@@ -4,8 +4,10 @@
 })();
 
 function onForm1ButtonClick() {
-    const rootElement = document.getElementById('root');
-    let element = document.createElement('p');
-    element.innerText = 'you entered: ';
-    rootElement.appendChild(element);
+
+    var userInput = document.getElementById('form_1').elements.namedItem('text').value;
+    const userInputOutput = document.getElementById('userInputOutput');
+
+    userInputOutput.innerText = 'you entered: ' + userInput;
+
 }
