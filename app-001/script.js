@@ -4,5 +4,8 @@
 })();
 
 function onForm1ButtonClick() {
-    console.log('button clicked');
+    const rootElement = document.getElementById('root');
+    let element = document.createElement('p');
+    element.innerText = 'you entered: ';
+    rootElement.appendChild(element);
 }
