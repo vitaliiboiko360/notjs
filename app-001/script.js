@@ -73,11 +73,23 @@
         headLine.innerText = 'Test Case #' + testCaseCounter++;
         document.body.appendChild(headLine);
 
-
         for (const dateObj of testCase) {
             let inputData = document.createElement('p');
             inputData.innerText = JSON.stringify(dateObj);
             document.body.appendChild(inputData);
+        }
+
+        let inputData = document.createElement('p');
+        inputData.innerText = 'Our function returns: ';
+        document.body.appendChild(inputData);
+
+
+        var ret = new Array();
+        for (const dateObj of testCase) {
+            var from = dateObj.from.split('/');
+            console.log(from);
+
+
         }
     }
 })();
@@ -88,5 +100,4 @@ function onForm1ButtonClick() {
     const userInputOutput = document.getElementById('output_users_input');
 
     userInputOutput.innerText = 'you entered: ' + userInput;
-
 }
