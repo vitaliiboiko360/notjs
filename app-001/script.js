@@ -87,9 +87,6 @@
         var result = new Array();
         const [month, day, year] = [0, 1, 2];
         const [f, t] = [0, 1];
-
-
-
         testCase.forEach((dateRangeObj)=> {
           const from = dateRangeObj.from.split('/');
           const to = dateRangeObj.to.split('/');
@@ -98,7 +95,7 @@
             result.push([from[day], to[day]]);
           }
           else {
-            var overlappingDataRangeIndex = result.findIndex(dataRange => dateRangeObj[f] >= to[day]);
+            var overlappingDataRangeIndex = result.findIndex(dataRange => dateRangeObj[t] <= from[day]);
             if (overlappingDataRangeIndex == -1) {
               result.push([from[day], to[day]]);
             }
@@ -107,7 +104,9 @@
               result[overlappingDataRangeIndex][t] = shiftToDate;
               for (var i=overlappingDataRangeIndex+1; i<result.length; i++) {
                 if (result[i][f] <= shiftToDate) {
-                  shiftToDate = result[i][f];
+                  console.log('shiftToDate='+shiftToDate);
+                  console.log('result[i][f]='+result[i][f]);
+                  shiftToDate = result[i][t];
                   result[overlappingDataRangeIndex][t] = shiftToDate;
                   result.splice(i, 1);
                   i--;
@@ -116,7 +115,7 @@
             }
           }       
         });
-        console.log(result);
+        //console.log(result);
         let resultData = document.createElement('p');
         resultData.innerText = result.map(arr => arr[f] + '-' + arr[t]).toString();
         document.body.appendChild(resultData);
