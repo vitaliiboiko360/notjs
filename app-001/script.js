@@ -65,7 +65,7 @@
         }
     ];
 
-    const testCases = [testArray1, testArray2];
+    const testCases = [testArray1, testArray2, testArray3, testArray4];
     var testCaseCounter = 0;
 
     for (const testCase of testCases) {
@@ -73,9 +73,9 @@
         headLine.innerText = 'Test Case #' + testCaseCounter++;
         document.body.appendChild(headLine);
 
-        for (const dateObj of testCase) {
+        for (const dateRangeObj of testCase) {
             let inputData = document.createElement('p');
-            inputData.innerText = JSON.stringify(dateObj);
+            inputData.innerText = JSON.stringify(dateRangeObj);
             document.body.appendChild(inputData);
         }
 
@@ -84,13 +84,42 @@
         document.body.appendChild(inputData);
 
 
-        var ret = new Array();
-        for (const dateObj of testCase) {
-            var from = dateObj.from.split('/');
-            console.log(from);
+        var result = new Array();
+        const [month, day, year] = [0, 1, 2];
+        const [f, t] = [0, 1];
 
 
-        }
+
+        testCase.forEach((dateRangeObj)=> {
+          const from = dateRangeObj.from.split('/');
+          const to = dateRangeObj.to.split('/');
+
+          if (result.length == 0) {
+            result.push([from[day], to[day]]);
+          }
+          else {
+            var overlappingDataRangeIndex = result.findIndex(dataRange => dateRangeObj[f] >= to[day]);
+            if (overlappingDataRangeIndex == -1) {
+              result.push([from[day], to[day]]);
+            }
+            else {
+              var shiftToDate = to[day];
+              result[overlappingDataRangeIndex][t] = shiftToDate;
+              for (var i=overlappingDataRangeIndex+1; i<result.length; i++) {
+                if (result[i][f] <= shiftToDate) {
+                  shiftToDate = result[i][f];
+                  result[overlappingDataRangeIndex][t] = shiftToDate;
+                  result.splice(i, 1);
+                  i--;
+                }
+              }
+            }
+          }       
+        });
+        console.log(result);
+        let resultData = document.createElement('p');
+        resultData.innerText = result.map(arr => arr[f] + '-' + arr[t]).toString();
+        document.body.appendChild(resultData);
     }
 })();
 
