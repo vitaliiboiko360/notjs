@@ -95,25 +95,39 @@
             result.push([from[day], to[day]]);
           }
           else {
-            var overlappingDataRangeIndex = result.findIndex(dataRange => dateRangeObj[t] <= from[day]);
-            if (overlappingDataRangeIndex == -1) {
-              result.push([from[day], to[day]]);
-            }
-            else {
-              var shiftToDate = to[day];
-              result[overlappingDataRangeIndex][t] = shiftToDate;
-              for (var i=overlappingDataRangeIndex+1; i<result.length; i++) {
-                if (result[i][f] <= shiftToDate) {
-                  console.log('shiftToDate='+shiftToDate);
-                  console.log('result[i][f]='+result[i][f]);
-                  shiftToDate = result[i][t];
-                  result[overlappingDataRangeIndex][t] = shiftToDate;
-                  result.splice(i, 1);
-                  i--;
-                }
+            result.push([from[day], to[day]]);
+            for (var i=result.length-1; i>=0; i--) {
+              if (from[day] <= result[i][t]) {
+                
               }
             }
-          }       
+          }
+
+
+
+          // if (result.length == 0) {
+          //   result.push([from[day], to[day]]);
+          // }
+          // else {
+          //   var overlappingDataRangeIndex = result.findIndex(dataRange => dateRangeObj[t] <= from[day]);
+          //   if (overlappingDataRangeIndex == -1) {
+          //     result.push([from[day], to[day]]);
+          //   }
+          //   else {
+          //     var shiftToDate = to[day];
+          //     result[overlappingDataRangeIndex][t] = shiftToDate;
+          //     for (var i=overlappingDataRangeIndex+1; i<result.length; i++) {
+          //       if (result[i][f] <= shiftToDate) {
+          //         console.log('shiftToDate='+shiftToDate);
+          //         console.log('result[i][f]='+result[i][f]);
+          //         shiftToDate = result[i][t];
+          //         result[overlappingDataRangeIndex][t] = shiftToDate;
+          //         result.splice(i, 1);
+          //         i--;
+          //       }
+          //     }
+          //   }
+          // }       
         });
         //console.log(result);
         let resultData = document.createElement('p');
