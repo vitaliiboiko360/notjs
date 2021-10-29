@@ -87,7 +87,7 @@
           result.push([from[day], to[day], from[month]]);
         }
         else {
-          var overlappingDataRangeIndex = result.findIndex(dataRange => dataRange[t] <= from[day]);
+          var overlappingDataRangeIndex = result.findIndex(dataRange => ((from[day] - dataRange[t]) <= 1));
           if (overlappingDataRangeIndex == -1) {
             result.push([from[day], to[day], from[month]]);
           }
@@ -96,7 +96,7 @@
             result[overlappingDataRangeIndex][t] = Math.max(to[day], result[overlappingDataRangeIndex][t]);
             var shiftToDate = result[overlappingDataRangeIndex][t];
             for (var i=overlappingDataRangeIndex+1; i<result.length; i++) {
-              if (result[i][f] <= shiftToDate) {
+              if ((result[i][f] - shiftToDate) >= 1) {
                 shiftToDate = Math.max(result[i][t], shiftToDate);
                 result[overlappingDataRangeIndex][t] = shiftToDate;
                 result.splice(i, 1);
