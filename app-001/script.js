@@ -67,6 +67,48 @@
 
     const testCases = [testArray1, testArray2, testArray3, testArray4];
     var testCaseCounter = 0;
+    
+    //
+    // function required by test assignment
+    // called for each test case
+    // DISCLAIMER: only works with date ranges within one month
+    // work in progress to make it work with dates from different months, years...
+    //
+    function createDateRanges(testCase) {
+      var result = new Array();
+      const [month, day, year] = [0, 1, 2];
+      const [f, t, m] = [0, 1, 2];
+
+      testCase.forEach((dateRangeObj)=> {        
+        const from = dateRangeObj.from.split('/');
+        const to = dateRangeObj.to.split('/');
+
+        if (result.length == 0) {
+          result.push([from[day], to[day], from[month]]);
+        }
+        else {
+          var overlappingDataRangeIndex = result.findIndex(dataRange => dataRange[t] <= from[day]);
+          if (overlappingDataRangeIndex == -1) {
+            result.push([from[day], to[day], from[month]]);
+          }
+          else {
+            var shiftToDate = to[day];
+            result[overlappingDataRangeIndex][t] = Math.max(to[day], result[overlappingDataRangeIndex][t]);
+            var shiftToDate = result[overlappingDataRangeIndex][t];
+            for (var i=overlappingDataRangeIndex+1; i<result.length; i++) {
+              if (result[i][f] <= shiftToDate) {
+                shiftToDate = Math.max(result[i][t], shiftToDate);
+                result[overlappingDataRangeIndex][t] = shiftToDate;
+                result.splice(i, 1);
+                i--;
+              }
+            }
+          }
+        }
+      });
+    
+      return result.map(arr => getMonthShortNameFromNumber(arr[m]) + ' ' + arr[f] + '-' + arr[t]).toString();       
+    }
 
     for (const testCase of testCases) {
         let headLine = document.createElement('h4');
@@ -83,63 +125,15 @@
         inputData.innerText = 'Our function returns: ';
         document.body.appendChild(inputData);
 
-
-        var result = new Array();
-        const [month, day, year] = [0, 1, 2];
-        const [f, t] = [0, 1];
-        testCase.forEach((dateRangeObj)=> {
-          const from = dateRangeObj.from.split('/');
-          const to = dateRangeObj.to.split('/');
-
-          if (result.length == 0) {
-            result.push([from[day], to[day]]);
-          }
-          else {
-            result.push([from[day], to[day]]);
-            for (var i=result.length-1; i>=0; i--) {
-              if (from[day] <= result[i][t]) {
-                
-              }
-            }
-          }
-
-
-
-          // if (result.length == 0) {
-          //   result.push([from[day], to[day]]);
-          // }
-          // else {
-          //   var overlappingDataRangeIndex = result.findIndex(dataRange => dateRangeObj[t] <= from[day]);
-          //   if (overlappingDataRangeIndex == -1) {
-          //     result.push([from[day], to[day]]);
-          //   }
-          //   else {
-          //     var shiftToDate = to[day];
-          //     result[overlappingDataRangeIndex][t] = shiftToDate;
-          //     for (var i=overlappingDataRangeIndex+1; i<result.length; i++) {
-          //       if (result[i][f] <= shiftToDate) {
-          //         console.log('shiftToDate='+shiftToDate);
-          //         console.log('result[i][f]='+result[i][f]);
-          //         shiftToDate = result[i][t];
-          //         result[overlappingDataRangeIndex][t] = shiftToDate;
-          //         result.splice(i, 1);
-          //         i--;
-          //       }
-          //     }
-          //   }
-          // }       
-        });
-        //console.log(result);
         let resultData = document.createElement('p');
-        resultData.innerText = result.map(arr => arr[f] + '-' + arr[t]).toString();
+        resultData.innerText = createDateRanges(testCase);
         document.body.appendChild(resultData);
     }
 })();
 
-function onForm1ButtonClick() {
-
-    var userInput = document.getElementById('form_1').elements.namedItem('text').value;
-    const userInputOutput = document.getElementById('output_users_input');
-
-    userInputOutput.innerText = 'you entered: ' + userInput;
+function getMonthShortNameFromNumber(number) {
+  if (number > 12 || number < 1) {
+    return 'ArgNotInRangeError';
+  }
+  return Intl.DateTimeFormat('en', { month: 'short' }).format(new Date(number.toString()));
 }
