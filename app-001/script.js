@@ -110,24 +110,21 @@
       return result.map(arr => getMonthShortNameFromNumber(arr[m]) + ' ' + arr[f] + '-' + arr[t]).toString();       
     }
 
+    function createTagElementWithTextAppendToBody(tagName, textToOutput) {
+      let element = document.createElement(tagName);
+      element.innerText = textToOutput;
+      document.body.appendChild(element);
+    }
+
     for (const testCase of testCases) {
-        let headLine = document.createElement('h4');
-        headLine.innerText = 'Test Case #' + testCaseCounter++;
-        document.body.appendChild(headLine);
+      createTagElementWithTextAppendToBody('h4', 'Test Case #' + testCaseCounter++);
 
         for (const dateRangeObj of testCase) {
-            let inputData = document.createElement('p');
-            inputData.innerText = JSON.stringify(dateRangeObj);
-            document.body.appendChild(inputData);
+          createTagElementWithTextAppendToBody('p', JSON.stringify(dateRangeObj));
         }
 
-        let inputData = document.createElement('p');
-        inputData.innerText = 'Our function returns: ';
-        document.body.appendChild(inputData);
-
-        let resultData = document.createElement('p');
-        resultData.innerText = createDateRanges(testCase);
-        document.body.appendChild(resultData);
+        createTagElementWithTextAppendToBody('p', 'Our function returns: ');
+        createTagElementWithTextAppendToBody('p', createDateRanges(testCase));
     }
 })();
 
