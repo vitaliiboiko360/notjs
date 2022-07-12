@@ -8,8 +8,8 @@ console.log(config);
 
 async function startBr(config) {
     const { stdout, stderr } = await exec(`${config.osxExecPath} ${config.cmdArgs}`);
-    console.log('stdout:', stdout);
     console.error('stderr:', stderr);
+    return stdout;
 }
 
 async function doApp() {
@@ -32,3 +32,7 @@ async function doApp() {
 
   await browser.close();
 };
+
+await startBr().then((data)=>{
+    console.log(data);
+});
