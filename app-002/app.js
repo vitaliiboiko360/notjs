@@ -3,11 +3,16 @@ const fs = require('fs');
 const util = require('node:util');
 const exec = util.promisify(require('node:child_process').exec);
 
-const config = fs.readFileSync('config.json', 'utf-8');
+const json = fs.readFileSync('config.json', 'utf-8');
+const config = JSON.parse(json);
 console.log(config);
 
 async function startBr(config) {
-    const { stdout, stderr } = await exec(`${config.osxExecPath} ${config.cmdArgs}`);
+    let cmd = `${config.osxExecPath} ${config.cmdArgs}`;
+    console.log(`running ${cmd}`);
+    const { stdout, stderr } = await exec(cmd).then((child)=>{
+        child.unref();
+    });
     console.error('stderr:', stderr);
     return stdout;
 }
@@ -33,6 +38,6 @@ async function doApp() {
   await browser.close();
 };
 
-await startBr().then((data)=>{
+startBr(config).then((data)=>{
     console.log(data);
 });
