@@ -2,30 +2,32 @@ const puppeteer = require('puppeteer');
 const fs = require('fs');
 const util = require('node:util');
 const exec = util.promisify(require('node:child_process').exec);
+// const spawn = util.promisify(require('node:child_process').spawn);
 const spawn = require('node:child_process').spawn;
+var stream = require('stream');
 
 const json = fs.readFileSync('config.json', 'utf-8');
 const config = JSON.parse(json);
 console.log(config);
 
-async function startBr(config) {
-    let cmd = `${config.execPath} ${config.cmdArgs}`;
+function startBr(config) {
+    let cmd = `${config.execPath} ${config.cmdArgs.join(' ')}`;
     console.log(`running ${cmd}`);
     const child = spawn(config.execPath, config.cmdArgs, {
         detached: true,
         stdio: 'pipe'
     });
-    
-    var subProcOutput = Buffer.alloc(0);
-    child.stdout.on('data', (data) => {
-        console.log(`Received chunk ${data}`);
-        let offset = 0;
-        offset = offset + subProcOutput.write(data, offset);
+
+    var output = "";
+    child.stdout.setEncoding('utf8');
+    child.stdout.on('data', function(data) {
+        console.log(`on data: ${data}`);
+        output += data.toString();
     });
+
     child.unref();
-    console.error('stderr:', stderr);
-    console.log('end of startBr');
-    console.log(subProcOutput);
+
+    return output;
 }
 
 async function doApp(config) {
@@ -49,9 +51,8 @@ async function doApp(config) {
   await browser.close();
 };
 
-var output = startBr(config).then((data)=>{
-    console.log('startBr then');
+(function(){
+    const data = startBr(config);
+    console.log('startBr after');
     console.log(data);
-    console.log(output);
-    //doApp(data);
-});
+})();
