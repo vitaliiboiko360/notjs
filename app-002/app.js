@@ -10,7 +10,7 @@ const json = fs.readFileSync('config.json', 'utf-8');
 const config = JSON.parse(json);
 console.log(config);
 
-function startBr(config) {
+async function startBr(config) {
     let cmd = `${config.execPath} ${config.cmdArgs.join(' ')}`;
     console.log(`running ${cmd}`);
     const child = spawn(config.execPath, config.cmdArgs, {
@@ -52,7 +52,7 @@ async function doApp(config) {
 };
 
 (function(){
-    const data = startBr(config);
+    const data = await startBr(config);
     console.log('startBr after');
     console.log(data);
 })();
