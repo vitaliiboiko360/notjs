@@ -5,29 +5,34 @@ const exec = util.promisify(require('node:child_process').exec);
 // const spawn = util.promisify(require('node:child_process').spawn);
 const spawn = require('node:child_process').spawn;
 var stream = require('stream');
+const { start } = require('repl');
 
 const json = fs.readFileSync('config.json', 'utf-8');
 const config = JSON.parse(json);
 console.log(config);
 
-async function startBr(config) {
-    let cmd = `${config.execPath} ${config.cmdArgs.join(' ')}`;
+
+
+function startBr(config) {
+    let cmd = `"${config.execPath}" ${config.cmdArgs.join(' ')}`;
     console.log(`running ${cmd}`);
     const child = spawn(config.execPath, config.cmdArgs, {
         detached: true,
         stdio: 'pipe'
     });
-
-    var output = "";
-    child.stdout.setEncoding('utf8');
-    child.stdout.on('data', function(data) {
-        console.log(`on data: ${data}`);
-        output += data.toString();
-    });
-
     child.unref();
 
-    return output;
+    var buffer = Buffer.alloc(0);
+    child.stdin.on('data', function(data) {
+        console.log(`on data: ${data}`);
+        buffer = Buffer.concat([buffer, data]);
+        console.log(`on data: ${buffer.toString()}`);
+    });
+
+    console.log('after on data handler');
+    console.log('before return');
+    console.log(`buffer: ${buffer.toString()}`);
+    return buffer.toString();
 }
 
 async function doApp(config) {
@@ -52,7 +57,8 @@ async function doApp(config) {
 };
 
 (function(){
-    const data = await startBr(config);
+    var output = startBr(config);
     console.log('startBr after');
-    console.log(data);
+    // console.log(output);
+    
 })();
