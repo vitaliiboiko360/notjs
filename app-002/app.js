@@ -15,13 +15,14 @@ async function startBr(config) {
         detached: true,
         stdio: 'pipe'
     });
-    child.unref();
+    
     var subProcOutput = Buffer.alloc(0);
     child.stdout.on('data', (data) => {
         console.log(`Received chunk ${data}`);
         let offset = 0;
-        offset = subProcOutput.write(data, offset);
+        offset = offset + subProcOutput.write(data, offset);
     });
+    child.unref();
     console.error('stderr:', stderr);
     console.log('end of startBr');
     console.log(subProcOutput);
