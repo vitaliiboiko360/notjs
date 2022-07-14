@@ -19,14 +19,19 @@ function startBr(config) {
         stdio: ['ignore', 'pipe', 'ignore']
     });
     
-    var buffer = Buffer.alloc(0);
+    var buffer = [];
+    var output = Buffer.alloc(0);
     child.stdout.on('data', (data)=>{
         console.log(`on data: ${data}`);
+        buffer.push(data);
         // buffer = Buffer.concat([buffer, data]);
         // console.log(`on data: ${buffer.toString()}`);
     });
+    child.stdout.on('end', ()=>{
+        output = Buffer.concat(buffer);
+    });
 
-    console.log(`buffer: ${buffer.toString()}`);
+    console.log(`buffer: ${output.toString()}`);
 
     child.unref();
     
