@@ -11,31 +11,31 @@ const { start } = require('repl');
 const json = fs.readFileSync('config.json', 'utf-8');
 const config = JSON.parse(json);
 
+var url = {
+    ready: false,
+    url: ''    
+};
 function startBr(config) {
     let cmd = `"${config.execPath}" ${config.cmdArgs.join(' ')}`;
     console.log(`running ${cmd}`);
     const child = spawn(config.execPath, config.cmdArgs, {
         detached: true,
-        stdio: ['ignore', 'pipe', 'ignore']
+        stdio: ['ignore', 'ignore', 'pipe']
     });
-    
-    var buffer = [];
-    var output = Buffer.alloc(0);
-    child.stdout.on('data', (data)=>{
-        console.log(`on data: ${data}`);
-        buffer.push(data);
-        // buffer = Buffer.concat([buffer, data]);
-        // console.log(`on data: ${buffer.toString()}`);
-    });
-    child.stdout.on('end', ()=>{
-        output = Buffer.concat(buffer);
-    });
-
-    console.log(`buffer: ${output.toString()}`);
-
     child.unref();
     
-    return buffer.toString();
+    const re = new RegExp('ws:[^ ]*');
+    var buffer = [];
+    var output = Buffer.alloc(0);
+    child.stderr.on('data', (data)=>{
+        let match = re.exec(data.toString());
+        if(match) { url.ready = true; url.url = match[0]; };
+    });
+}
+
+async function getUrl() {
+    let output = await startBr();
+    console.log(output);
 }
 
 async function doApp(config) {
@@ -60,8 +60,15 @@ async function doApp(config) {
 };
 
 (function(){
-    var output = startBr(config);
+    startBr(config);
     console.log('startBr after');
-    // console.log(output);
+    
+    let id = setInterval(()=>{
+        if (url.ready) {
+            console.log(`we have url ${url.url}`);
+            console.log('we are ready');
+            clearInterval(id);
+        } else console.log('...waiting for url');
+    },1000);
     
 })();
