@@ -29,7 +29,7 @@ function startBr(config) {
     var output = Buffer.alloc(0);
     child.stderr.on('data', (data)=>{
         let match = re.exec(data.toString());
-        if(match) { 
+        if(match) {
             url.ready = true; 
             url.url = match[0]; 
         };
@@ -40,7 +40,7 @@ async function doApp(config, ws) {
   console.log(`doApp started with ${ws}`);
   const browser = await puppeteer.connect({browserWSEndpoint:ws});
   const page = await browser.newPage();
-  await page.goto(config.url, {waitUntil: 'networkidle2'});
+  await page.goto(config.url1, {waitUntil: 'networkidle2'});
 
   // Get the "viewport" of the page, as reported by the page.
   const dimensions = await page.evaluate(() => {
