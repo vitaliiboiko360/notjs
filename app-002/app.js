@@ -66,7 +66,14 @@ async function doApp(config, ws) {
     var last;
     if(last != null) {
         startIndex = elements.findIndex(async (element)=>{
-            return element === last;
+            const links = await element.$$('a');
+            const link = links[links.length - 1];
+            const idName = await link.evaluate(a => a.innerText);
+            if(idName === last) {
+                console.log(`${idName} is equal to ${last}`);
+                return true;
+            }   
+            return false;
         });
     }
     console.log(`startIndex ${startIndex}`);
@@ -76,35 +83,39 @@ async function doApp(config, ws) {
         let element = elements[i];
         const links = await element.$$('a');
         const link = links[links.length - 1];
-    
-        console.log(await link.evaluate(a => a.innerText));
+        
+        const id = await link.evaluate(a => a.innerText);
+        console.log(id);
         const names = await element.$$('._aacl');
         if(names.length > 1) {
             console.log(await names[names.length-2].evaluate(n => n.innerText));
         }
+
+        link.hover().catch(() => {
+        });
+
         var saved = false;
+        var hoverFailed = 0;
         while(!saved) {
             try {
-                link.hover();
                 await page.waitForTimeout(2000);
                 let miniWindow = await page.$('div._aap3._aap4');
                 await miniWindow.screenshot({fromsurface:true, path: `./${picIndex++}.png`});
                 saved = true;
-                lastSaved = i;
+                lastSaved = id;
             } catch {
                 console.log(`hovering again`);
-                try {
-                    link.hover();
-                } catch {
+                link.hover().catch(() => {
+                    hoverFailed++;
+                });
+                if(hoverFailed > 5) {
                     break;
                 }
                 await page.waitForTimeout(2000);
             }
         }
-
         
         await page.mouse.move(40, 40);
-        
         
         // await new Promise(r => setTimeout(r, 1000));
         // await blockElements.evaluate(() => {
@@ -112,7 +123,6 @@ async function doApp(config, ws) {
         // });
         console.log(`${picIndex}`);
     }
-    last = elements[lastSaved];
 }
 };
 
