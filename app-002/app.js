@@ -37,34 +37,55 @@ function startBr(config) {
 }
 
 async function doApp(config, ws) {
-  console.log(`doApp started with ${ws}`);
-  const browser = await puppeteer.connect({browserWSEndpoint:ws});
-  const page = await browser.newPage();
-  await page.goto(config.url1, {waitUntil: 'networkidle2'});
+    console.log(`doApp started with ${ws}`);
+    const browser = await puppeteer.connect({browserWSEndpoint:ws, defaultViewport: null});
 
-  // Get the "viewport" of the page, as reported by the page.
-  const dimensions = await page.evaluate(() => {
-    return {
-      width: document.documentElement.clientWidth,
-      height: document.documentElement.clientHeight,
-      deviceScaleFactor: window.devicePixelRatio,
+    var page;
+    const pages = await browser.pages();
+    for (let i=0; i<pages.length; i++) {
+        if (pages[i].url().indexOf('instagram.com') !== -1) {
+            page = pages[i];
+            console.log(`found page ${page.url()}`);
+            break;
+        }
+    }
+    if (typeof page === undefined) {
+        page = await browser.newPage();
+        await page.goto(config.url1, {waitUntil: 'networkidle2'});
     };
-  });
-
-  console.log('Dimensions:', dimensions);
+    
+    const blockElements = await page.$('._aae-');
+    const elements = await blockElements.$$('._ab8w');
+    
+    console.log(`elements: ${elements.length}`);
+    for(let i=0; i<elements.length; i++) {
+        //elements[i].waitForSelector();
+        elements[i].hover();
+        const acOverview = page.$('._a3gq');
+        if (acOverview !== null) {
+            await acOverview.screenshot({path: `${i}.png`});
+        }
+        // await new Promise(r => setTimeout(r, 1000));
+        // await blockElements.evaluate(() => {
+        //     window.scrollBy(0, 30);
+        // });
+        console.log(`${i}`);
+    }
 };
 
-(function(){
-    startBr(config);
-    console.log('startBr after');
+// (function(){
+//     startBr(config);
+//     console.log('startBr after');
     
-    let id = setInterval(()=>{
-        if (url.ready) {
-            console.log(`we have url ${url.url}`);
-            console.log('start')
-            clearInterval(id);
-            doApp(config, url.url);
-        }
-    },1000);
+//     let id = setInterval(()=>{
+//         if (url.ready) {
+//             console.log(`we have url ${url.url}`);
+//             console.log('start')
+//             clearInterval(id);
+//             doApp(config, ws.ws);
+//         }
+//     },1000);
 
-})();
+// })();
+
+doApp(config, 'ws://127.0.0.1:9222/devtools/browser/eca39a74-4e8b-41c4-9cda-d34c0401172d');
