@@ -43,27 +43,39 @@ async function doApp(config, ws) {
     var page;
     const pages = await browser.pages();
     for (let i=0; i<pages.length; i++) {
-        if (pages[i].url().indexOf('instagram.com') !== -1) {
+        if (pages[i].url().indexOf(config.url1) !== -1) {
             page = pages[i];
             console.log(`found page ${page.url()}`);
             break;
         }
     }
-    if (typeof page === undefined) {
+    if (typeof page == 'undefined') {
+        console.log('no page found');
         page = await browser.newPage();
         await page.goto(config.url1, {waitUntil: 'networkidle2'});
-    };
+    }
+    else{console.log(typeof page)}
     
     const blockElements = await page.$('._aae-');
-    const elements = await blockElements.$$('._ab8w');
+    const elements = await blockElements.$$('li');
     
     console.log(`elements: ${elements.length}`);
     for(let i=0; i<elements.length; i++) {
-        //elements[i].waitForSelector();
-        elements[i].hover();
-        const acOverview = page.$('._a3gq');
-        if (acOverview !== null) {
-            await acOverview.screenshot({path: `${i}.png`});
+        const avatarHolder = await elements[i].$('._aarf');
+        const link = await avatarHolder.$('a');
+        
+        if (link !== null) {
+            await link.hover();
+            console.log(await link.evaluate(a => a.innerHTML));
+            try {
+            const acOverview = await page.waitForSelector('._a3gq');
+            await new Promise(r => setTimeout(r, 3000));
+            if (acOverview !== null) {
+                await acOverview.screenshot({path: `${i}.png`});
+            }
+            } catch (error) {
+                console.log(`e: ${error}`);
+            }
         }
         // await new Promise(r => setTimeout(r, 1000));
         // await blockElements.evaluate(() => {
@@ -88,4 +100,4 @@ async function doApp(config, ws) {
 
 // })();
 
-doApp(config, 'ws://127.0.0.1:9222/devtools/browser/eca39a74-4e8b-41c4-9cda-d34c0401172d');
+doApp(config, config.wsUrl);
