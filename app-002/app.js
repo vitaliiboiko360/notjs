@@ -32,13 +32,14 @@ function startBr(config) {
         if(match) {
             url.ready = true; 
             url.url = match[0]; 
+            doApp(config, url.url);
         };
     });
 }
 
 async function doApp(config, ws) {
     console.log(`doApp started with ${ws}`);
-    const browser = await puppeteer.connect({browserWSEndpoint:ws, defaultViewport: null});
+    const browser = await puppeteer.connect({browserWSEndpoint:ws, defaultViewport: {deviceScaleFactor:2, width:920, height:1292}});
 
     var page;
     const pages = await browser.pages();
@@ -49,40 +50,70 @@ async function doApp(config, ws) {
             break;
         }
     }
-    if (typeof page == 'undefined') {
+    if (page == null) {
         console.log('no page found');
         page = await browser.newPage();
         await page.goto(config.url1, {waitUntil: 'networkidle2'});
     }
-    else{console.log(typeof page)}
-    
+    var picIndex = 0;
+    var startIndex = 0;
     const blockElements = await page.$('._aae-');
+    while(true) {
     const elements = await blockElements.$$('li');
     
     console.log(`elements: ${elements.length}`);
-    for(let i=0; i<elements.length; i++) {
-        const avatarHolder = await elements[i].$('._aarf');
-        const link = await avatarHolder.$('a');
-        
-        if (link !== null) {
-            await link.hover();
-            console.log(await link.evaluate(a => a.innerHTML));
+    
+    var last;
+    if(last != null) {
+        startIndex = elements.findIndex(async (element)=>{
+            return element === last;
+        });
+    }
+    console.log(`startIndex ${startIndex}`);
+    let lastSaved = 0;
+    for(let i=startIndex; i< elements.length; i++) {
+        //const avatarHolder = await elements[i].$('._aarf');
+        let element = elements[i];
+        const links = await element.$$('a');
+        const link = links[links.length - 1];
+    
+        console.log(await link.evaluate(a => a.innerText));
+        const names = await element.$$('._aacl');
+        if(names.length > 1) {
+            console.log(await names[names.length-2].evaluate(n => n.innerText));
+        }
+        var saved = false;
+        while(!saved) {
             try {
-            const acOverview = await page.waitForSelector('._a3gq');
-            await new Promise(r => setTimeout(r, 3000));
-            if (acOverview !== null) {
-                await acOverview.screenshot({path: `${i}.png`});
-            }
-            } catch (error) {
-                console.log(`e: ${error}`);
+                link.hover();
+                await page.waitForTimeout(2000);
+                let miniWindow = await page.$('div._aap3._aap4');
+                await miniWindow.screenshot({fromsurface:true, path: `./${picIndex++}.png`});
+                saved = true;
+                lastSaved = i;
+            } catch {
+                console.log(`hovering again`);
+                try {
+                    link.hover();
+                } catch {
+                    break;
+                }
+                await page.waitForTimeout(2000);
             }
         }
+
+        
+        await page.mouse.move(40, 40);
+        
+        
         // await new Promise(r => setTimeout(r, 1000));
         // await blockElements.evaluate(() => {
         //     window.scrollBy(0, 30);
         // });
-        console.log(`${i}`);
+        console.log(`${picIndex}`);
     }
+    last = elements[lastSaved];
+}
 };
 
 // (function(){
@@ -99,5 +130,5 @@ async function doApp(config, ws) {
 //     },1000);
 
 // })();
-
+//startBr(config);
 doApp(config, config.wsUrl);
