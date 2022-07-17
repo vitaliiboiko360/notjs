@@ -20,7 +20,7 @@ function startBr(config) {
     console.log(`running ${cmd}`);
     const child = spawn(config.execPath, config.cmdArgs, {
         detached: true,
-        stdio: ['ignore', 'ignore', 'pipe']
+        stdio: ['ignore', 'pipe', 'pipe']
     });
     child.unref();
     
@@ -55,29 +55,30 @@ async function doApp(config, ws) {
         page = await browser.newPage();
         await page.goto(config.url1, {waitUntil: 'networkidle2'});
     }
+    var lastSaved;
     var picIndex = 0;
-    var startIndex = 0;
+    
     const blockElements = await page.$('._aae-');
     while(true) {
+    var startIndex = 0;
     const elements = await blockElements.$$('li');
     
     console.log(`elements: ${elements.length}`);
     
-    var last;
-    if(last != null) {
-        startIndex = elements.findIndex(async (element)=>{
+    console.log(`saved is ${lastSaved}`);
+    if(lastSaved != null) {
+        for(let i=0; i<elements.length; i++) {
             const links = await element.$$('a');
             const link = links[links.length - 1];
             const idName = await link.evaluate(a => a.innerText);
-            if(idName === last) {
-                console.log(`${idName} is equal to ${last}`);
-                return true;
-            }   
-            return false;
-        });
+            if(idName === lastSaved) {
+                console.log(`${idName} is equal to ${lastSaved}`);
+                startIndex = i+1;
+                break;
+            }
+        }
     }
     console.log(`startIndex ${startIndex}`);
-    let lastSaved = 0;
     for(let i=startIndex; i< elements.length; i++) {
         //const avatarHolder = await elements[i].$('._aarf');
         let element = elements[i];
@@ -98,7 +99,7 @@ async function doApp(config, ws) {
         var hoverFailed = 0;
         while(!saved) {
             try {
-                await page.waitForTimeout(2000);
+                await page.waitForTimeout(1000);
                 let miniWindow = await page.$('div._aap3._aap4');
                 await miniWindow.screenshot({fromsurface:true, path: `./${picIndex++}.png`});
                 saved = true;
@@ -108,10 +109,10 @@ async function doApp(config, ws) {
                 link.hover().catch(() => {
                     hoverFailed++;
                 });
-                if(hoverFailed > 5) {
+                if(hoverFailed > 4) {
                     break;
                 }
-                await page.waitForTimeout(2000);
+                await page.waitForTimeout(1000);
             }
         }
         
