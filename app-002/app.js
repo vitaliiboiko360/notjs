@@ -20,7 +20,7 @@ function startBr(config) {
     console.log(`running ${cmd}`);
     const child = spawn(config.execPath, config.cmdArgs, {
         detached: true,
-        stdio: ['ignore', 'pipe', 'pipe']
+        stdio: ['ignore', 'ignore', 'pipe']
     });
     child.unref();
     
@@ -72,8 +72,8 @@ async function doApp(config, ws) {
             const link = links[links.length - 1];
             const idName = await link.evaluate(a => a.innerText);
             if(idName === lastSaved) {
-                console.log(`${idName} is equal to ${lastSaved}`);
                 startIndex = i+1;
+                console.log(`${idName} is equal to ${lastSaved} and startIndex=${startIndex}`);
                 break;
             }
         }
