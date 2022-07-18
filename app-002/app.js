@@ -68,6 +68,7 @@ async function doApp(config, ws) {
     console.log(`saved is ${lastSaved}`);
     if(lastSaved != null) {
         for(let i=0; i<elements.length; i++) {
+            let element = elements[i];
             const links = await element.$$('a');
             const link = links[links.length - 1];
             const idName = await link.evaluate(a => a.innerText);
@@ -116,7 +117,7 @@ async function doApp(config, ws) {
             }
         }
         
-        await page.mouse.move(40, 40);
+        await page.mouse.move(-80, -80);
         
         // await new Promise(r => setTimeout(r, 1000));
         // await blockElements.evaluate(() => {
