@@ -68,7 +68,7 @@ async function doApp(config, ws) {
     console.log(`saved is ${lastSaved}`);
     if(lastSaved != null) {
         for(let i=0; i<elements.length; i++) {
-            const links = await element.$$('a');
+            const links = await elements[i].$$('a');
             const link = links[links.length - 1];
             const idName = await link.evaluate(a => a.innerText);
             if(idName === lastSaved) {
@@ -91,32 +91,32 @@ async function doApp(config, ws) {
         if(names.length > 1) {
             console.log(await names[names.length-2].evaluate(n => n.innerText));
         }
-
-        link.hover().catch(() => {
+        const imgHolder = await element.$('canvas');
+        imgHolder.hover().catch(() => {
         });
-
+        
         var saved = false;
         var hoverFailed = 0;
         while(!saved) {
             try {
-                await page.waitForTimeout(1000);
+                await page.waitForTimeout(1000);            
                 let miniWindow = await page.$('div._aap3._aap4');
                 await miniWindow.screenshot({fromsurface:true, path: `./${picIndex++}.png`});
                 saved = true;
                 lastSaved = id;
             } catch {
                 console.log(`hovering again`);
-                link.hover().catch(() => {
+                imgHolder.hover().catch(() => {
                     hoverFailed++;
                 });
                 if(hoverFailed > 4) {
                     break;
-                }
-                await page.waitForTimeout(1000);
+                }               
             }
         }
-        
+
         await page.mouse.move(40, 40);
+        await page.waitForTimeout(1000);
         
         // await new Promise(r => setTimeout(r, 1000));
         // await blockElements.evaluate(() => {
