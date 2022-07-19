@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
+const http = require('http');
 const util = require('node:util');
 const exec = util.promisify(require('node:child_process').exec);
 // const spawn = util.promisify(require('node:child_process').spawn);
@@ -25,7 +26,15 @@ var url = {
     ready: false,
     url: ''    
 };
-function startBr(config) {
+function main(config) {
+    let runFilePath = './run';
+    if (fs.existsSync(runFilePath)) {
+        let wsUrl = fs.readFileSync(runFilePath);
+        console.log(`trying to connect to ${wsUrl}`);
+        doApp(config, wsUrl);
+        return;
+    }
+
     let cmd = `"${config.execPath}" ${config.cmdArgs.join(' ')}`;
     console.log(`running ${cmd}`);
     const child = spawn(config.execPath, config.cmdArgs, {
@@ -33,15 +42,12 @@ function startBr(config) {
         stdio: ['ignore', 'ignore', 'pipe']
     });
     child.unref();
-    
     const re = new RegExp('ws:[^ ]*');
-    var buffer = [];
-    var output = Buffer.alloc(0);
     child.stderr.on('data', (data)=>{
         let match = re.exec(data.toString());
         if(match) {
             url.ready = true; 
-            url.url = match[0]; 
+            url.url = match[0];
             doApp(config, url.url);
         };
     });
@@ -90,7 +96,6 @@ async function doApp(config, ws) {
     }
     console.log(`startIndex ${startIndex}`);
     for(let i=startIndex; i< elements.length; i++) {
-        //const avatarHolder = await elements[i].$('._aarf');
         let element = elements[i];
         const links = await element.$$('a');
         const link = links[links.length - 1];
@@ -107,8 +112,28 @@ async function doApp(config, ws) {
                 let miniWindow = await page.waitForSelector('div._aap3._aap4');
                 let name = await miniWindow.$eval('._aap2', n => n.innerText).catch(e => {}) || "";
                 let numPosts = await miniWindow.$eval('._ac2a',n => n.innerText);
+                numPosts = numPosts.replaceAll(',','');
                 console.log(`${name} : ${numPosts}`);
-                await miniWindow.screenshot({fromsurface:true, path: `./out/${id}.png`});
+                await miniWindow.$$('._aazw')
+                .then(async (divs)=>{
+                    let isPrivate = await divs[divs.length-1].evaluate(n => n.innerText) || "";
+                    if (isPrivate.indexOf('Private') != -1) {
+                        await divs[0].$('img')
+                        .then(async (img)=>{
+                            let imgSrc = await img.evaluate(i => i.getAttribute('src'));
+                            const file = fs.createWriteStream(`./out/${id}.jpg`);
+                            http.get(imgSrc, (response)=>{
+                                response.pipe(file);
+                                file.on("finish", () => {
+                                    file.close();
+                                });
+                            });
+                        });
+                    } else {
+                        await miniWindow.screenshot({fromsurface:true, path: `./out/${id}.png`});
+                    }
+                })
+                .catch(e => {});   
                 saved = true;
                 lastSaved = id;
                 await page.waitForTimeout(1000);
@@ -123,32 +148,13 @@ async function doApp(config, ws) {
                 }               
             }
         }
-
-        await page.mouse.move(0, 0);
-        await page.waitForTimeout(1000000);
         
-        // await new Promise(r => setTimeout(r, 1000));
-        // await blockElements.evaluate(() => {
-        //     window.scrollBy(0, 30);
-        // });
+        await page.mouse.move(0, 0);
+        await page.waitForTimeout(500);
+    
         console.log(`${picIndex++}`);
     }
 }
 };
 
-// (function(){
-//     startBr(config);
-//     console.log('startBr after');
-    
-//     let id = setInterval(()=>{
-//         if (url.ready) {
-//             console.log(`we have url ${url.url}`);
-//             console.log('start')
-//             clearInterval(id);
-//             doApp(config, ws.ws);
-//         }
-//     },1000);
-
-// })();
-startBr(config);
-//sdoApp(config, config.wsUrl);
+main(config);
