@@ -6,10 +6,20 @@ const exec = util.promisify(require('node:child_process').exec);
 const spawn = require('node:child_process').spawn;
 const spawnSync = require('node:child_process').spawnSync;
 var stream = require('stream');
-const { start } = require('repl');
 
 const json = fs.readFileSync('config.json', 'utf-8');
 const config = JSON.parse(json);
+
+var outputFile = fs.createWriteStream('./out/output.json');
+outputFile.write('{data:[\n');
+
+var writeToFile = function(idName,name,numPosts) {
+    outputFile.write(`["${idName}","${name}",${numPosts}],\n`)
+}
+
+var endFile = function(count) {
+    outputFile.write(`\ncount:${count}}`);
+}
 
 var url = {
     ready: false,
@@ -58,7 +68,7 @@ async function doApp(config, ws) {
     var lastSaved;
     var picIndex = 0;
     
-    const blockElements = await page.$('._aae-');
+    const blockElements = await page.waitForSelector('._aae-');
     while(true) {
     var startIndex = 0;
     const elements = await blockElements.$$('li');
@@ -87,24 +97,22 @@ async function doApp(config, ws) {
         
         const id = await link.evaluate(a => a.innerText);
         console.log(id);
-        const names = await element.$$('._aacl');
-        if(names.length > 1) {
-            console.log(await names[names.length-2].evaluate(n => n.innerText));
-        }
         const imgHolder = await element.$('canvas');
         imgHolder.hover().catch(() => {
         });
-        
         var saved = false;
         var hoverFailed = 0;
         while(!saved) {
-            try {
-                await page.waitForTimeout(1000);            
-                let miniWindow = await page.$('div._aap3._aap4');
-                await miniWindow.screenshot({fromsurface:true, path: `./out/${picIndex++}.png`});
+            try {         
+                let miniWindow = await page.waitForSelector('div._aap3._aap4');
+                let name = await miniWindow.$eval('._aap2', n => n.innerText).catch(e => {}) || "";
+                let numPosts = await miniWindow.$eval('._ac2a',n => n.innerText);
+                console.log(`${name} : ${numPosts}`);
+                await miniWindow.screenshot({fromsurface:true, path: `./out/${id}.png`});
                 saved = true;
                 lastSaved = id;
                 await page.waitForTimeout(1000);
+                writeToFile(id, name, numPosts);
             } catch {
                 console.log(`hovering again`);
                 imgHolder.hover().catch(() => {
@@ -116,14 +124,14 @@ async function doApp(config, ws) {
             }
         }
 
-        await page.mouse.move(40, 40);
-        await page.waitForTimeout(1000);
+        await page.mouse.move(0, 0);
+        await page.waitForTimeout(1000000);
         
         // await new Promise(r => setTimeout(r, 1000));
         // await blockElements.evaluate(() => {
         //     window.scrollBy(0, 30);
         // });
-        console.log(`${picIndex}`);
+        console.log(`${picIndex++}`);
     }
 }
 };
@@ -142,5 +150,5 @@ async function doApp(config, ws) {
 //     },1000);
 
 // })();
-//startBr(config);
-doApp(config, config.wsUrl);
+startBr(config);
+//sdoApp(config, config.wsUrl);
