@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ReactAudioPlayer from 'react-audio-player';
+import ReactAudioPlayer from '../src/index.tsx';
 
 ReactDOM.render(
   <ReactAudioPlayer
