@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import ReactAudioPlayer from '../src/index.tsx';
 import { createRoot } from 'react-dom/client';
 
