@@ -1,10 +1,7 @@
 import React from 'react';
-import ReactAudioPlayer from '../src/index.tsx';
 import { createRoot } from 'react-dom/client';
+import App from '../src/index.tsx'
 
 const container = document.getElementById('app');
 const root = createRoot(container!); // createRoot(container!) if you use TypeScript
-root.render(<ReactAudioPlayer
-  src="threepigs-sp-full-128.mp3"
-  controls
-/>);
+root.render(<App/>);
