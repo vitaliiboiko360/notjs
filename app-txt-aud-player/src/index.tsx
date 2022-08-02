@@ -1,9 +1,9 @@
 import ReactAudioPlayer from './player.tsx';
 import React from 'react';
 
-function Progress(n) {
+function Progress({n}) {
     return (
-        `<p>${n}%</p>`
+        <p>{n}</p>
     );
 }
 
