@@ -1,19 +1,21 @@
 import ReactAudioPlayer from './player.tsx';
 import React from 'react';
 
-function Progress({n}) {
+function Progress(props) {
     return (
-        <p>{n}</p>
+        <p>{props.pos}</p>
     );
 }
 
 function Container() {
     return (
+        <>
         <ReactAudioPlayer
         src="threepigs-sp-full-128.mp3"
         controls
         />
-        <Progress n="" />
+        <Progress pos="a" />
+        </>
     );
 }
 
