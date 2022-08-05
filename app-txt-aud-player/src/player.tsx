@@ -10,7 +10,8 @@ interface ReactAudioPlayerProps {
   crossOrigin?: string
   id?: string
   listenInterval?: number
-  progress?: number
+  updateProgress?: (newProgres: number) => void
+  onTimeUpdate?: (e: Event) => void
   loop?: boolean
   muted?: boolean
   onAbort?: (e: Event) => void
@@ -45,14 +46,15 @@ class ReactAudioPlayer extends Component<ReactAudioPlayerProps> {
 
   listenTracker?: number
   onTimeUpdate = (e: Event) => {
-    console.log('time has ' + this.audioEl.current.currentTime);
+    this.props.updateProgress(this.audioEl.current?.currentTime);
+    this.props.onTimeUpdate?.(e);
   }
   onError = (e: Event) => this.props.onError?.(e);
   onCanPlay = (e: Event) => this.props.onCanPlay?.(e);
   onCanPlayThrough = (e: Event) => this.props.onCanPlayThrough?.(e);
   onPlay = (e: Event) => {
     this.setListenTrack();
-    console.log('on play');
+    console.log('cur time '+this.audioEl.current?.currentTime);
     this.props.onPlay?.(e);
   }
   onAbort = (e: Event) => {
@@ -86,7 +88,7 @@ class ReactAudioPlayer extends Component<ReactAudioPlayerProps> {
 
     audio.addEventListener('error', this.onError);
 
-    audio.addEventListener('ontimeupdate', this.onTimeUpdate);
+    audio.addEventListener('timeupdate', this.onTimeUpdate);
 
     // When enough of the file has downloaded to start playing
     audio.addEventListener('canplay', this.onCanPlay);
@@ -122,7 +124,7 @@ class ReactAudioPlayer extends Component<ReactAudioPlayerProps> {
 
     audio.removeEventListener('error', this.onError);
 
-    audio.removeEventListener('ontimeupdate', this.onTimeUpdate);
+    audio.removeEventListener('timeupdate', this.onTimeUpdate);
 
     // When enough of the file has downloaded to start playing
     audio.removeEventListener('canplay', this.onCanPlay);
@@ -209,7 +211,7 @@ class ReactAudioPlayer extends Component<ReactAudioPlayerProps> {
         autoPlay={this.props.autoPlay}
         className={`react-audio-player ${this.props.className}`}
         controls={controls}
-        crossOrigin={this.props.crossOrigin}
+        crossOrigin={this.props.crossOrigin}   
         id={this.props.id}
         loop={this.props.loop}
         muted={this.props.muted}
@@ -236,7 +238,8 @@ ReactAudioPlayer.defaultProps = {
   listenInterval: 10000,
   loop: false,
   muted: false,
-  progress: 0,
+  updateProgress: () => {},
+  onTimeUpdate: () => {},
   onAbort: () => {},
   onCanPlay: () => {},
   onCanPlayThrough: () => {},
@@ -263,6 +266,8 @@ ReactAudioPlayer.propTypes = {
   crossOrigin: PropTypes.string,
   id: PropTypes.string,
   listenInterval: PropTypes.number,
+  updateProgress: PropTypes.func,
+  onTimeUpdate: PropTypes.func,
   loop: PropTypes.bool,
   muted: PropTypes.bool,
   onAbort: PropTypes.func,
