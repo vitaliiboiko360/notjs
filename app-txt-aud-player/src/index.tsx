@@ -11,7 +11,6 @@ function Container() {
     const [progress, setProgess] = useState(0);
 
     const updateProgress = (newProgress)=>{
-        console.log('new progress so far {newProgress}');
         setProgess(newProgress);
     }
     return (
