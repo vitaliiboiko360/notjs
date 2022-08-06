@@ -11,6 +11,7 @@ interface ReactAudioPlayerProps {
   id?: string
   listenInterval?: number
   updateProgress?: (newProgres: number) => void
+  updateEnd?: (newEnd: number) => void
   onTimeUpdate?: (e: Event) => void
   loop?: boolean
   muted?: boolean
@@ -73,6 +74,8 @@ class ReactAudioPlayer extends Component<ReactAudioPlayerProps> {
     this.props.onSeeked?.(e);
   }
   onLoadedMetadata = (e: Event) => {
+    console.log(`length is ${this.audioEl.current?.duration}`);
+    this.props.updateEnd(this.audioEl.current?.duration);
     this.props.onLoadedMetadata?.(e);
   }
   onVolumeChanged = (e: Event) => {
@@ -164,6 +167,7 @@ class ReactAudioPlayer extends Component<ReactAudioPlayerProps> {
       const listenInterval = this.props.listenInterval;
       this.listenTracker = window.setInterval(() => {
         this.audioEl.current && this.props.onListen?.(this.audioEl.current.currentTime);
+        console.log(`setListenTrack interval currentTime ${this.audioEl.current.currentTime}`);
       }, listenInterval);
     }
   }
@@ -239,6 +243,7 @@ ReactAudioPlayer.defaultProps = {
   loop: false,
   muted: false,
   updateProgress: () => {},
+  updateEnd: () => {},
   onTimeUpdate: () => {},
   onAbort: () => {},
   onCanPlay: () => {},
@@ -267,6 +272,7 @@ ReactAudioPlayer.propTypes = {
   id: PropTypes.string,
   listenInterval: PropTypes.number,
   updateProgress: PropTypes.func,
+  updateEnd: PropTypes.func,
   onTimeUpdate: PropTypes.func,
   loop: PropTypes.bool,
   muted: PropTypes.bool,
