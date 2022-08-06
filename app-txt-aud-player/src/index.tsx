@@ -1,5 +1,6 @@
 import ReactAudioPlayer from './player.tsx';
 import React, {useState} from 'react';
+import PositionSlider from './slider.tsx'
 
 function Progress(props) {
     return (
@@ -21,6 +22,13 @@ function Container() {
         controls
         />
         <Progress progress={progress} />
+        <Slider
+        size="small"
+        defaultValue={70}
+        aria-label="Small"
+        valueLabelDisplay="auto"
+        />
+        <PositionSlider />
         </>
     );
 }
