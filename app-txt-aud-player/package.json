@@ -24,5 +24,11 @@
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
     "webpack-dev-server": "^4.9.3"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.0",
+    "@emotion/styled": "^11.10.0",
+    "@fontsource/roboto": "^4.5.7",
+    "@mui/material": "^5.9.3"
   }
 }

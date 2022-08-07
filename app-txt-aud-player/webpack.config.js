@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 
-const PORT = 4000;
+const PORT = 4001;
 
 module.exports = {
   entry: {
@@ -18,6 +18,7 @@ module.exports = {
     port: PORT,
     hot: true,
     liveReload: true,
+    watchFiles: ['src/**/*.js'],
     static: {
       directory: path.resolve(__dirname),
       watch: true,

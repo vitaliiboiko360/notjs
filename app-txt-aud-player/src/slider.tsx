@@ -66,11 +66,11 @@ const marks = [
   },
 ];
 
-export default function PositionSlider({start}, {end}, currentValue) {
-  console.log(`start ${typeof start} ${start}`)
-  console.log(`end ${typeof end} ${end}`)
+export default function PositionSlider(props) {
+  console.log(`start ${typeof props.start} ${props.start}`)
+  console.log(`end ${typeof props.end} ${props.end}`)
   const s = 0;
-  const e = end || 100;
+  const e = props.end || 100;
   console.log(`e ${e}`)
   return (
     <Box sx={{ width: 480 }}>
@@ -79,7 +79,7 @@ export default function PositionSlider({start}, {end}, currentValue) {
         defaultValue={0}
         min={s}
         max={e}
-        value={currentValue}
+        value={props.currentValue}
         valueLabelDisplay="on"
       />
       <Typography gutterBottom>playback</Typography>

@@ -3,4 +3,4 @@ tsconfig.json
 data
 dist
 js/bundle.js*
-package-json.locks
+package-lock.json
