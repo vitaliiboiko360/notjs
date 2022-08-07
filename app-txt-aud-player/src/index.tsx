@@ -1,6 +1,6 @@
-import ReactAudioPlayer from 'player.tsx';
+import ReactAudioPlayer from './player.tsx';
 import React, {useState} from 'react';
-import PositionSlider from 'slider.tsx'
+import PositionSlider from './slider.tsx'
 
 
 function Container() {
@@ -13,18 +13,24 @@ function Container() {
         console.log(`updateEnd ${newEnd}`);
         setEnd(newEnd);
     }
+    const [currentTime, setCurrentTime] = useState(0);
+    const updateCurrentTime = (newCurrentTime) => {
+        setCurrentTime(newCurrentTime);
+    }
+
     return (
         <>
         <ReactAudioPlayer
         src="data/threepigs-sp-full-128.mp3"
+        currentTime={currentTime}
         updateProgress={updateProgress}
         updateEnd={updateEnd}
         controls
         />
         <PositionSlider
-            start={0}
             end={end}
             currentValue={progress}
+            updateCurrentTime={updateCurrentTime}
         />
         </>
     );

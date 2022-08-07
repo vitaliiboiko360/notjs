@@ -45,6 +45,8 @@ class ReactAudioPlayer extends Component<ReactAudioPlayerProps> {
 
   audioEl = React.createRef<HTMLAudioElement>();
 
+  previousCurrentTime = 0;
+
   listenTracker?: number
   onTimeUpdate = (e: Event) => {
     this.props.updateProgress(this.audioEl.current?.currentTime);
@@ -157,6 +159,7 @@ class ReactAudioPlayer extends Component<ReactAudioPlayerProps> {
 
   componentDidUpdate(prevProps: ReactAudioPlayerProps) {
     this.updateVolume(this.props.volume);
+    this.updateTime(this.props.currentTime);
   }
 
   /**
@@ -180,6 +183,14 @@ class ReactAudioPlayer extends Component<ReactAudioPlayerProps> {
     const audio = this.audioEl.current;
     if (audio !== null && typeof volume === 'number' && volume !== audio?.volume) {
       audio.volume = volume;
+    }
+  }
+
+  updateTime(value: number) {
+    const audio = this.audioEl.current;
+    if (audio !== null && typeof value === 'number' && value !== this.previousCurrentTime) {
+      audio.currentTime = value;
+      this.previousCurrentTime = value;
     }
   }
 

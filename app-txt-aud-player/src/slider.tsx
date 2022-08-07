@@ -67,20 +67,22 @@ const marks = [
 ];
 
 export default function PositionSlider(props) {
-  console.log(`start ${typeof props.start} ${props.start}`)
-  console.log(`end ${typeof props.end} ${props.end}`)
-  const s = 0;
-  const e = props.end || 100;
-  console.log(`e ${e}`)
+  const end = props.end || 100;
+  console.log(`end ${end}`)
+
+  const onChange = (event: Event, value: number | Array<number>, activeThumb: number) => {
+    props.updateCurrentTime(value);
+  }
+
   return (
     <Box sx={{ width: 480 }}>
       <CustomSlider
         aria-label="playback slider"
         defaultValue={0}
-        min={s}
-        max={e}
+        max={end}
         value={props.currentValue}
         valueLabelDisplay="on"
+        onChange={onChange}
       />
       <Typography gutterBottom>playback</Typography>
     </Box>
