@@ -1,6 +1,10 @@
 import ReactAudioPlayer from './player.tsx';
 import React, {useState} from 'react';
 import PositionSlider from './slider.tsx'
+import TextBox from './text_box';
+
+
+
 
 
 function Container() {
@@ -26,6 +30,9 @@ function Container() {
         updateProgress={updateProgress}
         updateEnd={updateEnd}
         controls
+        />
+        <TextBox
+        textToDisplay=
         />
         <PositionSlider
             end={end}

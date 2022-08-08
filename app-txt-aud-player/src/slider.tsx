@@ -74,12 +74,20 @@ export default function PositionSlider(props) {
     props.updateCurrentTime(value);
   }
 
+  const formatLabelValue = (x: number)=>{
+    const numMinutes = Math.floor(x / 60);
+    const numSeconds = Math.floor(x % 60);
+    //console.log(`numMinutes ${numMinutes} numSeconds ${numSeconds}`);
+    return `${numMinutes}:${numSeconds < 10 ? '0'+numSeconds : numSeconds}`;
+  }
+
   return (
-    <Box sx={{ width: 480 }}>
+    <Box sx={{ width: 680 }}>
       <CustomSlider
         aria-label="playback slider"
         defaultValue={0}
         max={end}
+        valueLabelFormat={formatLabelValue}
         value={props.currentValue}
         valueLabelDisplay="on"
         onChange={onChange}
