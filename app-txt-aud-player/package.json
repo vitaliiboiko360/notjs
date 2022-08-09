@@ -1,5 +1,10 @@
 {
   "name": "txt-player",
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
+  },
   "scripts": {
     "test": "jest",
     "build": "webpack --progress",
