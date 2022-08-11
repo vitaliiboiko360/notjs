@@ -30,7 +30,7 @@ function Container() {
         controls
         />
         <TextBox
-        textToDisplay={readFile}
+        textToDisplay={readFile()}
         />
         <PositionSlider
             end={end}

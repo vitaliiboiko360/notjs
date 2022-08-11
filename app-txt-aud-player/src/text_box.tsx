@@ -7,6 +7,6 @@ const Div = styled('div')(({ theme }) => ({
   padding: theme.spacing(1),
 }));
 
-export default function TextBox() {
+export default function TextBox(props) {
   return <Div>{props.textToDisplay}</Div>;
 }
