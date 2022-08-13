@@ -3,8 +3,6 @@ import React, {useState} from 'react';
 import PositionSlider from './slider.tsx'
 import TextBox from './text_box';
 
-import readFile from './readFile.ts';
-
 function Container() {
     const [progress, setProgess] = useState(0);
     const [end, setEnd] = useState(100);
@@ -30,7 +28,7 @@ function Container() {
         controls
         />
         <TextBox
-        textToDisplay={readFile()}
+        textToDisplay={'do you see me?'}
         />
         <PositionSlider
             end={end}
