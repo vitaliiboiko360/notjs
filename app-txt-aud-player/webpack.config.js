@@ -18,7 +18,7 @@ module.exports = {
     port: PORT,
     hot: true,
     liveReload: true,
-    watchFiles: ['src/**/*.js'],
+    watchFiles: ['src/**/*'],
     static: {
       directory: path.resolve(__dirname),
       watch: true,
