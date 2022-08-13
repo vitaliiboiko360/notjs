@@ -7,7 +7,7 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "webpack --progress",
+    "build": "webpack --progress --watch",
     "build:d.ts": "tsc",
     "watch": "webpack --progress --watch",
     "prepare": "npm run build && npm run build:d.ts",
