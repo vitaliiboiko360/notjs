@@ -6,23 +6,8 @@ import TextBox from './text_box';
 function Container() {
     const [progress, setProgess] = useState(0);
     const [end, setEnd] = useState(100);
-    const updateProgress = (newProgress)=>{
-        setProgess(newProgress);
-    }
-    const updateEnd = (newEnd)=>{
-        console.log(`updateEnd ${newEnd}`);
-        setEnd(newEnd);
-    }
     const [currentTime, setCurrentTime] = useState(0);
-    const updateCurrentTime = (newCurrentTime) => {
-        setCurrentTime(newCurrentTime);
-    }
-
     const [text, setText] = useState('');
-    const updateText = (newText) => {
-        setText(newText);
-    }
-
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
@@ -36,7 +21,7 @@ function Container() {
             if(isLoaded)
                 console.log('already loaded text');
             else
-                updateText(text);
+            setText(text);
             })
             .catch((error)=>{
             console.log(error);
@@ -52,8 +37,8 @@ function Container() {
         <ReactAudioPlayer
         src="data/threepigs-sp-full-128.mp3"
         currentTime={currentTime}
-        updateProgress={updateProgress}
-        updateEnd={updateEnd}
+        updateProgress={setProgess}
+        updateEnd={setEnd}
         controls
         />
         <TextBox
@@ -62,7 +47,7 @@ function Container() {
         <PositionSlider
             end={end}
             currentValue={progress}
-            updateCurrentTime={updateCurrentTime}
+            updateCurrentTime={setCurrentTime}
         />
         </>
     );
