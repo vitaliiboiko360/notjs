@@ -92,7 +92,7 @@ export default function PositionSlider(props) {
         valueLabelDisplay="on"
         onChange={onChange}
       />
-      <Typography gutterBottom>playback</Typography>
+      <Typography gutterBottom></Typography>
     </Box>
   );
 }

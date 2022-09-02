@@ -18,4 +18,3 @@ const files = fs.readdirSync(dataPath, {withFileTypes:false});
 files.forEach(element => {
     console.log(`http://localhost:${port}/data/${element}`);
 });
-

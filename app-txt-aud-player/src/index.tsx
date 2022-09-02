@@ -1,5 +1,5 @@
 import ReactAudioPlayer from './player.tsx';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PositionSlider from './slider.tsx'
 import TextBox from './text_box';
 
@@ -18,6 +18,26 @@ function Container() {
         setCurrentTime(newCurrentTime);
     }
 
+    const [text, setText] = useState('');
+    const updateText = (newText) => {
+        setText(newText);
+    }
+
+    useEffect(() => {
+        const fetchData = async () => {
+          const data = await fetch('http://localhost:4001/data/threepigs.txt')
+          .then((response) => {
+            return response.text();
+          })
+           .then((text)=>{
+            console.log(text);
+            updateText(text);
+           });
+        }
+      
+        fetchData().catch(console.error);
+      });
+
     return (
         <>
         <ReactAudioPlayer
@@ -28,7 +48,7 @@ function Container() {
         controls
         />
         <TextBox
-        textToDisplay={'do you see me?'}
+        textToDisplay={text}
         />
         <PositionSlider
             end={end}
