@@ -23,19 +23,28 @@ function Container() {
         setText(newText);
     }
 
+    const [isLoaded, setIsLoaded] = useState(false);
+
     useEffect(() => {
         const fetchData = async () => {
-          const data = await fetch('http://localhost:4001/data/threepigs.txt')
-          .then((response) => {
-            return response.text();
-          })
-           .then((text)=>{
-            console.log(text);
-            updateText(text);
-           });
+            let gotResult = false;
+            await fetch('http://localhost:4001/data/threepigs.txt')
+            .then((response) => {
+                return response.text();
+            })
+            .then((text)=>{
+            if(isLoaded)
+                console.log('already loaded text');
+            else
+                updateText(text);
+            })
+            .catch((error)=>{
+            console.log(error);
+            });
         }
       
         fetchData().catch(console.error);
+        setIsLoaded(true);
       });
 
     return (
