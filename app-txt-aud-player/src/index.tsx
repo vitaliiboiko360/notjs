@@ -8,7 +8,7 @@ function Container() {
     const [end, setEnd] = useState(100);
     const [currentTime, setCurrentTime] = useState(0);
     const [text, setText] = useState('');
-    const [isLoaded, setIsLoaded] = useState(false);
+    const [isTextLoaded, setTextIsLoaded] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -18,7 +18,7 @@ function Container() {
                 return response.text();
             })
             .then((text)=>{
-            if(isLoaded)
+            if(isTextLoaded)
                 console.log('already loaded text');
             else
             setText(text);
@@ -29,7 +29,7 @@ function Container() {
         }
       
         fetchData().catch(console.error);
-        setIsLoaded(true);
+        setTextIsLoaded(true);
       });
 
     return (
