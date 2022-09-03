@@ -12,7 +12,6 @@ function Container() {
 
     useEffect(() => {
         const fetchData = async () => {
-            let gotResult = false;
             await fetch('http://localhost:4001/data/threepigs.txt')
             .then((response) => {
                 return response.text();
