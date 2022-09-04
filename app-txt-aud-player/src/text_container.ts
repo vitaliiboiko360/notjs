@@ -1,22 +1,27 @@
+import { string } from "prop-types";
+
 export default class TextContainer {
     static numDivideBy: number = 4;
-    textBlocks: Array<number> = [];
+    textBlocks: Array<string> = [];
 
     constructor(text) {
         const lines = text.split('\n');
 
-        const totalLinesLenght = lines.reduce((total, line)=>{
-            return total+line.Lenght();
+        const totalLinesLength = lines.reduce((total, line)=>{
+            return total+line.lenght;
         },0);
 
-        lines.reduce((prevCounter, line, index) => {
-            let counter = prevCounter+line.Length();
-            if (counter > (totalLinesLenght / TextContainer.numDivideBy)) {
-                this.textBlocks.push(index-1<0 ? 0 : index-1);
-                counter = 0;
+        console.log(`totalLinesLength=${totalLinesLength}`);
+
+        lines.reduce((lineAccumulator, line) => {
+            let counter = lineAccumulator.runningLinesTotal+line.lenth;
+            if (counter > (totalLinesLength / TextContainer.numDivideBy)) {
+                this.textBlocks.push(lineAccumulator.text);
+                console.log(`text block #${this.textBlocks.length} written`);
+                return {text:line, runningLinesTotal: line.length};
             }
-            return counter+line.Length();
-        }, 0);
+            return {text: lineAccumulator.text + line, runningLinesTotal: counter};
+        }, {text:'',runningLinesTotal:0});
         console.assert(this.textBlocks.length == TextContainer.numDivideBy, `text divided into ${this.textBlocks.length} parts`);
     }
 
