@@ -7,6 +7,11 @@ const Div = styled('div')(({ theme }) => ({
   padding: theme.spacing(1),
 }));
 
+function divideText(text) {
+  text.split('/n');
+}
+
 export default function TextBox(props) {
+  if ()
   return <Div>{props.textToDisplay}</Div>;
 }
