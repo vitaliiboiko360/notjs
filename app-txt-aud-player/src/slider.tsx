@@ -67,9 +67,6 @@ const marks = [
 ];
 
 export default function PositionSlider(props) {
-  const end = props.end || 100;
-  console.log(`end ${end}`)
-
   const onChange = (event: Event, value: number | Array<number>, activeThumb: number) => {
     props.updateCurrentTime(value);
   }
@@ -86,7 +83,6 @@ export default function PositionSlider(props) {
       <CustomSlider
         aria-label="playback slider"
         defaultValue={0}
-        max={end}
         valueLabelFormat={formatLabelValue}
         value={props.currentValue}
         valueLabelDisplay="on"

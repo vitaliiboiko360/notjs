@@ -5,7 +5,6 @@ import TextBox from './text_box';
 
 function Container() {
     const [progress, setProgess] = useState(0);
-    const [end, setEnd] = useState(100);
     const [currentTime, setCurrentTime] = useState(0);
     const [text, setText] = useState('');
     const [isTextLoaded, setTextIsLoaded] = useState(false);
@@ -44,7 +43,6 @@ function Container() {
         textToDisplay={text}
         />
         <PositionSlider
-            end={end}
             currentValue={progress}
             updateCurrentTime={setCurrentTime}
         />
