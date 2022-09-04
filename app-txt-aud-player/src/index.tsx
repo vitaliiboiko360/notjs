@@ -2,11 +2,13 @@ import ReactAudioPlayer from './player.tsx';
 import React, {useState, useEffect} from 'react';
 import PositionSlider from './slider.tsx'
 import TextBox from './text_box';
+import TextContainer from './text_container.ts';
+
+let textContainer = new TextContainer('');
 
 function Container() {
     const [progress, setProgess] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
-    const [text, setText] = useState('');
     const [isTextLoaded, setTextIsLoaded] = useState(false);
 
     useEffect(() => {
@@ -19,10 +21,10 @@ function Container() {
             if(isTextLoaded)
                 console.log('already loaded text');
             else
-            setText(text);
+                textContainer = new TextContainer(text);
             })
             .catch((error)=>{
-            console.log(error);
+                console.log(error);
             });
         }
       
@@ -36,11 +38,10 @@ function Container() {
         src="data/threepigs-sp-full-128.mp3"
         currentTime={currentTime}
         updateProgress={setProgess}
-        updateEnd={setEnd}
         controls
         />
         <TextBox
-        textToDisplay={text}
+        textToDisplay={textContainer.getTextBlock(progress)}
         />
         <PositionSlider
             currentValue={progress}

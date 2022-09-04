@@ -5,22 +5,27 @@ export default class TextContainer {
     textBlocks: Array<string> = [];
 
     constructor(text) {
+        console.log(`text.length=${text.length}`);
         const lines = text.split('\n');
 
-        const totalLinesLength = lines.reduce((total, line)=>{
-            return total+line.lenght;
+        const totalLinesLength = lines.reduce((total: number, line: string)=>{
+            // console.log(`line is ${line}`);
+            // console.log(`total is ${total}`);
+            return total+line.length;
         },0);
 
         console.log(`totalLinesLength=${totalLinesLength}`);
 
         lines.reduce((lineAccumulator, line) => {
-            let counter = lineAccumulator.runningLinesTotal+line.lenth;
+            let counter = lineAccumulator.runningLinesTotal + line.length;
+            console.log(`line is ${line}`);
+            console.log(`counter is ${counter}`);
             if (counter > (totalLinesLength / TextContainer.numDivideBy)) {
                 this.textBlocks.push(lineAccumulator.text);
                 console.log(`text block #${this.textBlocks.length} written`);
                 return {text:line, runningLinesTotal: line.length};
             }
-            return {text: lineAccumulator.text + line, runningLinesTotal: counter};
+            return {text: lineAccumulator.text + '\n' + line, runningLinesTotal: counter};
         }, {text:'',runningLinesTotal:0});
         console.assert(this.textBlocks.length == TextContainer.numDivideBy, `text divided into ${this.textBlocks.length} parts`);
     }
