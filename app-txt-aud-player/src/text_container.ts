@@ -5,6 +5,10 @@ export default class TextContainer {
     textBlocks: Array<string> = [];
 
     constructor(text) {
+        if (typeof text === 'undefined' || text.length == 0 ) {
+            this.textBlocks = ['','','',''];
+            return;
+        }
         console.log(`text.length=${text.length}`);
         const lines = text.split('\n');
 
