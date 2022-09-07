@@ -10,6 +10,7 @@ function Container() {
     const [progress, setProgess] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
     const [isTextLoaded, setTextIsLoaded] = useState(false);
+    const [end, setEnd] = useState(100);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -18,9 +19,7 @@ function Container() {
                 return response.text();
             })
             .then((text)=>{
-            if(isTextLoaded)
-                console.log('already loaded text');
-            else
+            if(!isTextLoaded)
                 textContainer = new TextContainer(text);
             })
             .catch((error)=>{
@@ -38,12 +37,14 @@ function Container() {
         src="data/threepigs-sp-full-128.mp3"
         currentTime={currentTime}
         updateProgress={setProgess}
+        updateEnd={setEnd}
         controls
         />
         <TextBox
-        textToDisplay={textContainer.getTextBlock(progress)}
+        textToDisplay={textContainer.getTextBlock(progress*100/end)}
         />
         <PositionSlider
+            end={end}
             currentValue={progress}
             updateCurrentTime={setCurrentTime}
         />

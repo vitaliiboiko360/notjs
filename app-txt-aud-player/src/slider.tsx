@@ -83,6 +83,7 @@ export default function PositionSlider(props) {
       <CustomSlider
         aria-label="playback slider"
         defaultValue={0}
+        max={props.end}
         valueLabelFormat={formatLabelValue}
         value={props.currentValue}
         valueLabelDisplay="on"

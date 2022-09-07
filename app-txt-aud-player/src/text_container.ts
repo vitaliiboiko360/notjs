@@ -22,8 +22,8 @@ export default class TextContainer {
 
         lines.reduce((lineAccumulator, line) => {
             let counter = lineAccumulator.runningLinesTotal + line.length;
-            console.log(`line is ${line}`);
-            console.log(`counter is ${counter}`);
+            // console.log(`line is ${line}`);
+            // console.log(`counter is ${counter}`);
             if (counter > (totalLinesLength / TextContainer.numDivideBy)) {
                 this.textBlocks.push(lineAccumulator.text);
                 console.log(`text block #${this.textBlocks.length} written`);
@@ -35,6 +35,7 @@ export default class TextContainer {
     }
 
    getTextBlock(percentValue: number) {
+    console.log(`getTextBlock passed ${percentValue}`);
     return this.textBlocks[this.getIndex(percentValue)];
    }
 
