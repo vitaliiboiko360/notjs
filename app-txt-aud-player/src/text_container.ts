@@ -5,8 +5,8 @@ export default class TextContainer {
     textBlocks: Array<string> = [];
 
     constructor(text) {
+        this.textBlocks = ['','','',''];
         if (typeof text === 'undefined' || text.length == 0 ) {
-            this.textBlocks = ['','','',''];
             return;
         }
         console.log(`text.length=${text.length}`);
@@ -20,17 +20,11 @@ export default class TextContainer {
 
         console.log(`totalLinesLength=${totalLinesLength}`);
 
-        lines.reduce((lineAccumulator, line) => {
-            let counter = lineAccumulator.runningLinesTotal + line.length;
-            // console.log(`line is ${line}`);
-            // console.log(`counter is ${counter}`);
-            if (counter > (totalLinesLength / TextContainer.numDivideBy)) {
-                this.textBlocks.push(lineAccumulator.text);
-                console.log(`text block #${this.textBlocks.length} written`);
-                return {text:line, runningLinesTotal: line.length};
-            }
-            return {text: lineAccumulator.text + '\n' + line, runningLinesTotal: counter};
-        }, {text:'',runningLinesTotal:0});
+        lines.reduce((total: number, line: string) => {
+            let currentTotal = total + line.length;
+            this.textBlocks[this.getIndex(currentTotal*100/totalLinesLength)] += line;
+            return currentTotal;
+        }, 0);
         console.assert(this.textBlocks.length == TextContainer.numDivideBy, `text divided into ${this.textBlocks.length} parts`);
     }
 
@@ -40,9 +34,9 @@ export default class TextContainer {
    }
 
    private getIndex(value: number) {
-        if (value >= 25) return 1;
-        if (value >= 50) return 2;
         if (value >= 75) return 3;
+        if (value >= 50) return 2;
+        if (value >= 25) return 1;
         return 0;
     }
 }
