@@ -1,112 +1,142 @@
+import puppeteer from 'puppeteer-core';
+import fs from 'fs';
+import spawn from 'node:child_process';
 
-const puppeteer = require('puppeteer-core');
+import pTimeout from 'p-timeout';
 
-const config = {browserWSEndpoint:ws, defaultViewport: {deviceScaleFactor:2, width:920, height:1292}};
-const browser = await puppeteer.launch(config);
-const page = await browser.newPage();
+async function doApp(appConfig, wsUrl)
+{
+  const width = 920;
+  const height = 1292;
+  const pageURL = appConfig.url;
+  const config = {browserWSEndpoint:wsUrl, defaultViewport: {deviceScaleFactor:2, width:920, height:1292}};
+  const browser = await puppeteer.connect(config);
+  const page = await browser.newPage();
 
-await page.setViewport({
-    width,
-    height,
-});
-
-console.log('⬇️ Fetching ' + pageURL);
-    await Promise.race([
-    responsePromise,
-    page.goto(pageURL, {
-        waitUntil: 'networkidle2',
-    }),
-]);
-
-page.frames().forEach((frame) => {
-    frame.evaluate(() => {
-      document.querySelectorAll('video, audio').forEach((m) => {
-        if (!m) return;
-        if (m.pause) m.pause();
-        m.preload = 'none';
-      });
-    });
+  await page.setViewport({
+      width,
+      height,
   });
 
-const content = await pTimeout(
-    page.evaluate(() => {
-          let content = '';
-          if (document.doctype) {
-            content = new XMLSerializer().serializeToString(
-              document.doctype,
-            );
-          }
+  let responseReject;
+  const responsePromise = new Promise((_, reject) => {
+    responseReject = reject;
+  });
 
-          const doc = document.documentElement.cloneNode(true);
+  page.on('response', ({ headers }) => {
+    const location = headers['location'];
+    if (location && location.includes(host)) {
+      responseReject(new Error('Possible infinite redirects detected.'));
+    }
+  });
 
-          // Remove scripts except JSON-LD
-          const scripts = doc.querySelectorAll(
-            'script:not([type="application/ld+json"])',
-          );
-          scripts.forEach((s) => s.parentNode.removeChild(s));
+  console.log('⬇️ Fetching ' + pageURL);
+      await Promise.race([
+      responsePromise,
+      page.goto(pageURL, {
+          waitUntil: 'domcontentloaded',
+      }),
+  ]);
 
-          // Remove import tags
-          const imports = doc.querySelectorAll('link[rel=import]');
-          imports.forEach((i) => i.parentNode.removeChild(i));
+  page.frames().forEach((frame) => {
+      frame.evaluate(() => {
+        document.querySelectorAll('video, audio').forEach((m) => {
+          if (!m) return;
+          if (m.pause) m.pause();
+          m.preload = 'none';
+        });
+      });
+    });
 
-          const { origin, pathname } = location;
-          // Inject <base> for loading relative resources
-          if (!doc.querySelector('base')) {
-            const base = document.createElement('base');
-            base.href = origin + pathname;
-            doc.querySelector('head').appendChild(base);
-          }
-
-          // Try to fix absolute paths
-          const absEls = doc.querySelectorAll(
-            'link[href^="/"], script[src^="/"], img[src^="/"]',
-          );
-          absEls.forEach((el) => {
-            const href = el.getAttribute('href');
-            const src = el.getAttribute('src');
-            if (src && /^\/[^/]/i.test(src)) {
-              el.src = origin + src;
-            } else if (href && /^\/[^/]/i.test(href)) {
-              el.href = origin + href;
+  const content = await pTimeout(
+      page.evaluate(() => {
+            let content = '';
+            if (document.doctype) {
+              content = new XMLSerializer().serializeToString(
+                document.doctype,
+              );
             }
-          });
 
-          content += doc.outerHTML;
+            const doc = document.documentElement.cloneNode(true);
 
-          // Remove comments
-          content = content.replace(/<!--[\s\S]*?-->/g, '');
+            // Remove scripts except JSON-LD
+            const scripts = doc.querySelectorAll(
+              'script:not([type="application/ld+json"])',
+            );
+            scripts.forEach((s) => s.parentNode.removeChild(s));
 
-          return content;
-        }),
-    10 * 1000,
-    'Render timed out',
-  );
+            // Remove import tags
+            const imports = doc.querySelectorAll('link[rel=import]');
+            imports.forEach((i) => i.parentNode.removeChild(i));
 
-console.log(content);
+            const { origin, pathname } = location;
+            // Inject <base> for loading relative resources
+            if (!doc.querySelector('base')) {
+              const base = document.createElement('base');
+              base.href = origin + pathname;
+              doc.querySelector('head').appendChild(base);
+            }
 
-function main(config) {
+            // Try to fix absolute paths
+            const absEls = doc.querySelectorAll(
+              'link[href^="/"], script[src^="/"], img[src^="/"]',
+            );
+            absEls.forEach((el) => {
+              const href = el.getAttribute('href');
+              const src = el.getAttribute('src');
+              if (src && /^\/[^/]/i.test(src)) {
+                el.src = origin + src;
+              } else if (href && /^\/[^/]/i.test(href)) {
+                el.href = origin + href;
+              }
+            });
+
+            content += doc.outerHTML;
+
+            // Remove comments
+            content = content.replace(/<!--[\s\S]*?-->/g, '');
+
+            return content;
+          }),
+          { 
+            milliseconds:10000,
+            message:'Render timed out'
+          }
+    );
+  console.log(content);
+}
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const appConfig = require('./config.json');
+
+function main(appConfig) {
     let runFilePath = './run';
     if (fs.existsSync(runFilePath)) {
         let wsUrl = fs.readFileSync(runFilePath);
         console.log(`trying to connect to ${wsUrl}`);   
-        doApp(config, wsUrl);
+        doApp(appConfig, wsUrl);
         return;
     }
 
-    let cmd = `"${config.execPath}" ${config.cmdArgs.join(' ')}`;
+    let cmd = `"${appConfig.execPath}" ${appConfig.cmdArgs.join(' ')}`;
     console.log(`running ${cmd}`);
-    const child = spawn(config.execPath, config.cmdArgs, {
+    const child = spawn(appConfig.execPath, appConfig.cmdArgs, {
         detached: true,
         stdio: ['ignore', 'ignore', 'pipe']
     });
-    child.unref();
+    
     const re = new RegExp('ws:[^ ]*');
     child.stderr.on('data', (data)=>{
+        console.log('getting wsUrl');
         let match = re.exec(data.toString());
         if(match) {
-            url.ready = true; 
-            url.url = match[0];
-            doApp(config, url.url);
+            wsUrl = match[0];
+            console.log(`found wsUrl=${wsUrl}`);
+            fs.writeFileSync(runFilePath, wsUrl);
+            doApp(appConfig, wsUrl);
         };
     });
+    child.unref();
 }
+
+main(appConfig);
