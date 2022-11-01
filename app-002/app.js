@@ -8,14 +8,18 @@ const spawn = require('node:child_process').spawn;
 const spawnSync = require('node:child_process').spawnSync;
 var stream = require('stream');
 
+function getRandInt(min, max) { // min and max included 
+    return Math.floor(Math.random() * (max - min + 1) + min)
+  }  
+
 const json = fs.readFileSync('config.json', 'utf-8');
 const config = JSON.parse(json);
 
 var outputFile = fs.createWriteStream('./out/output.json');
 outputFile.write('{data:[\n');
 
-var writeToFile = function(idName,name,numPosts) {
-    outputFile.write(`["${idName}","${name}",${numPosts}],\n`)
+var writeToFile = function(idName,name,numPosts,isPrivate) {
+    outputFile.write(`["${idName}","${name}",${numPosts},${isPrivate}],\n`)
 }
 
 var endFile = function(count) {
@@ -30,7 +34,7 @@ function main(config) {
     let runFilePath = './run';
     if (fs.existsSync(runFilePath)) {
         let wsUrl = fs.readFileSync(runFilePath);
-        console.log(`trying to connect to ${wsUrl}`);
+        console.log(`trying to connect to ${wsUrl}`);   
         doApp(config, wsUrl);
         return;
     }
@@ -114,30 +118,21 @@ async function doApp(config, ws) {
                 let numPosts = await miniWindow.$eval('._ac2a',n => n.innerText);
                 numPosts = numPosts.replaceAll(',','');
                 console.log(`${name} : ${numPosts}`);
+                var isPrivate = 0;
                 await miniWindow.$$('._aazw')
                 .then(async (divs)=>{
-                    let isPrivate = await divs[divs.length-1].evaluate(n => n.innerText) || "";
-                    if (isPrivate.indexOf('Private') != -1) {
-                        await divs[0].$('img')
-                        .then(async (img)=>{
-                            let imgSrc = await img.evaluate(i => i.getAttribute('src'));
-                            const file = fs.createWriteStream(`./out/${id}.jpg`);
-                            http.get(imgSrc, (response)=>{
-                                response.pipe(file);
-                                file.on("finish", () => {
-                                    file.close();
-                                });
-                            });
-                        });
-                    } else {
-                        await miniWindow.screenshot({fromsurface:true, path: `./out/${id}.png`});
+                    let privateDiv= await divs[divs.length-1].evaluate(n => n.innerText) || "";
+                    if (privateDiv.indexOf('Private') != -1) {
+                        isPrivate = 1;
                     }
                 })
-                .catch(e => {});   
+                .catch(e => {});
+                await miniWindow.screenshot({fromsurface:true, path: `./out/${id}.png`});   
                 saved = true;
                 lastSaved = id;
-                await page.waitForTimeout(1000);
-                writeToFile(id, name, numPosts);
+                //let tmOut = getRandInt(750,1500);
+                await page.waitForTimeout(1500);
+                writeToFile(id, name, numPosts, isPrivate);
             } catch {
                 console.log(`hovering again`);
                 imgHolder.hover().catch(() => {
@@ -150,7 +145,8 @@ async function doApp(config, ws) {
         }
         
         await page.mouse.move(0, 0);
-        await page.waitForTimeout(500);
+        let tmOut = getRandInt(750,1500);
+        await page.waitForTimeout(1500);
     
         console.log(`${picIndex++}`);
     }
