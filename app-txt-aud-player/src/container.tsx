@@ -14,7 +14,7 @@ function Container() {
 
     useEffect(() => {
         const fetchData = async () => {
-            await fetch('http://localhost:4001/data/threepigs.txt')
+            await fetch('http://localhost:4001/data/los_tres_cerditos.txt')
             .then((response) => {
                 return response.text();
             })
@@ -52,10 +52,4 @@ function Container() {
     );
 }
 
-function App() {
-    return (
-        <Container />
-    );
-  }
-
-export default App;
+export default Container;
