@@ -1,4 +1,5 @@
 import * as React from 'react';
+const useState = React.useState;
 import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
 import { styled } from '@mui/system';
 import Stack from '@mui/material/Stack';
@@ -74,14 +75,12 @@ const PlayButton = styled(ButtonUnstyled)(
 `,);
 
 export default function PlayerButtons() {
+  const [pause, setPause] = useState(false);
   return (
     <Stack spacing={2} direction="row">
       <CustomButton>Backward -5 Seconds</CustomButton>
       <PlayButton
-        active={false}
-        onClick={() => {
-          this.active = !this.active;
-        }}
+        onClick={()=>{setPause(!pause)}}
         sx={{
         name: 'Play',
       }}></PlayButton>
