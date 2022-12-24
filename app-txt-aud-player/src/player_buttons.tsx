@@ -2,7 +2,6 @@ import * as React from 'react';
 import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
 import { styled } from '@mui/system';
 import Stack from '@mui/material/Stack';
-import { json } from 'express';
 
 const blue = {
   500: '#007FFF',
@@ -53,10 +52,11 @@ const buttonSidePx = '60px';
 const PlayButton = styled(ButtonUnstyled)(
     ({ theme }) => `
     background-image: url('http://localhost:4001/data/play-button.png');
-    border-image-width: ${buttonSidePx};
+    background-size: ${buttonSidePx} ${buttonSidePx};
     width: ${buttonSidePx};
     height: 60px;
-    border-width: 0;
+    border-radius: 13px;
+    border: none;
 
 
     &:hover {
@@ -77,7 +77,12 @@ export default function PlayerButtons() {
   return (
     <Stack spacing={2} direction="row">
       <CustomButton>Backward -5 Seconds</CustomButton>
-      <PlayButton sx={{
+      <PlayButton
+        active={false}
+        onClick={() => {
+          this.active = !this.active;
+        }}
+        sx={{
         name: 'Play',
       }}></PlayButton>
       <CustomButton>Forward +5 Seconds</CustomButton>
