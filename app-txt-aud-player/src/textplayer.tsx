@@ -2,7 +2,7 @@ import ReactAudioPlayer from './player.tsx';
 import React, {useState, useEffect} from 'react';
 import PositionSlider from './slider.tsx'
 import TextBox from './text_box';
-import TextContainer from './text_container.ts';
+import PlayerButtons from './player_buttons';
 
 import Container from '@mui/material/Container';
 
@@ -42,13 +42,14 @@ function TextPlayer() {
         updateEnd={setEnd}
         controls
         />
-        <TextBox
-        textToDisplay={text}
-        />
         <PositionSlider
             end={end}
             currentValue={progress}
             updateCurrentTime={setCurrentTime}
+        />
+        <PlayerButtons></PlayerButtons>
+        <TextBox
+        textToDisplay={text}
         />
         </Container>
     );

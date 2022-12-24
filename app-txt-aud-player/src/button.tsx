@@ -2,7 +2,6 @@ import * as React from 'react';
 import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
 import { styled } from '@mui/system';
 import Stack from '@mui/material/Stack';
-import { json } from 'express';
 
 const blue = {
   500: '#007FFF',
@@ -49,38 +48,12 @@ const CustomButton = styled(ButtonUnstyled)(
   }
   `,
 );
-const buttonSidePx = '60px';
-const PlayButton = styled(ButtonUnstyled)(
-    ({ theme }) => `
-    background-image: url('http://localhost:4001/data/play-button.png');
-    border-image-width: ${buttonSidePx};
-    width: ${buttonSidePx};
-    height: 60px;
-    border-width: 0;
 
-
-    &:hover {
-      box-shadow: 0 3px 20px 0 rgba(61, 71, 82, 0.1), 0 0 0 5px rgba(0, 127, 255, 0.5);
-      outline: none;
-    }
-
-    &.${buttonUnstyledClasses.active} {
-      background-image: url('http://localhost:4001/data/pause-button.png');
-    }
-    &.${buttonUnstyledClasses.disabled} {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-`,);
-
-export default function PlayerButtons() {
+export default function UnstyledButtonIntroduction() {
   return (
     <Stack spacing={2} direction="row">
-      <CustomButton>Backward -5 Seconds</CustomButton>
-      <PlayButton sx={{
-        name: 'Play',
-      }}></PlayButton>
-      <CustomButton>Forward +5 Seconds</CustomButton>
+      <CustomButton>Button</CustomButton>
+      <CustomButton disabled>Disabled</CustomButton>
     </Stack>
   );
 }
