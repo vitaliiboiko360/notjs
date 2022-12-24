@@ -1,10 +1,10 @@
 
 import React from 'react';
-import Container from './container.tsx';
+import TextPlayer from './textplayer.tsx';
 
 function App() {
     return (
-        <Container />
+        <TextPlayer />
     );
   }
 

@@ -4,9 +4,11 @@ import PositionSlider from './slider.tsx'
 import TextBox from './text_box';
 import TextContainer from './text_container.ts';
 
-let textContainer = new TextContainer('');
+import Container from '@mui/material/Container';
 
-function Container() {
+let text = '';
+
+function TextPlayer() {
     const [progress, setProgess] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
     const [isTextLoaded, setTextIsLoaded] = useState(false);
@@ -18,9 +20,9 @@ function Container() {
             .then((response) => {
                 return response.text();
             })
-            .then((text)=>{
+            .then((loadedText)=>{
             if(!isTextLoaded)
-                textContainer = new TextContainer(text);
+                text = loadedText;
             })
             .catch((error)=>{
                 console.log(error);
@@ -32,7 +34,7 @@ function Container() {
       });
 
     return (
-        <>
+        <Container>
         <ReactAudioPlayer
         src="data/threepigs-sp-full-128.mp3"
         currentTime={currentTime}
@@ -41,15 +43,15 @@ function Container() {
         controls
         />
         <TextBox
-        textToDisplay={textContainer.getTextBlock(progress*100/end)}
+        textToDisplay={text}
         />
         <PositionSlider
             end={end}
             currentValue={progress}
             updateCurrentTime={setCurrentTime}
         />
-        </>
+        </Container>
     );
 }
 
-export default Container;
+export default TextPlayer;
