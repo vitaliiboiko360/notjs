@@ -13,7 +13,9 @@ function TextPlayer() {
     const [progress, setProgess] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
     const [isTextLoaded, setTextIsLoaded] = useState(false);
-    const [end, setEnd] = useState(100); 
+    const [end, setEnd] = useState(100);
+    const [isActivePlay, setActivePlay] = useState(false);
+    const [isEnded, setEnded] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -36,7 +38,7 @@ function TextPlayer() {
     
     
     let listLines = text.lines.map(line => 
-        <li>line</li>
+        <li>{line}</li>
     );
     console.log(`text.lines.length=${text.lines.length}`);
     return (
@@ -46,6 +48,21 @@ function TextPlayer() {
         currentTime={currentTime}
         updateProgress={setProgess}
         updateEnd={setEnd}
+        activePlay={isActivePlay}
+        setActivePlay={setActivePlay}
+        onPlay={(e: Event)=> {
+            setActivePlay(true);
+            setEnded(false);
+        }}
+        onEnded={(e: Event)=> {
+            setActivePlay(false);
+            setEnded(true);
+        }}
+        onPause={(e: Event)=> setActivePlay(false)}
+        onSeeked={(e: Event)=> {
+            console.log(e.type);
+            setEnded(false);
+        }}
         controls
         />
         <PositionSlider
@@ -53,7 +70,10 @@ function TextPlayer() {
             currentValue={progress}
             updateCurrentTime={setCurrentTime}
         />
-        <PlayerButtons />
+        <PlayerButtons
+            ended={isEnded}
+            setActivePlay={setActivePlay}
+        />
         <TextBox>
             <ul>
                 {listLines}

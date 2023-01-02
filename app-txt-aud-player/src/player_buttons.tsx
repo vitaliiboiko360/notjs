@@ -99,15 +99,17 @@ const PlayButton2 = styled(ToggleButton)`
     }
 `;
 
-export default function PlayerButtons() {
+export default function PlayerButtons(props) {
   const [selected, setSelected] = useState(false);
+  //if (props.ended) setSelected(false);
   return (
     <Stack spacing={2} direction="row">
       <CustomButton>Backward -5 Seconds</CustomButton>
       <PlayButton2
         value={'play/pause'}
-        selected={selected}
+        selected={props.ended ? false : selected}
         onClick={() => {
+          props.setActivePlay(!selected);
           setSelected(!selected);
         }}
         sx={{

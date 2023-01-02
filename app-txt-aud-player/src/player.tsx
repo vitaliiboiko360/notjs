@@ -12,6 +12,8 @@ interface ReactAudioPlayerProps {
   listenInterval?: number
   updateProgress?: (newProgres: number) => void
   updateEnd?: (newEnd: number) => void
+  activePlay?: boolean
+  setActivePlay?: (p: boolean) => void
   onTimeUpdate?: (e: Event) => void
   loop?: boolean
   muted?: boolean
@@ -221,10 +223,12 @@ class ReactAudioPlayer extends Component<ReactAudioPlayerProps> {
       conditionalProps.controlsList = this.props.controlsList;
     }
 
+    this.props.activePlay ? this.audioEl.current?.play() : this.audioEl.current?.pause();
+
     return (
       <audio
         autoPlay={this.props.autoPlay}
-        className={`react-audio-player ${this.props.className}`}
+        className={`audio1 ${this.props.className}`}
         controls={controls}
         crossOrigin={this.props.crossOrigin}   
         id={this.props.id}
@@ -253,6 +257,8 @@ ReactAudioPlayer.defaultProps = {
   listenInterval: 10000,
   loop: false,
   muted: false,
+  activePlay: false,
+  setActivePlay: () => {},
   updateProgress: () => {},
   updateEnd: () => {},
   onTimeUpdate: () => {},
@@ -284,6 +290,8 @@ ReactAudioPlayer.propTypes = {
   listenInterval: PropTypes.number,
   updateProgress: PropTypes.func,
   updateEnd: PropTypes.func,
+  activePlay: PropTypes.bool,
+  setActivePlay: PropTypes.func,
   onTimeUpdate: PropTypes.func,
   loop: PropTypes.bool,
   muted: PropTypes.bool,
