@@ -5,14 +5,15 @@ import TextBox from './text_box';
 import PlayerButtons from './player_buttons';
 
 import Container from '@mui/material/Container';
+import TextContainer from './text_container.ts';
 
-let text = '';
+let text = new TextContainer();
 
 function TextPlayer() {
     const [progress, setProgess] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
     const [isTextLoaded, setTextIsLoaded] = useState(false);
-    const [end, setEnd] = useState(100);
+    const [end, setEnd] = useState(100); 
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,7 +23,7 @@ function TextPlayer() {
             })
             .then((loadedText)=>{
             if(!isTextLoaded)
-                text = loadedText;
+                text = new TextContainer(loadedText);
             })
             .catch((error)=>{
                 console.log(error);
@@ -32,7 +33,12 @@ function TextPlayer() {
         fetchData().catch(console.error);
         setTextIsLoaded(true);
       });
-
+    
+    
+    let listLines = text.lines.map(line => 
+        <li>line</li>
+    );
+    console.log(`text.lines.length=${text.lines.length}`);
     return (
         <Container>
         <ReactAudioPlayer
@@ -47,10 +53,12 @@ function TextPlayer() {
             currentValue={progress}
             updateCurrentTime={setCurrentTime}
         />
-        <PlayerButtons></PlayerButtons>
-        <TextBox
-        textToDisplay={text}
-        />
+        <PlayerButtons />
+        <TextBox>
+            <ul>
+                {listLines}
+            </ul>
+        </TextBox>
         </Container>
     );
 }

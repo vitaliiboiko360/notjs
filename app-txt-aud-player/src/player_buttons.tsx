@@ -3,6 +3,8 @@ const useState = React.useState;
 import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
 import { styled } from '@mui/system';
 import Stack from '@mui/material/Stack';
+import IconButton, {iconButtonClasses} from '@mui/material/IconButton';
+import { ToggleButton } from '@mui/material';
 
 const blue = {
   500: '#007FFF',
@@ -74,16 +76,43 @@ const PlayButton = styled(ButtonUnstyled)(
     }
 `,);
 
+const PlayButton2 = styled(ToggleButton)`
+    background-image: url('http://localhost:4001/data/play-button.png');
+    background-size: ${buttonSidePx} ${buttonSidePx};
+    width: ${buttonSidePx};
+    height: 60px;
+    border-radius: 13px;
+    border: none;
+
+
+    &:hover {
+      box-shadow: 0 3px 20px 0 rgba(61, 71, 82, 0.1), 0 0 0 5px rgba(0, 127, 255, 0.5);
+      outline: none;
+    }
+
+    &.Mui-selected {
+      background-image: url('http://localhost:4001/data/pause-button.png');
+    }
+    &.Mui-disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+`;
+
 export default function PlayerButtons() {
-  const [pause, setPause] = useState(false);
+  const [selected, setSelected] = useState(false);
   return (
     <Stack spacing={2} direction="row">
       <CustomButton>Backward -5 Seconds</CustomButton>
-      <PlayButton
-        onClick={()=>{setPause(!pause)}}
+      <PlayButton2
+        value={'play/pause'}
+        selected={selected}
+        onClick={() => {
+          setSelected(!selected);
+        }}
         sx={{
         name: 'Play',
-      }}></PlayButton>
+      }}></PlayButton2>
       <CustomButton>Forward +5 Seconds</CustomButton>
     </Stack>
   );

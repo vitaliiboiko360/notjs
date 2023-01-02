@@ -10,5 +10,5 @@ const Div = styled('div')(({ theme }) => ({
 }));
 
 export default function TextBox(props) {
-  return <Div>{props.textToDisplay}</Div>;
+  return <Div>{props.children}</Div>;
 }
