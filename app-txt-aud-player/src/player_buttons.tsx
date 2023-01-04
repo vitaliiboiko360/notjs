@@ -1,5 +1,6 @@
 import * as React from 'react';
 const useState = React.useState;
+const useEffect = React.useEffect;
 import ButtonUnstyled, { buttonUnstyledClasses } from '@mui/base/ButtonUnstyled';
 import { styled } from '@mui/system';
 import Stack from '@mui/material/Stack';
@@ -101,7 +102,9 @@ const PlayButton2 = styled(ToggleButton)`
 
 export default function PlayerButtons(props) {
   const [selected, setSelected] = useState(false);
-  //if (props.ended) setSelected(false);
+  useEffect(()=>{
+    if (props.ended) setSelected(false);
+  },[props.ended]);
   return (
     <Stack spacing={2} direction="row">
       <CustomButton>Backward -5 Seconds</CustomButton>
