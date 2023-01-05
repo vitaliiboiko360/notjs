@@ -10,5 +10,10 @@ const Div = styled('div')(({ theme }) => ({
 }));
 
 export default function TextBox(props) {
-  return <Div>{props.children}</Div>;
+  return <Div
+  sx={{
+     overflow-wrap: 'normal',
+     max-height: '600px',
+     overflow-y: 'auto',}}
+  >{props.children}</Div>;
 }

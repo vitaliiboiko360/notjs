@@ -6,6 +6,7 @@ import PlayerButtons from './player_buttons';
 
 import Container from '@mui/material/Container';
 import TextContainer from './text_container.ts';
+import AutoGridNoWrap from './grid_text.tsx';
 
 let text = new TextContainer();
 
@@ -40,7 +41,7 @@ function TextPlayer() {
     let listLines = text.lines.map(line => 
         <li>{line}</li>
     );
-    console.log(`text.lines.length=${text.lines.length}`);
+    //console.log(`text.lines.length=${text.lines.length}`);
     return (
         <Container>
         <ReactAudioPlayer
@@ -74,11 +75,9 @@ function TextPlayer() {
             ended={isEnded}
             setActivePlay={setActivePlay}
         />
-        <TextBox>
-            <ul>
-                {listLines}
-            </ul>
-        </TextBox>
+        <AutoGridNoWrap
+            lines={text.lines}
+        />
         </Container>
     );
 }
