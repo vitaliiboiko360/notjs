@@ -110,7 +110,7 @@ export default function PlayerButtons(props) {
       <CustomButton>Backward -5 Seconds</CustomButton>
       <PlayButton2
         value={'play/pause'}
-        selected={props.ended ? false : selected}
+        selected={selected}
         onClick={() => {
           props.setActivePlay(!selected);
           setSelected(!selected);
