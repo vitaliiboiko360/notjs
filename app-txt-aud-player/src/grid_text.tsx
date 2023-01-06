@@ -35,6 +35,7 @@ export default function AutoGridNoWrap(props) {
   });
   return (
     <Box sx={{ flexGrow: 1, overflow: 'hidden', px: 3 }}>
+        <p>{props.scroll}</p>
         {linesContent}
     </Box>
   );
