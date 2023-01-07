@@ -36,42 +36,56 @@ function getIndicesForSubarray(offset, index, arrayLength) {
   };
 }
 
+function Lines(props) {
+  let linesToShow = props.lines.slice(props.start, props.end).map((line, index) => {
+    return(<StyledPaper
+    sx={{
+    my: 1,
+    mx: 'auto',
+    p: 2,
+    }}
+    >
+        <Grid container wrap="nowrap" spacing={2}>
+        <Grid item xs zeroMinWidth>
+            <Typography sx={{
+              lineHeight: 1.3,
+              fontSize: 23,
+            }}>{line}</Typography>
+        </Grid>
+        </Grid>
+    </StyledPaper>);
+  });
+  return (
+    <Box sx={{ flexGrow: 1, overflow: 'hidden', maxHeight: 700, px: 3 }}>
+      {linesToShow}
+    </Box>
+);
+}
+
 export default function AutoGridNoWrap(props) {
   console.log(` recived lines ${props.lines.length}`);
-    const [offset, setOffset] = useState(0);
+    const [start, setStart] = useState(0);
+    const [end, setEnd] = useState(4)
+
 
     useEffect(() => {
-        const onWheel = (e: WheelEvent) => { setOffset(e.deltaY); console.log(`deltaY=${e.deltaY}\deltaMode=${e.deltaMode}`); };
+        const onWheel = (e: WheelEvent) => { 
+          let {start,end} = getIndicesForSubarray(e.deltaY, index, props.lines.length);
+          console.log(`start=${start}\tend=${end}`);
+          setStart(start);
+          setEnd(end);
+         };
         // clear prev lstnr, if any
         window.removeEventListener('wheel', onWheel);
         window.addEventListener('wheel', onWheel, { passive: true });
         return () => window.removeEventListener('wheel', onWheel);
     }, []);
-
-    let indices = getIndicesForSubarray(offset, index, props.lines.length);
-    linesContent = props.lines.slice(indices.start, indices.end).map((line, index) => {
-      return(<StyledPaper
-      sx={{
-      my: 1,
-      mx: 'auto',
-      p: 2,
-      }}
-      >
-          <Grid container wrap="nowrap" spacing={2}>
-          <Grid item xs zeroMinWidth>
-              <Typography sx={{
-                lineHeight: 1.3,
-                fontSize: 23,
-              }}>{line}</Typography>
-          </Grid>
-          </Grid>
-      </StyledPaper>);
-    });
-
+    
   return (
-    <Box sx={{ flexGrow: 1, overflow: 'hidden', maxHeight: 700, px: 3 }}>
-        <p>{offset}</p>
-        {linesContent}
-    </Box>
+    <Lines
+      start={start}
+      end={end}
+      lines={props.lines}
+     />
   );
 }
