@@ -15,9 +15,30 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.primary,
 }));
 
+let index = {
+  start: 0,
+  end: 4,
+};
+let linesContent :Array<string> = [];
+
+function getIndicesForSubarray(offset, index, arrayLength) {
+  if (arrayLength==0) return {start:0,end:0};
+  if (offset==0) return index;
+  if (offset > 0) {
+    return { 
+      start: Math.max(0, Math.min(index.start+3, arrayLength-4)),
+      end: Math.min(index.end+4, arrayLength), 
+    };
+  }
+  return {
+    start: Math.max(index.start-4, 0),
+    end: Math.min(arrayLength, Math.max(index.end-3, 4)),
+  };
+}
+
 export default function AutoGridNoWrap(props) {
   console.log(` recived lines ${props.lines.length}`);
-      const [offset, setOffset] = useState(0);
+    const [offset, setOffset] = useState(0);
 
     useEffect(() => {
         const onWheel = (e: WheelEvent) => { setOffset(e.deltaY); console.log(`deltaY=${e.deltaY}\deltaMode=${e.deltaMode}`); };
@@ -27,13 +48,13 @@ export default function AutoGridNoWrap(props) {
         return () => window.removeEventListener('wheel', onWheel);
     }, []);
 
-    let linesContent = props.lines.map((line, index) => {
+    let indices = getIndicesForSubarray(offset, index, props.lines.length);
+    linesContent = props.lines.slice(indices.start, indices.end).map((line, index) => {
       return(<StyledPaper
       sx={{
       my: 1,
       mx: 'auto',
       p: 2,
-      display: index>4 ? 'none' : 'inherit',
       }}
       >
           <Grid container wrap="nowrap" spacing={2}>
