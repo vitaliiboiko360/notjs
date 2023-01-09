@@ -37,11 +37,6 @@ function TextPlayer() {
         setTextIsLoaded(true);
       });
     
-    
-    let listLines = text.lines.map(line => 
-        <li>{line}</li>
-    );
-    //console.log(`text.lines.length=${text.lines.length}`);
     return (
         <Container>
         <ReactAudioPlayer

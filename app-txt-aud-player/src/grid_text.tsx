@@ -15,30 +15,23 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.primary,
 }));
 
-let index = {
-  start: 0,
-  end: 4,
-};
-let linesContent :Array<string> = [];
+interface Indices {
+  start: number;
+  end: number;
+}
 
-function getIndicesForSubarray(offset, index, arrayLength) {
-  if (arrayLength==0) return {start:0,end:0};
-  if (offset==0) return index;
-  if (offset > 0) {
-    return { 
-      start: Math.max(0, Math.min(index.start+3, arrayLength-4)),
-      end: Math.min(index.end+4, arrayLength), 
-    };
-  }
-  return {
-    start: Math.max(index.start-4, 0),
-    end: Math.min(arrayLength, Math.max(index.end-3, 4)),
-  };
+function getNextIndex(offset, index, arrayLength) :Indices {
+  let newIndex = index;
+  if (offset>0) { newIndex = index+4; }
+  if (offset<0) { newIndex = index-4; }
+  return { start:Math.max(newIndex-4,0), end:Math.min(Math.max(4,newIndex), arrayLength) };
 }
 
 function Lines(props) {
   let linesToShow = props.lines.slice(props.start, props.end).map((line, index) => {
-    return(<StyledPaper
+    return(
+    <React.Fragment key={index}>
+    <StyledPaper
     sx={{
     my: 1,
     mx: 'auto',
@@ -53,7 +46,8 @@ function Lines(props) {
             }}>{line}</Typography>
         </Grid>
         </Grid>
-    </StyledPaper>);
+    </StyledPaper>
+    </React.Fragment>);
   });
   return (
     <Box sx={{ flexGrow: 1, overflow: 'hidden', maxHeight: 700, px: 3 }}>
@@ -68,13 +62,13 @@ export default function AutoGridNoWrap(props) {
     const [end, setEnd] = useState(4)
 
     useEffect(() => {
-        const onWheel = (e: WheelEvent) => { 
-          let {newStart,newEnd} = getIndicesForSubarray(e.deltaY, {start:start,end:end}, props.lines.length);
+        const onWheel = (e: WheelEvent) => {
+          const { newStart, newEnd} :Indices  = getNextIndex(e.deltaY, end, props.lines.length);
           console.log(`start=${newStart}\tend=${newEnd}\te.deltaY=${e.deltaY}`);
           setStart(newStart);
           setEnd(newEnd);
          };
-        // clear prev lstnr, if any
+        // clear prev listener if any
         window.removeEventListener('wheel', onWheel);
         window.addEventListener('wheel', onWheel, { passive: true });
         return () => window.removeEventListener('wheel', onWheel);
