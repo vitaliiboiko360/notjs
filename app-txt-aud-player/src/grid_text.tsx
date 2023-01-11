@@ -63,10 +63,10 @@ export default function AutoGridNoWrap(props) {
 
     useEffect(() => {
         const onWheel = (e: WheelEvent) => {
-          const { newStart, newEnd} :Indices  = getNextIndex(e.deltaY, end, props.lines.length);
-          console.log(`start=${newStart}\tend=${newEnd}\te.deltaY=${e.deltaY}`);
-          setStart(newStart);
-          setEnd(newEnd);
+          const i = getNextIndex(e.deltaY, end, props.lines.length);
+          console.log(`start=${i.start}\tend=${i.end}\te.deltaY=${e.deltaY}`);
+          setStart(i.start);
+          setEnd(i.end);
          };
         // clear prev listener if any
         window.removeEventListener('wheel', onWheel);
