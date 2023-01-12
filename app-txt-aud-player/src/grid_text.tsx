@@ -1,6 +1,7 @@
 import * as React from 'react';
 const useEffect = React.useEffect;
 const useState = React.useState;
+const useCallback = React.useCallback;
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -22,8 +23,8 @@ interface Indices {
 
 function getNextIndex(offset, index, arrayLength) :Indices {
   let newIndex = index;
-  if (offset>0) { newIndex = index+4; }
-  if (offset<0) { newIndex = index-4; }
+  if (offset>0) { newIndex = index+4; console.log('+++');}
+  if (offset<0) { newIndex = index-4; console.log('---');}
   return { start:Math.max(newIndex-4,0), end:Math.min(Math.max(4,newIndex), arrayLength) };
 }
 
@@ -58,27 +59,30 @@ function Lines(props) {
 
 export default function AutoGridNoWrap(props) {
   console.log(` recived lines ${props.lines.length}`);
-    const [start, setStart] = useState(0);
-    const [end, setEnd] = useState(4)
+  const [offset, setOffset] = useState(5);
+  let prev = offset;
 
-    useEffect(() => {
-        const onWheel = (e: WheelEvent) => {
-          const i = getNextIndex(e.deltaY, end, props.lines.length);
-          console.log(`start=${i.start}\tend=${i.end}\te.deltaY=${e.deltaY}`);
-          setStart(i.start);
-          setEnd(i.end);
-         };
-        // clear prev listener if any
-        window.removeEventListener('wheel', onWheel);
-        window.addEventListener('wheel', onWheel, { passive: true });
-        return () => window.removeEventListener('wheel', onWheel);
-    }, []);
-    
+  const onWheel = useCallback(event => {
+    let delta = event.deltaY;
+    console.log(`we called onWeel with props.lines.length ${props.lines.length}`);
+    if (delta > 0) { setOffset(prevOffset => Math.min(prevOffset+5, props.lines.length)); }
+    if (delta < 0) { setOffset(prevOffset => Math.max(prevOffset-5, 5)); }
+}, [props.lines.length]);
+
+  useEffect(() => {
+      window.addEventListener('wheel', onWheel, { passive: true });
+      return () => window.removeEventListener('wheel', onWheel);
+  }, [onWheel]);
+
+  let diff = offset-(Math.abs(prev));
+  let end = Math.min(diff*5, props.lines.length);
+  let start = Math.max(end-5, 0);
+  console.log(`prev=${prev}\toffset=${offset}\tdiff=${diff}\tstart=${start}\tend=${end}`);
   return (
     <Lines
-      start={start}
-      end={end}
+      start={offset-5}
+      end={offset}
       lines={props.lines}
-     />
+    />
   );
 }
