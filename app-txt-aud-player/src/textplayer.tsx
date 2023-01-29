@@ -73,6 +73,7 @@ function TextPlayer() {
         <AutoGridNoWrap
             lines={text.lines}
             scroll={window.pageYOffset}
+            setCurrentTime={setCurrentTime}
         />
         </Container>
     );

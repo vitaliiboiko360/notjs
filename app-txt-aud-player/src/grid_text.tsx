@@ -21,13 +21,6 @@ interface Indices {
   end: number;
 }
 
-function getNextIndex(offset, index, arrayLength) :Indices {
-  let newIndex = index;
-  if (offset>0) { newIndex = index+4; console.log('+++');}
-  if (offset<0) { newIndex = index-4; console.log('---');}
-  return { start:Math.max(newIndex-4,0), end:Math.min(Math.max(4,newIndex), arrayLength) };
-}
-
 function Lines(props) {
   let linesToShow = props.lines.slice(props.start, props.end).map((line, index) => {
     return(
@@ -67,7 +60,7 @@ export default function AutoGridNoWrap(props) {
     console.log(`we called onWeel with props.lines.length ${props.lines.length}`);
     if (delta > 0) { setOffset(prevOffset => Math.min(prevOffset+5, props.lines.length)); }
     if (delta < 0) { setOffset(prevOffset => Math.max(prevOffset-5, 5)); }
-}, [props.lines.length]);
+  }, [props.lines.length]);
 
   useEffect(() => {
       window.addEventListener('wheel', onWheel, { passive: true });
