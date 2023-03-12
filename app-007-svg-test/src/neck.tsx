@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export default function GuitarNeck(props) {
+export default function Neck(props) {
   const svg = 
   `<svg width="800" height="600" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <polyline points="0 45 100 55 100 65 0 65" stroke="black" fill="transparent" stroke-width="2"/>
