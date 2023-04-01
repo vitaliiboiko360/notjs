@@ -7,6 +7,6 @@ export default function Neck(props) {
   </svg>`;
   const div = `<div>
     <p>text</p>
-  </div>`
+  </div>`;
   return (<polyline points="0,230 800,210 800,390 0,370 0,230" stroke="black" fill="transparent" stroke-width="2"/>);
 }
