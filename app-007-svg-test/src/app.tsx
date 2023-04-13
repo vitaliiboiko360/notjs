@@ -1,5 +1,4 @@
 import * as React from 'react';
-const useState = React.useState;
 import Neck from './neck.tsx';
 import Frets from './frets.tsx';
 import Svg from './svg.tsx';
@@ -8,20 +7,20 @@ import Buttons from './buttons.tsx';
 import Dots from './dots.tsx';
 
 function App() {
+  let displayAll = false;
   function onClick() {
-    console.log('click');
+    displayAll = !displayAll;
+    console.log(`displayAll=${displayAll}`);
   }
-
-  const [yArray, updateYArray] = useState([]);
-  const [xArray, updateXArray] = useState([]);
+  let coordinates = {x:[], y:[]};
   return (
   <>
   <Buttons onClick={onClick} />
   <Svg>
     <Neck />
-    <Frets updateXArray={updateXArray} />
-    <Strings updateYArray={updateYArray} />
-    <Dots displayAll={true} y={yArray} x={xArray} />
+    <Frets coordinates={coordinates} />
+    <Strings coordinates={coordinates} />
+    <Dots displayAll={displayAll} coordinates={coordinates} />
   </Svg>
   </>
   );
