@@ -11,9 +11,16 @@ const theme = createTheme({
   },
 });
 
+var lastClickedIndex = -1;
+
 function ClickableLine(props) {
-  const onClick = () => { props.onClick(props.index) };
-  return (<Typography onClick={onClick} variant="body1" >
+  const onClick = () => {
+    props.onClick(props.index);
+
+    console.log(`lastClickedIndex was = ${lastClickedIndex}`);
+    lastClickedIndex = props.index;
+  };
+  return (<Typography theme={theme} onClick={onClick} variant="body1" >
     {props.text}
   </Typography>);
 }
