@@ -27,12 +27,25 @@ function ClickableLine(props) {
 
 export default function ClickLines(props) {
   let lineArray = props.lines;
+
   const onClick = (index) => props.onClick(index);
+
+  let prevIndex = -1;
+  const intervalId = setInterval(() => {
+    let index = props.getCurrentIndex();
+    if (index && (prevIndex != index)) {
+      console.log(`prevIndex=${prevIndex} new index=${index}`);
+      prevIndex = index;
+    }
+
+  }, 1000);
+
   let textLines = lineArray.map((textLine, index) => {
     return (<React.Fragment key={index}>
       <ClickableLine text={textLine} onClick={onClick} index={index} />
     </React.Fragment>);
   });
+
   console.log(`textLines.lenght=${textLines.length}`);
   return (<div>{textLines}</div>);
 }

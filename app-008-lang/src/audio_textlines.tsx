@@ -6,11 +6,11 @@ import TextLines from './text_lines.tsx';
 import Audio from './audio.tsx';
 
 export default function AudioTextLines() {
-
+  const numChunks = 26; // TODO
   const inputRef = useRef(null);
 
   function setCurrentTime(lineIndex) {
-    const numChunks = 26;
+
     const totalTime = inputRef.current.duration;
     console.log(`duration ${totalTime}`);
     inputRef.current.currentTime = (totalTime / numChunks) * lineIndex;
@@ -20,11 +20,18 @@ export default function AudioTextLines() {
     console.log(`clicked with index=${lineIndex}`);
   }
 
+  function getCurrentIndex() {
+    const totalTime = inputRef.current.duration;
+    return Math.floor((inputRef.current.currentTime * numChunks) / totalTime);
+  }
+
   return (
     <>
       <Audio ref={inputRef} />
       <Container>
-        <TextLines onClick={setCurrentTime} />
+        <TextLines
+          getCurrentIndex={getCurrentIndex}
+          onClick={setCurrentTime} />
       </Container>
     </>
   );

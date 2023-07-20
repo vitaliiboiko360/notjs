@@ -23,13 +23,17 @@ function QueryLines(props) {
     return textLine;
   });
 
-  return (<ClickLines onClick={props.onClick} lines={textLines} />);
+  return (<ClickLines
+    getCurrentIndex={props.getCurrentIndex}
+    onClick={props.onClick} lines={textLines} />);
 }
 
 export default function TextLines(props) {
   return (
     <QueryClientProvider client={queryClient}>
-      <QueryLines onClick={props.onClick} />
+      <QueryLines
+        getCurrentIndex={props.getCurrentIndex}
+        onClick={props.onClick} />
     </QueryClientProvider >
   );
 }
