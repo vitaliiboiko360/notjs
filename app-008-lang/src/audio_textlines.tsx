@@ -7,27 +7,27 @@ import Audio from './audio.tsx';
 
 export default function AudioTextLines() {
   const numChunks = 26; // TODO
-  const inputRef = useRef(null);
+  const audioRef = useRef(null);
 
   function setCurrentTime(lineIndex) {
 
-    const totalTime = inputRef.current.duration;
+    const totalTime = audioRef.current.duration;
     console.log(`duration ${totalTime}`);
-    inputRef.current.currentTime = (totalTime / numChunks) * lineIndex;
-    inputRef.current.play();
+    audioRef.current.currentTime = (totalTime / numChunks) * lineIndex;
+    audioRef.current.play();
 
     console.log(`set current time to ${(totalTime / numChunks) * lineIndex}`);
     console.log(`clicked with index=${lineIndex}`);
   }
 
   function getCurrentIndex() {
-    const totalTime = inputRef.current.duration;
-    return Math.floor((inputRef.current.currentTime * numChunks) / totalTime);
+    const totalTime = audioRef.current.duration;
+    return Math.floor((audioRef.current.currentTime * numChunks) / totalTime);
   }
 
   return (
     <>
-      <Audio ref={inputRef} />
+      <Audio ref={audioRef} />
       <Container>
         <TextLines
           getCurrentIndex={getCurrentIndex}
