@@ -1,40 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import Typography, { TypographyProps } from '@mui/material/Typography';
 
-import { styled } from '@mui/material/styles';
-import { createTheme } from '@mui/material/styles';
-
-const theme = createTheme({
-  typography: {
-    // In Chinese and Japanese the characters are usually larger,
-    // so a smaller fontsize may be appropriate.
-    fontSize: 12,
-  },
-});
-
-
-interface StyledTypographyProps extends TypographyProps {
-  active?: boolean;
-}
-
-const StyledTypography = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'success',
-})<StyledTypographyProps>(({ active, theme }) => ({
-  ...(active && {
-    color: 'green',
-  }),
-}));
+import TextParagraph from './text_paragraph.tsx'
 
 var lastClickedIndex = -1;
 function ClickableLine(props) {
+
   const onClick = () => {
     props.onClick(props.index);
     console.log(`lastClickedIndex was = ${lastClickedIndex}`);
     lastClickedIndex = props.index;
   };
-  return (<StyledTypography active={props.active} theme={theme} onClick={onClick} variant="body1" >
+
+  return (<TextParagraph active={props.active} onClick={onClick} >
     {props.text}
-  </StyledTypography>);
+  </TextParagraph>);
 }
 
 export default function ClickLines(props) {
