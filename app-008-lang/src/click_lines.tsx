@@ -11,9 +11,7 @@ function ClickableLine(props) {
     lastClickedIndex = props.index;
   };
 
-  return (<TextParagraph active={props.active} onClick={onClick} >
-    {props.text}
-  </TextParagraph>);
+  return (<TextParagraph active={props.active} onClick={onClick} text={props.text} />);
 }
 
 export default function ClickLines(props) {

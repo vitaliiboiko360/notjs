@@ -21,8 +21,10 @@ const StyledTypography = styled(Typography, {
 })<StyledTypographyProps>(({ active, theme }) => ({
   ...(active && {
     fontSize: 16,
-    padding: 20,
-    margin: 20,
+    padding: 12,
+    paddingLeft: 8,
+    margin: 12,
+    marginLeft: 0,
   }),
 }));
 
@@ -34,6 +36,6 @@ export default function TextParagraph(props) {
   }
 
   return (<StyledTypography sx={sx} active={props.active} theme={theme} onClick={props.onClick} variant="body1" >
-    {props.children}
+    {props.text}
   </StyledTypography>);
 }
