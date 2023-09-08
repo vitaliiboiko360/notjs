@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from '@mui/material/Container';
-import { useRef, useCallback } from 'react';
+import { useRef, useEffect } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
@@ -21,6 +21,7 @@ export default function AudioTextLines() {
   const numChunks = 26; // TODO
   const audioRef = useRef(null);
   const [position, setPosition] = React.useState(0);
+  const [totalTime, setTotalTime] = React.useState(0);
 
   // const setCurrentTime2 = useCallback((lineIndex) => {
   //   const totalTime = audioRef.current.duration;
@@ -32,14 +33,38 @@ export default function AudioTextLines() {
   //   console.log(`clicked with index=${lineIndex}`);
   // }, [setPosition]);
 
-  function setCurrentTime(lineIndex) {
-    const totalTime = audioRef.current.duration;
-    console.log(`duration ${totalTime}`);
-    audioRef.current.currentTime = (totalTime / numChunks) * lineIndex;
+  // audioRef.onloadedmetadata = function () {
+  //   setTotalTime()
+  // };
+
+  useEffect(() => {
+    const onLoadedMetadata = (event) => {
+      if (audioRef && audioRef.current) {
+        setTotalTime(audioRef.current.duration);
+        console.log(`onLoadedMetadata duration ${audioRef.current.duration}`);
+      }
+      else {
+        console.log(`onLoadedMetadata audioRef is NULL`);
+      }
+    }
+    if (audioRef && audioRef.current) {
+      audioRef.current.addEventListener("loadedmetadata", onLoadedMetadata, false);
+      return () => {
+        audioRef.current.removeEventListener("loadedmetadata", onLoadedMetadata, false);
+      };
+    }
+    else {
+      console.log(`useEffect audioRef is NULL`);
+    }
+  }, [audioRef]);
+
+  function setCurrentTime(seconds) {
+    // const totalTime = audioRef.current.duration;
+    // console.log(`duration ${totalTime}`);
+    audioRef.current.currentTime = seconds;
     audioRef.current.play();
 
-    console.log(`set current time to ${(totalTime / numChunks) * lineIndex}`);
-    console.log(`clicked with index=${lineIndex}`);
+    console.log(`onClick with seconds = ${seconds} `);
   }
 
   function getCurrentIndex() {
@@ -50,7 +75,7 @@ export default function AudioTextLines() {
   function formatDuration(value: number) {
     const minute = Math.floor(value / 60);
     const secondLeft = value - minute * 60;
-    return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
+    return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft} `;
   }
 
   return (
@@ -78,7 +103,7 @@ export default function AudioTextLines() {
               boxShadow: `0px 0px 0px 8px ${theme.palette.mode === 'dark'
                 ? 'rgb(255 255 255 / 16%)'
                 : 'rgb(0 0 0 / 16%)'
-                }`,
+                } `,
             },
             '&.Mui-active': {
               width: 20,
@@ -101,7 +126,7 @@ export default function AudioTextLines() {
         marginRight: 0,
         display: 'inline',
         float: 'right'
-      }}>{formatDuration(position)}</TinyText>
+      }}>{formatDuration(totalTime)}</TinyText>
       <Container>
         <TextLines
           getCurrentIndex={getCurrentIndex}
