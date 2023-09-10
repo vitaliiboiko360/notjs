@@ -56,9 +56,7 @@ export default function AudioTextLines() {
     }
 
     audioRef.current.addEventListener("timeupdate", onTimeUpdateHandlerNew, false);
-
     onTimeUpdateHandler.current = onTimeUpdateHandlerNew;
-
   }
 
   function onClickUserPlayNewStart(seconds, end) {
