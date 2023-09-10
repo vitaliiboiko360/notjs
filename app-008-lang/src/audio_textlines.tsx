@@ -33,7 +33,7 @@ export default function AudioTextLines() {
     };
   }, [audioRef]);
 
-  function updateStopTimeAudio(endTime) {
+  function updateStopTimeAudio(endTime, callback) {
     // updateStopTimeAudio
     if (!(audioRef && audioRef.current)) {
       console.log(`updateStopTimeAudio audioRef is ${audioRef}`);
@@ -51,7 +51,7 @@ export default function AudioTextLines() {
       setCurrentTime(Math.floor(currentTime));
       if (currentTime >= endTime) {
         audioRef.current.pause();
-        setTimeout(setNextTextToActive, 500);
+        setTimeout(callback, 500);
       }
     }
 
@@ -59,11 +59,11 @@ export default function AudioTextLines() {
     onTimeUpdateHandler.current = onTimeUpdateHandlerNew;
   }
 
-  function onClickUserPlayNewStart(seconds, end) {
+  function onClickUserPlayNewStart(seconds, end, callback) {
     // const totalTime = audioRef.current.duration;
     // console.log(`duration ${totalTime}`);
     console.log(`END was set = ${end}`);
-    updateStopTimeAudio(end);
+    updateStopTimeAudio(end, callback);
     audioRef.current.currentTime = seconds;
     audioRef.current.play();
     //console.log(`onClick with seconds = ${seconds} `);

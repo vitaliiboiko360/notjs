@@ -19,7 +19,11 @@ export default function ClickLines(props) {
   let lineArray = props.lines;
   const [activeIndex, setActiveIndex] = useState(-1);
   const onClick = (seconds, index, end) => {
-    props.onClick(seconds, end)
+    const setNextIndexAsActive = () => {
+      console.log(`callback called !!!`);
+      setActiveIndex(index++ % lineArray.length);
+    }
+    props.onClick(seconds, end, setNextIndexAsActive)
     setActiveIndex(index);
   };
 
