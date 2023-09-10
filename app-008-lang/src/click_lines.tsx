@@ -6,7 +6,7 @@ var lastClickedIndex = -1;
 function ClickableLine(props) {
 
   const onClick = () => {
-    props.onClick(props.start, props.index);
+    props.onClick(props.start, props.index, props.end);
     console.log(`lastClickedIndex was = ${lastClickedIndex}`);
     lastClickedIndex = props.index;
   };
@@ -18,8 +18,8 @@ export default function ClickLines(props) {
 
   let lineArray = props.lines;
   const [activeIndex, setActiveIndex] = useState(-1);
-  const onClick = (seconds, index) => {
-    props.onClick(seconds)
+  const onClick = (seconds, index, end) => {
+    props.onClick(seconds, end)
     setActiveIndex(index);
   };
 
@@ -49,6 +49,7 @@ export default function ClickLines(props) {
         active={(activeIndex == index) ? true : false}
         text={textEntry.text}
         start={textEntry.start}
+        end={textEntry.end}
         onClick={onClick}
         index={index} />
     </React.Fragment>);
