@@ -1,6 +1,6 @@
 import React from 'react';
 import Container from '@mui/material/Container';
-import { useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 
 import TextLines from './text_lines.tsx';
@@ -9,83 +9,66 @@ import Audio from './audio.tsx';
 
 export default function AudioTextLines() {
   const audioRef = useRef(null);
-  const [totalTime, setTotalTime] = React.useState(0);
-  const [currentTime, setCurrentTime] = React.useState(0);
+  const [totalTime, setTotalTime] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const onTimeUpdateHandler = useRef(null);
 
-  let endTime = 0;
-
-  // const setCurrentTime2 = useCallback((lineIndex) => {
-  //   const totalTime = audioRef.current.duration;
-  //   console.log(`duration ${totalTime}`);
-  //   audioRef.current.currentTime = (totalTime / numChunks) * lineIndex;
-  //   audioRef.current.play();
-
-  //   console.log(`set current time to ${(totalTime / numChunks) * lineIndex}`);
-  //   console.log(`clicked with index=${lineIndex}`);
-  // }, [setPosition]);
-
-  // audioRef.onloadedmetadata = function () {
-  //   setTotalTime()
-  // };
+  const setNextTextToActive = () => {
+    console.log(`setNextTextToActive`);
+  }
 
   useEffect(() => {
+    if (!(audioRef && audioRef.current))
+      return;
+
     const onLoadedMetadata = (event) => {
-      if (audioRef && audioRef.current) {
-        const totalTime = Math.ceil(audioRef.current.duration);
-        setTotalTime(totalTime);
-        console.log(`onLoadedMetadata duration ${totalTime}`);
-      }
-      else {
-        console.log(`onLoadedMetadata audioRef is NULL`);
-      }
+      const totalTime = Math.ceil(audioRef.current.duration);
+      setTotalTime(totalTime);
     }
 
-    if (audioRef && audioRef.current) {
-      audioRef.current.addEventListener("loadedmetadata", onLoadedMetadata, false);
-      return () => {
-        audioRef.current.removeEventListener("loadedmetadata", onLoadedMetadata, false);
-      };
-    }
-    else {
-      console.log(`useEffect audioRef is NULL`);
-    }
-  }, [audioRef, endTime]);
+    audioRef.current.addEventListener("loadedmetadata", onLoadedMetadata, false);
 
-  function updateStopTimeAudio() {
+    return () => {
+      audioRef.current.removeEventListener("loadedmetadata", onLoadedMetadata, false);
+    };
+  }, [audioRef]);
+
+  function updateStopTimeAudio(endTime) {
+    // updateStopTimeAudio
     if (!(audioRef && audioRef.current)) {
       console.log(`updateStopTimeAudio audioRef is ${audioRef}`);
       return;
     }
 
-    const onTimeUpdate = (event) => {
-      if (audioRef && audioRef.current) {
-        //console.log(`onTimeUpdate currentTime ${audioRef.current.currentTime}`);
-        const currentTime = audioRef.current.currentTime;
-        setCurrentTime(Math.floor(currentTime));
-        if (currentTime >= endTime) {
-          audioRef.current.pause();
-          console.log(`onTimeUpdate paused audio !!!`);
-          // setNextTextActive 
-        }
-      }
-      else {
-        console.log(`onTimeUpdate audioRef is NULL`);
+    if (onTimeUpdateHandler.current) {
+      audioRef.current.removeEventListener("timeupdate", onTimeUpdateHandler.current, false);
+    }
+
+    const onTimeUpdateHandlerNew = (event) => {
+      if (!(audioRef && audioRef.current))
+        return;
+      const currentTime = audioRef.current.currentTime;
+      setCurrentTime(Math.floor(currentTime));
+      if (currentTime >= endTime) {
+        audioRef.current.pause();
+        setTimeout(setNextTextToActive, 500);
       }
     }
-    audioRef.current.removeEventListener("timeupdate", onTimeUpdate, false);
-    audioRef.current.addEventListener("timeupdate", onTimeUpdate, false);
-    console.log(`updated Audio timeupdate handler`);
+
+    audioRef.current.addEventListener("timeupdate", onTimeUpdateHandlerNew, false);
+
+    onTimeUpdateHandler.current = onTimeUpdateHandlerNew;
+
   }
 
-  function onClickPlayNewStart(seconds, end) {
+  function onClickUserPlayNewStart(seconds, end) {
     // const totalTime = audioRef.current.duration;
     // console.log(`duration ${totalTime}`);
     console.log(`END was set = ${end}`);
-    endTime = end;
+    updateStopTimeAudio(end);
     audioRef.current.currentTime = seconds;
     audioRef.current.play();
-    console.log(`onClick with seconds = ${seconds} `);
-    updateStopTimeAudio();
+    //console.log(`onClick with seconds = ${seconds} `);
   }
 
   function getCurrentIndex() {
@@ -103,7 +86,7 @@ export default function AudioTextLines() {
       <Container>
         <TextLines
           getCurrentIndex={getCurrentIndex}
-          onClick={onClickPlayNewStart} />
+          onClick={onClickUserPlayNewStart} />
       </Container>
     </>
   );

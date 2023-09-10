@@ -7,7 +7,7 @@ function ClickableLine(props) {
 
   const onClick = () => {
     props.onClick(props.start, props.index, props.end);
-    console.log(`lastClickedIndex was = ${lastClickedIndex}`);
+    //console.log(`lastClickedIndex was = ${lastClickedIndex}`);
     lastClickedIndex = props.index;
   };
 
@@ -55,6 +55,6 @@ export default function ClickLines(props) {
     </React.Fragment>);
   });
 
-  console.log(`textLines.lenght=${textLines.length}`);
+  // console.log(`textLines.lenght=${textLines.length}`);
   return (<div>{textLines}</div>);
 }
