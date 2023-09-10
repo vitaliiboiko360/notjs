@@ -26,10 +26,10 @@ export default function SliderAudioPlayseek(props) {
   return (<><Slider
     aria-label="time-indicator"
     size="small"
-    value={position}
+    value={props.currentTime}
     min={0}
     step={1}
-    max={100}
+    max={props.totalTime}
     onChange={(_, value) => setPosition(value as number)}
     sx={{
       color: theme.palette.mode === 'dark' ? '#fff' : 'rgba(0,0,0,0.87)',

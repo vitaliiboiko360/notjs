@@ -61,7 +61,7 @@ export default function AudioTextLines() {
       if (audioRef && audioRef.current) {
         //console.log(`onTimeUpdate currentTime ${audioRef.current.currentTime}`);
         const currentTime = audioRef.current.currentTime;
-        setCurrentTime(Math.floor(currenTime));
+        setCurrentTime(Math.floor(currentTime));
         if (currentTime >= endTime) {
           audioRef.current.pause();
           console.log(`onTimeUpdate paused audio !!!`);
