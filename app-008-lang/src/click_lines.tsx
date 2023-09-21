@@ -11,7 +11,7 @@ function ClickableLine(props) {
     lastClickedIndex = props.index;
   };
 
-  return (<TextParagraph active={props.active} onClick={onClick} text={props.text} />);
+  return (<TextParagraph active={props.active} onClick={onClick} text={props.text} length={props.end - props.start} index={props.index} />);
 }
 
 export default function ClickLines(props) {
@@ -19,11 +19,7 @@ export default function ClickLines(props) {
   let lineArray = props.lines;
   const [activeIndex, setActiveIndex] = useState(-1);
   const onClick = (seconds, index, end) => {
-    const setNextIndexAsActive = () => {
-      console.log(`callback called !!!`);
-      setActiveIndex(index++ % lineArray.length);
-    }
-    props.onClick(seconds, end, setNextIndexAsActive)
+    props.onClick(seconds, end)
     setActiveIndex(index);
   };
 
@@ -60,5 +56,7 @@ export default function ClickLines(props) {
   });
 
   // console.log(`textLines.lenght=${textLines.length}`);
-  return (<div>{textLines}</div>);
+  return (<>
+    <div>{textLines}</div>
+  </>);
 }

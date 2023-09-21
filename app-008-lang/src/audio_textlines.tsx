@@ -13,10 +13,6 @@ export default function AudioTextLines() {
   const [currentTime, setCurrentTime] = useState(0);
   const onTimeUpdateHandler = useRef(null);
 
-  const setNextTextToActive = () => {
-    console.log(`setNextTextToActive`);
-  }
-
   useEffect(() => {
     if (!(audioRef && audioRef.current))
       return;
@@ -33,7 +29,7 @@ export default function AudioTextLines() {
     };
   }, [audioRef]);
 
-  function updateStopTimeAudio(endTime, callback) {
+  function updateStopTimeAudio(endTime) {
     // updateStopTimeAudio
     if (!(audioRef && audioRef.current)) {
       console.log(`updateStopTimeAudio audioRef is ${audioRef}`);
@@ -51,7 +47,6 @@ export default function AudioTextLines() {
       setCurrentTime(Math.floor(currentTime));
       if (currentTime >= endTime) {
         audioRef.current.pause();
-        setTimeout(callback, 500);
       }
     }
 
