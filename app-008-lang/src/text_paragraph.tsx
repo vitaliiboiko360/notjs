@@ -103,13 +103,23 @@ export default function TextParagraph(props) {
   let svgId = `svg_${props.index}`;
 
   function setAnimation(length) {
-    let spanRect = spanRef.current.getBoundingClientRect();
+    //let spanRect = spanRef.current.getBoundingClientRect();
     //let svgRect = window.getElementById(svgId).getBoundingClientRec();
-    console.log(JSON.stringify(spanRect));
+    //console.log(JSON.stringify(spanRef.current.getBoundingClientRect()));
     //console.log(`svgRect.y = ${svgRect.y}`);
     //console.log(`lenght= ${length}`);
 
+    const parentRect = spanRef.current.getBoundingClientRect();
+
     const a = appendSVGChild('circle', svgRef.current, { 'cy': '3', 'cx': '3', 'r': '3', 'fill': 'blue' });
+
+    const children = [].slice.call(spanRef.current.childNodes);
+    for (let index in children) {
+      let child = children[index];
+      //console.log(JSON.stringify(child.getBoundingClientRect()));
+      const childRect = child.getBoundingClientRect();
+      console.log(`deltaX=${childRect.x - parentRect.x}\ndeltaY=${childRect.y - parentRect.y}`);
+    }
     a.beginElement();
   }
 
@@ -119,18 +129,30 @@ export default function TextParagraph(props) {
   }
 
   React.useEffect(() => {
-    if (props.active) {
+    const { width, height, top, left } = spanRef.current.getBoundingClientRect()
+    svgRef.current.style.width = width + 'px';
+    svgRef.current.style.height = height + 'px';
+    svgRef.current.style.top = top + 'px';
+    svgRef.current.style.left = left + 'px';
+    if (!props.active) {
       return;
     }
-    // let spanText = document.getElementById(spanId);
+    //console.log(`active clicked element bounding rect = ${JSON.stringify(spanRef.current.getBoundingClientRect())}`);
   }, []);
 
   // onClick={props.onClick}  width="100" height="10" 
   //<path d="M0,0 L100,0" fill="blue" strokeWidth="5" stroke="blue" />
+  //<span ref={spanRef} style={{ fontSize: 22, display: 'inline', }} id={spanId} onClick={onClick}></span>
+  //  widht={updatedWidht} height={updatedHeight} viewBox={updateRectCoords}
+  const wordsArray = props.text.split(' ');
+  const wordsInSpans = wordsArray.map((w, index) => {
+    return <span key={index + 1}>{w + ' '}</span>;
+  });
+
   return (<>
-    <div style={{ position: 'relative', display: 'inline' }}>
-      <svg ref={svgRef} id={svgId} style={{ position: 'absolute', zIndex: -1 }}></svg>
-      <span ref={spanRef} style={{ fontSize: 22, display: 'inline', }} id={spanId} onClick={onClick}>{props.text + ' '}</span>
+    <div key={props.index} style={{ display: 'inline' }}>
+      <svg ref={svgRef} id={svgId} style={{ position: 'absolute', zIndex: '-1' }}></svg>
+      <span key={0} ref={spanRef} style={{ fontSize: 22, display: 'inline', }} id={spanId} onClick={onClick}>{wordsInSpans}</span>
     </div >
   </>);
 }
