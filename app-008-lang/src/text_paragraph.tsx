@@ -71,20 +71,19 @@ function appendSVGChild(elementType: string, target: HTMLElement | SVGElement, a
   Object.entries(attributes).map(a => element.setAttribute(a[0], a[1] as string));
   let dur = '5s'
   if (text) {
-    // const textNode = document.createTextNode(text);
-    // element.appendChild(textNode);
     dur = text
   }
 
   const animation = document.createElementNS(schema, "animateTransform");
   animation.setAttribute("attributeName", "transform");
-  animation.setAttribute('from', 'M0 0');
-  animation.setAttribute('to', d);
+  //animation.setAttribute('path', d);
+  // animation.setAttribute('from', 'M0 0');
+  // animation.setAttribute('to', d);
   animation.setAttribute('begin', '0s');
   animation.setAttribute('dur', dur);
   animation.setAttribute('repeatCount', '1');
 
-  //element.appendChild(animation);
+  element.appendChild(animation);
   target.appendChild(element);
 
   return animation;
@@ -127,7 +126,8 @@ export default function TextParagraph(props) {
     const animationElements = coordinates.map(values => {
       let path = `M ${Math.floor(values.x)} ${Math.floor(values.y)} L ${Math.floor(values.deltaX)} ${Math.floor(values.y)}`;
       return appendSVGChild('path', svgRef.current, {
-        'd': path, 'stroke-width': '3', 'stroke': 'blue', 'fill': 'blue'
+        'd': path, 'stroke-width': '3', 'stroke': 'blue', 'fill': 'blue', 'transform': `translateX(${values.x} ${values.deltaX
+          })`
       }, `${length}s`, path);
     });
 
