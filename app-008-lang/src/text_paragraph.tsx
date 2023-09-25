@@ -65,62 +65,73 @@ const StyledTypography = styled(Typography, {
 }));
 
 // If applying attributes, they need to be in the format {'attr':'val','attr2':'val2',...}
-function appendSVGChild(elementType: string, target: HTMLElement | SVGElement, attributes: Record<string, unknown> = {}, text = '') {
-  const element: SVGElement = document.createElementNS("http://www.w3.org/2000/svg", elementType);
+function appendSVGChild(elementType: string, target: HTMLElement | SVGElement, attributes: Record<string, unknown> = {}, text = '', d = '') {
+  const schema = 'http://www.w3.org/2000/svg';
+  const element: SVGElement = document.createElementNS(schema, elementType);
   Object.entries(attributes).map(a => element.setAttribute(a[0], a[1] as string));
+  let dur = '5s'
   if (text) {
-    const textNode = document.createTextNode(text);
-    element.appendChild(textNode);
+    // const textNode = document.createTextNode(text);
+    // element.appendChild(textNode);
+    dur = text
   }
-  // <animate
-  // attributeName = "rx"
-  // values = "0;5;0"
-  // dur = "10s"
-  // repeatCount = "indefinite" />
-  const animation = document.createElementNS("http://www.w3.org/2000/svg", "animate");
-  animation.setAttribute("attributeName", "r");
-  animation.setAttribute('from', '3');
-  animation.setAttribute('to', '30');
+
+  const animation = document.createElementNS(schema, "animateTransform");
+  animation.setAttribute("attributeName", "transform");
+  animation.setAttribute('from', 'M0 0');
+  animation.setAttribute('to', d);
   animation.setAttribute('begin', '0s');
-  animation.setAttribute('dur', '5s');
+  animation.setAttribute('dur', dur);
   animation.setAttribute('repeatCount', '1');
 
-  element.appendChild(animation);
-
+  //element.appendChild(animation);
   target.appendChild(element);
+
   return animation;
 };
 
 export default function TextParagraph(props) {
   const spanRef = React.useRef(null);
   const svgRef = React.useRef(null);
-  let sx = {};
-  if (props.active) {
-    // sx = { boxShadow: 3 };
-  }
-
-  let spanId = `span_${props.index}`;
-  let svgId = `svg_${props.index}`;
 
   function setAnimation(length) {
-    //let spanRect = spanRef.current.getBoundingClientRect();
-    //let svgRect = window.getElementById(svgId).getBoundingClientRec();
-    //console.log(JSON.stringify(spanRef.current.getBoundingClientRect()));
-    //console.log(`svgRect.y = ${svgRect.y}`);
-    //console.log(`lenght= ${length}`);
 
     const parentRect = spanRef.current.getBoundingClientRect();
 
-    const a = appendSVGChild('circle', svgRef.current, { 'cy': '3', 'cx': '3', 'r': '3', 'fill': 'blue' });
-
     const children = [].slice.call(spanRef.current.childNodes);
-    for (let index in children) {
-      let child = children[index];
-      //console.log(JSON.stringify(child.getBoundingClientRect()));
+    console.log(`\n${JSON.stringify(parentRect)}`);
+    const coordinates = children.reduce((collectedArray, child, index) => {
+
       const childRect = child.getBoundingClientRect();
-      console.log(`deltaX=${childRect.x - parentRect.x}\ndeltaY=${childRect.y - parentRect.y}`);
-    }
-    a.beginElement();
+      const x = (childRect.x - parentRect.x) > 0 ? childRect.x : 0;
+      const coordinateValues = { 'x': (childRect.x - parentRect.x), 'y': childRect.height * (collectedArray.length + 1), 'deltaX': (childRect.x - parentRect.x) + childRect.width, 'lineBottomY': childRect.bottom };
+
+      console.log(`word=${child.innerText}\t${JSON.stringify(childRect)}`);
+
+      const foundIndex = collectedArray.findIndex((element) => {
+        return element.lineBottomY === coordinateValues.lineBottomY;
+      });
+
+      if (foundIndex == -1) {
+        collectedArray.push(coordinateValues);
+      }
+      else {
+        collectedArray[foundIndex].deltaX = collectedArray[foundIndex].deltaX + childRect.width;
+      }
+
+      return collectedArray;
+    }, []);
+
+
+    //
+    const animationElements = coordinates.map(values => {
+      let path = `M ${Math.floor(values.x)} ${Math.floor(values.y)} L ${Math.floor(values.deltaX)} ${Math.floor(values.y)}`;
+      return appendSVGChild('path', svgRef.current, {
+        'd': path, 'stroke-width': '3', 'stroke': 'blue', 'fill': 'blue'
+      }, `${length}s`, path);
+    });
+
+    animationElements.forEach(a => a.beginElement());
   }
 
   function onClick() {
@@ -129,21 +140,16 @@ export default function TextParagraph(props) {
   }
 
   React.useEffect(() => {
-    const { width, height, top, left } = spanRef.current.getBoundingClientRect()
-    svgRef.current.style.width = width + 'px';
-    svgRef.current.style.height = height + 'px';
+    const { width, height, top, left } = spanRef.current.getBoundingClientRect();
+    svgRef.current.style.width = Math.ceil(width) + 'px';
+    svgRef.current.style.height = Math.ceil(height) + 'px';
     svgRef.current.style.top = top + 'px';
     svgRef.current.style.left = left + 'px';
     if (!props.active) {
       return;
     }
-    //console.log(`active clicked element bounding rect = ${JSON.stringify(spanRef.current.getBoundingClientRect())}`);
   }, []);
 
-  // onClick={props.onClick}  width="100" height="10" 
-  //<path d="M0,0 L100,0" fill="blue" strokeWidth="5" stroke="blue" />
-  //<span ref={spanRef} style={{ fontSize: 22, display: 'inline', }} id={spanId} onClick={onClick}></span>
-  //  widht={updatedWidht} height={updatedHeight} viewBox={updateRectCoords}
   const wordsArray = props.text.split(' ');
   const wordsInSpans = wordsArray.map((w, index) => {
     return <span key={index + 1}>{w + ' '}</span>;
@@ -151,8 +157,8 @@ export default function TextParagraph(props) {
 
   return (<>
     <div key={props.index} style={{ display: 'inline' }}>
-      <svg ref={svgRef} id={svgId} style={{ position: 'absolute', zIndex: '-1' }}></svg>
-      <span key={0} ref={spanRef} style={{ fontSize: 22, display: 'inline', }} id={spanId} onClick={onClick}>{wordsInSpans}</span>
+      <svg ref={svgRef} style={{ position: 'absolute', zIndex: '-1' }}></svg>
+      <span key={0} ref={spanRef} style={{ fontSize: 22, display: 'inline', }} onClick={onClick}>{wordsInSpans}</span>
     </div >
   </>);
 }
