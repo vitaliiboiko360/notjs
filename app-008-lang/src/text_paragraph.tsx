@@ -65,20 +65,19 @@ const StyledTypography = styled(Typography, {
 }));
 
 // If applying attributes, they need to be in the format {'attr':'val','attr2':'val2',...}
-function appendSVGChild(elementType: string, target: HTMLElement | SVGElement, attributes: Record<string, unknown> = {}, text = '', d = '') {
+function appendSVGChild(elementType: string, target: HTMLElement | SVGElement, attributes: Record<string, unknown> = {}, duration, to) {
   const schema = 'http://www.w3.org/2000/svg';
   const element: SVGElement = document.createElementNS(schema, elementType);
   Object.entries(attributes).map(a => element.setAttribute(a[0], a[1] as string));
   let dur = '5s'
-  if (text) {
-    dur = text
+  if (duration) {
+    dur = duration
   }
 
-  const animation = document.createElementNS(schema, "animateTransform");
-  animation.setAttribute("attributeName", "transform");
-  //animation.setAttribute('path', d);
-  // animation.setAttribute('from', 'M0 0');
-  // animation.setAttribute('to', d);
+  const animation = document.createElementNS(schema, "animate");
+  animation.setAttribute("attributeName", "width");
+  animation.setAttribute('from', '0');
+  animation.setAttribute('to', to);
   animation.setAttribute('begin', '0s');
   animation.setAttribute('dur', dur);
   animation.setAttribute('repeatCount', '1');
@@ -122,13 +121,17 @@ export default function TextParagraph(props) {
     }, []);
 
 
+    const lineLength = coordinates.reduce((width, values) => {
+      width += values.deltaX;
+      return width;
+    }, 0);
     //
     const animationElements = coordinates.map(values => {
-      let path = `M ${Math.floor(values.x)} ${Math.floor(values.y)} L ${Math.floor(values.deltaX)} ${Math.floor(values.y)}`;
-      return appendSVGChild('path', svgRef.current, {
-        'd': path, 'stroke-width': '3', 'stroke': 'blue', 'fill': 'blue', 'transform': `translateX(${values.x} ${values.deltaX
-          })`
-      }, `${length}s`, path);
+      let portionOfLength = lineLength / values.deltaX;
+      let durationOfAnimation = Math.floor(length / portionOfLength);
+      return appendSVGChild('rect', svgRef.current, {
+        'x': values.x, 'y': values.y, 'stroke-width': '3', 'stroke': 'blue', 'fill': 'blue', 'height': 1, 'width': values.deltaX
+      }, `${durationOfAnimation}s`, values.deltaX);
     });
 
     animationElements.forEach(a => a.beginElement());
