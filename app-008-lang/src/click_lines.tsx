@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { Provider } from 'react-redux'
 
 import TextParagraph from './text_paragraph.tsx'
+
+const store = {};
 
 function ClickableLine(props) {
   const onClick = () => {
@@ -9,24 +12,8 @@ function ClickableLine(props) {
   return (<TextParagraph active={props.active} onClick={onClick} text={props.text} length={props.end - props.start} index={props.index} />);
 }
 
-function useTraceUpdate(props) {
-  const prev = React.useRef(props);
-  React.useEffect(() => {
-    const changedProps = Object.entries(props).reduce((ps, [k, v]) => {
-      if (prev.current[k] !== v) {
-        ps[k] = [prev.current[k], v];
-      }
-      return ps;
-    }, {});
-    if (Object.keys(changedProps).length > 0) {
-      console.log('Changed props:', changedProps);
-    }
-    prev.current = props;
-  });
-}
-
 export default function ClickLines(props) {
-  useTraceUpdate(props);
+
   console.log(`ClickLines rendered`);
 
   let lineArray = props.lines;
@@ -43,6 +30,6 @@ export default function ClickLines(props) {
   });
 
   return (<>
-    <div>{textLines}</div>
+    <Provider store={store}><div>{textLines}</div></Provider>
   </>);
 }

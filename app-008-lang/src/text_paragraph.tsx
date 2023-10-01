@@ -25,14 +25,36 @@ function addSVGElemenReturnAnime(elementType: string, target: HTMLElement | SVGE
   return animation;
 };
 
+function useTraceUpdate(props) {
+  const prev = React.useRef(props);
+  React.useEffect(() => {
+    const changedProps = Object.entries(props).reduce((ps, [k, v]) => {
+      if (prev.current[k] !== v) {
+        ps[k] = [prev.current[k], v];
+      }
+      return ps;
+    }, {});
+    if (Object.keys(changedProps).length > 0) {
+      console.log('Changed props:', changedProps);
+    }
+    prev.current = props;
+  });
+}
+
+
 export default function TextParagraph(props) {
   const spanRef = React.useRef(null);
   const svgRef = React.useRef(null);
 
   const [active, setActive] = React.useState(false);
+  console.log(`TextParagraph ${props.index} rendred`);
+  //useTraceUpdate(props);
 
   function setAnimation(length) {
-
+    if (active) {
+      return;
+    }
+    setActive(true);
     const parentRect = spanRef.current.getBoundingClientRect();
     const children = [].slice.call(spanRef.current.childNodes);
     // console.log(`\n${JSON.stringify(parentRect)}`);
@@ -79,6 +101,7 @@ export default function TextParagraph(props) {
         }
         else {
           animationElements.forEach((element) => { element.parentNode.remove() });
+          setActive(false);
         }
       });
       animationElements[index].beginElement();
@@ -107,7 +130,7 @@ export default function TextParagraph(props) {
   return (<>
     <div key={props.index} style={{ display: 'inline' }}>
       <svg ref={svgRef} style={{ position: 'absolute', zIndex: '-1' }}></svg>
-      <span ref={spanRef} style={{ fontSize: 22, display: 'inline', }} onClick={onClick}>{wordsInSpans}</span>
+      <span ref={spanRef} style={{ fontSize: 26, display: 'inline', }} onClick={onClick}>{wordsInSpans}</span>
     </div >
   </>);
 }
