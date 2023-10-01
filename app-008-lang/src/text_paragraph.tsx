@@ -1,5 +1,9 @@
 import React from 'react';
 
+import { useAppDispatch, useAppSelector } from './hooks.ts'
+import { setActiveIndex } from './activeIndexSlice.ts';
+import { store } from './store.ts'
+
 // attributes needs to be in format {'attr':'val','attr2':'val2',...}
 function addSVGElemenReturnAnime(elementType: string, target: HTMLElement | SVGElement, attributes: Record<string, unknown> = {}, duration, to, animationId, beginAnimation) {
   const schema = 'http://www.w3.org/2000/svg';
@@ -25,30 +29,14 @@ function addSVGElemenReturnAnime(elementType: string, target: HTMLElement | SVGE
   return animation;
 };
 
-function useTraceUpdate(props) {
-  const prev = React.useRef(props);
-  React.useEffect(() => {
-    const changedProps = Object.entries(props).reduce((ps, [k, v]) => {
-      if (prev.current[k] !== v) {
-        ps[k] = [prev.current[k], v];
-      }
-      return ps;
-    }, {});
-    if (Object.keys(changedProps).length > 0) {
-      console.log('Changed props:', changedProps);
-    }
-    prev.current = props;
-  });
-}
-
-
 export default function TextParagraph(props) {
   const spanRef = React.useRef(null);
   const svgRef = React.useRef(null);
 
   const [active, setActive] = React.useState(false);
-  console.log(`TextParagraph ${props.index} rendred`);
-  //useTraceUpdate(props);
+
+  const dispatch = useAppDispatch();
+  const selector = useAppDispatch((state) => state.setActiveIndex.value);
 
   function setAnimation(length) {
     if (active) {
@@ -110,6 +98,7 @@ export default function TextParagraph(props) {
   }
 
   function onClick() {
+    dispatch({ payload: props.index, type: setActiveIndex });
     setAnimation(props.length);
     props.onClick();
   }
@@ -121,6 +110,12 @@ export default function TextParagraph(props) {
     svgRef.current.style.top = Math.ceil(top) + 'px';
     svgRef.current.style.left = Math.ceil(left) + 'px';
   }, []);
+
+  React.useEffect(() => {
+    if (store.getState().setActiveIndex.payload == props.index) {
+      console.log(`we are ative paragraph index=${props.index}`);
+    }
+  });
 
   const wordsArray = props.text.split(' ');
   const wordsInSpans = wordsArray.map((w, index) => {
