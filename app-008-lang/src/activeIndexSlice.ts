@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import type { RootState } from '../../app/store'
+import type { RootState } from './store.ts'
 
 interface ActiveIndexState {
   value: number
 }
 const initialState = {
-  value: 0
+  value: -1
 } as ActiveIndexState;
 
 export const activeIndexSlice = createSlice({

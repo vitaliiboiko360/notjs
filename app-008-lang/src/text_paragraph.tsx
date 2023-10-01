@@ -36,7 +36,7 @@ export default function TextParagraph(props) {
   const [active, setActive] = React.useState(false);
 
   const dispatch = useAppDispatch();
-  const selector = useAppDispatch((state) => state.setActiveIndex.value);
+  const selector = useAppSelector(state => state.activeIndex.value);
 
   function setAnimation(length) {
     if (active) {
@@ -98,7 +98,7 @@ export default function TextParagraph(props) {
   }
 
   function onClick() {
-    dispatch({ payload: props.index, type: setActiveIndex });
+    dispatch({ payload: props.index, type: 'activeIndex' });
     setAnimation(props.length);
     props.onClick();
   }
@@ -112,7 +112,7 @@ export default function TextParagraph(props) {
   }, []);
 
   React.useEffect(() => {
-    if (store.getState().setActiveIndex.payload == props.index) {
+    if (selector == props.index) {
       console.log(`we are ative paragraph index=${props.index}`);
     }
   });
