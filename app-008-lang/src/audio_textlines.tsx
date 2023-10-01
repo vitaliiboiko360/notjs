@@ -1,50 +1,23 @@
 import React from 'react';
+
 import Container from '@mui/material/Container';
-import { useState, useRef, useEffect } from 'react';
-
-
 import TextLines from './text_lines.tsx';
-import SliderAudioPlayseek from './slider_audio_playseek.tsx';
-import Audio from './audio.tsx';
+import AudioAndSlider from './audio_and_silider.tsx';
 
 export default function AudioTextLines() {
-  const audioRef = useRef(null);
-  const [totalTime, setTotalTime] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const onTimeUpdateHandler = useRef(null);
 
-  useEffect(() => {
-    if (!(audioRef && audioRef.current))
-      return;
+  const audioRef = React.useRef(null);
+  const onTimeUpdateHandler = React.useRef(null);
 
-    const onLoadedMetadata = (event) => {
-      const totalTime = Math.ceil(audioRef.current.duration);
-      setTotalTime(totalTime);
-    }
-
-    audioRef.current.addEventListener("loadedmetadata", onLoadedMetadata, false);
-
-    return () => {
-      audioRef.current.removeEventListener("loadedmetadata", onLoadedMetadata, false);
-    };
-  }, [audioRef]);
-
-  function updateStopTimeAudio(endTime) {
-    // updateStopTimeAudio
-    if (!(audioRef && audioRef.current)) {
-      console.log(`updateStopTimeAudio audioRef is ${audioRef}`);
-      return;
-    }
+  const updateStopTimeAudio = React.useCallback((endTime) => {
 
     if (onTimeUpdateHandler.current) {
       audioRef.current.removeEventListener("timeupdate", onTimeUpdateHandler.current, false);
     }
 
-    const onTimeUpdateHandlerNew = (event) => {
-      if (!(audioRef && audioRef.current))
-        return;
+    const onTimeUpdateHandlerNew = () => {
       const currentTime = audioRef.current.currentTime;
-      setCurrentTime(Math.floor(currentTime));
+
       if (currentTime >= endTime) {
         audioRef.current.pause();
       }
@@ -52,33 +25,21 @@ export default function AudioTextLines() {
 
     audioRef.current.addEventListener("timeupdate", onTimeUpdateHandlerNew, false);
     onTimeUpdateHandler.current = onTimeUpdateHandlerNew;
-  }
+  }, []);
 
-  function onClickUserPlayNewStart(seconds, end, callback) {
-    // const totalTime = audioRef.current.duration;
-    // console.log(`duration ${totalTime}`);
+  const onClickUserPlayNewStart = React.useCallback((seconds, end) => {
+
     console.log(`END was set = ${end}`);
-    updateStopTimeAudio(end, callback);
+    updateStopTimeAudio(end);
     audioRef.current.currentTime = seconds;
     audioRef.current.play();
-    //console.log(`onClick with seconds = ${seconds} `);
-  }
-
-  function getCurrentIndex() {
-    const totalTime = audioRef.current.duration;
-    return Math.floor((audioRef.current.currentTime * numChunks) / totalTime);
-  }
+  }, []);
 
   return (
     <>
-      <Audio ref={audioRef} />
-      <SliderAudioPlayseek
-        currentTime={currentTime}
-        totalTime={totalTime}
-      />
+      <AudioAndSlider ref={audioRef} />
       <Container>
         <TextLines
-          getCurrentIndex={getCurrentIndex}
           onClick={onClickUserPlayNewStart} />
       </Container>
     </>

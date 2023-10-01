@@ -18,21 +18,16 @@ function QueryLines(props) {
 
   if (error) return 'An error has occurred: ' + error.message;
 
-  // let lineArray = data.split('\n');
-  // let textLines = lineArray.map((textLine, index) => {
-  //   return textLine;
-  // });
-
   return (<ClickLines
-    getCurrentIndex={props.getCurrentIndex}
-    onClick={props.onClick} lines={data} />);
+    onClick={props.onClick}
+    lines={data} />);
 }
 
 export default function TextLines(props) {
+  console.log('wraping Query and rendering TextLines')
   return (
     <QueryClientProvider client={queryClient}>
       <QueryLines
-        getCurrentIndex={props.getCurrentIndex}
         onClick={props.onClick} />
     </QueryClientProvider >
   );
