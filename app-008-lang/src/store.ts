@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { setActiveIndex } from './activeIndexSlice.ts'
+
 export const store = configureStore({
   reducer: { activeIndex: setActiveIndex }
 })

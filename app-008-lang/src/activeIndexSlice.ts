@@ -4,9 +4,9 @@ import type { RootState } from './store.ts'
 interface ActiveIndexState {
   value: number
 }
-const initialState = {
+const initialState: ActiveIndexState = {
   value: -1
-} as ActiveIndexState;
+};
 
 export const activeIndexSlice = createSlice({
   name: 'activeIndex',
