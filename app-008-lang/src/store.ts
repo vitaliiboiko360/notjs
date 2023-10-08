@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { setActiveIndex } from './activeIndexSlice.ts'
+import { setActiveIndexReducer } from './activeIndexSlice.ts'
 
-export const store = configureStore({
-  reducer: { activeIndex: setActiveIndex }
+const store = configureStore({
+  reducer: { activeIndex: setActiveIndexReducer }
 })
+
+export default store
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>
