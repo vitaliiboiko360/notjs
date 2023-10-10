@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useAppDispatch, useAppSelector } from './hooks.ts'
-import { setActiveIndex, selectActiveIndex, setActiveIndexAction2 } from './activeIndexSlice.ts';
+import { testSetActiveIndex, setActiveIndex, selectActiveIndex, setActiveIndexAction2 } from './activeIndexSlice.ts';
 
 // attributes needs to be in format {'attr':'val','attr2':'val2',...}
 function addSVGElemenReturnAnime(elementType: string, target: HTMLElement | SVGElement, attributes: Record<string, unknown> = {}, duration, to, animationId, beginAnimation) {
@@ -32,22 +32,17 @@ export default function TextParagraph(props) {
   const spanRef = React.useRef(null);
   const svgRef = React.useRef(null);
 
-  const [active, setActive] = React.useState(false);
-
   const dispatch = useAppDispatch();
-  const selector = useAppSelector((state) => {
-    console.log(`selector index=${props.index}`);
-    return state.activeIndex.value
-  }
-  );
-  // console.log(selector);
+  // const selector = useAppSelector((state) => {
+  //   //console.log(`SELECTOR in component index=${props.index}`);
+  //   return selectActiveIndex(state);
+  // }
+  //);
+  //console.log(`VALUE selector=${selector}`);
+
+  const selector = useAppSelector(selectActiveIndex);
 
   function setAnimation(length) {
-    if (active) {
-      console.log(`clicked on active index=${props.index}`);
-      //return;
-    }
-    setActive(true);
     const parentRect = spanRef.current.getBoundingClientRect();
     const children = [].slice.call(spanRef.current.childNodes);
     // console.log(`\n${JSON.stringify(parentRect)}`);
@@ -94,7 +89,6 @@ export default function TextParagraph(props) {
         }
         else {
           animationElements.forEach((element) => { element.parentNode.remove() });
-          setActive(false);
         }
       });
       animationElements[index].beginElement();
@@ -103,8 +97,11 @@ export default function TextParagraph(props) {
   }
 
   function onClick() {
-    console.log(setActiveIndexAction2(props.index));
-    console.log(setActiveIndex(props.index));
+    // console.log(setActiveIndexAction2(props.index));
+    //console.log(setActiveIndex(props.index));
+    // console.log(setActiveIndex(props.index));
+    // console.log(testSetActiveIndex(props.index));
+    //dispatch(setActiveIndexAction2(props.index));
     dispatch(setActiveIndexAction2(props.index));
     setAnimation(props.length);
     props.onClick();
@@ -120,7 +117,7 @@ export default function TextParagraph(props) {
 
   React.useEffect(() => {
     if (selector == props.index) {
-      console.log(`we are ative paragraph index=${props.index}`);
+      console.log(`ACTIVE COMP paragraph index=${props.index}`);
     }
   });
 

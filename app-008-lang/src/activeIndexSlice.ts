@@ -14,10 +14,9 @@ export const setActiveIndexReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(setActiveIndexActionCreator.type, (state, action) => {
       console.log(`someone passed us action.payload=${action.payload}`);
-      state.value = action.payload;
-      return state;
+      return { ...state, value: action.payload }
     })
-    .addDefaultCase((state, action) => { console.log(`default case reducer`) })
+    .addDefaultCase((state, action) => { console.log(`default case reducer`); return state; })
   // .addCase('default', (state, action) => {
   //   console.log(`default action`);
   //   return state;
@@ -28,7 +27,11 @@ export const activeIndexSlice = createSlice({
   name: 'activeIndex',
   initialState,
   reducers: {
-    setActiveIndex: setActiveIndexReducer
+    setActiveIndex: setActiveIndexReducer,
+    testSetActiveIndex: (state, action) => {
+      console.log(`testSetActiveIndex action.payload=${action.payload}`);
+      return state;
+    }
   },
 })
 // setActiveIndexAction: (state, action: PayloadAction<number>) => {
@@ -45,8 +48,11 @@ export function setActiveIndexAction2(value: number) {
 }
 
 // Action creators are generated for each case reducer function
-export const { setActiveIndex } = activeIndexSlice.actions
+export const { setActiveIndex, testSetActiveIndex } = activeIndexSlice.actions
 
-export const selectActiveIndex = (state: RootState) => state.activeIndex
+export const selectActiveIndex = (state: RootState) => {
+  console.log('geting value Selector called')
+  return state.activeIndex.value;
+}
 
 export default activeIndexSlice.reducer

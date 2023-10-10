@@ -29,7 +29,7 @@ export default function AudioTextLines() {
 
   const onClickUserPlayNewStart = React.useCallback((seconds, end) => {
 
-    console.log(`END was set = ${end}`);
+    //console.log(`END was set = ${end}`);
     updateStopTimeAudio(end);
     audioRef.current.currentTime = seconds;
     audioRef.current.play();
