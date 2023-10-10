@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, createReducer } from '@reduxjs/toolkit'
+import { createSlice, createAction, PayloadAction, createReducer } from '@reduxjs/toolkit'
 import type { RootState } from './store.ts'
 
 interface ActiveIndexState {
@@ -8,9 +8,11 @@ const initialState: ActiveIndexState = {
   value: -1
 };
 
+const setActiveIndexActionCreator = createAction('SET_ACTIVE_INDEX');
+
 export const setActiveIndexReducer = createReducer(-1, (builder) => {
   builder
-    .addCase('SET_ACTIVE_INDEX', (state, action) => {
+    .addCase(setActiveIndexActionCreator.type, (state, action) => {
       state.value = action.payload
     })
 })
@@ -19,13 +21,13 @@ export const activeIndexSlice = createSlice({
   name: 'activeIndex',
   initialState,
   reducers: {
-    setActiveIndex: (state, action: PayloadAction<number>) => {
+    setActiveIndexAction: (state, action: PayloadAction<number>) => {
       state.value = action.payload
     },
   },
 })
 
-export function setActiveIndexAction(value: number) {
+export function setActiveIndexAction2(value: number) {
   return {
     type: 'SET_ACTIVE_INDEX',
     payload: value,
@@ -33,8 +35,8 @@ export function setActiveIndexAction(value: number) {
 }
 
 // Action creators are generated for each case reducer function
-export const { setActiveIndex } = activeIndexSlice.actions
+export const { setActiveIndexAction } = activeIndexSlice.actions
 
-export const selectActiveIndex = (state: RootState) => state.activeIndex.value
+export const selectActiveIndex = (state: RootState) => state.activeIndex
 
 export default activeIndexSlice.reducer

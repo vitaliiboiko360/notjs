@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useAppDispatch, useAppSelector } from './hooks.ts'
-import { setActiveIndex, selectActiveIndex } from './activeIndexSlice.ts';
+import { setActiveIndexAction, selectActiveIndex } from './activeIndexSlice.ts';
 
 // attributes needs to be in format {'attr':'val','attr2':'val2',...}
 function addSVGElemenReturnAnime(elementType: string, target: HTMLElement | SVGElement, attributes: Record<string, unknown> = {}, duration, to, animationId, beginAnimation) {
@@ -40,7 +40,8 @@ export default function TextParagraph(props) {
 
   function setAnimation(length) {
     if (active) {
-      return;
+      console.log(`clicked on active index=${props.index}`);
+      //return;
     }
     setActive(true);
     const parentRect = spanRef.current.getBoundingClientRect();
@@ -98,9 +99,7 @@ export default function TextParagraph(props) {
   }
 
   function onClick() {
-    // dispatch(setActiveIndex({
-    //   type: "activeIndex/setActiveIndex", payload: props.index
-    // }));
+    dispatch(setActiveIndexAction(props.index));
     setAnimation(props.length);
     props.onClick();
   }
