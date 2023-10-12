@@ -103,6 +103,12 @@ export default function TextParagraph(props) {
     // console.log(testSetActiveIndex(props.index));
     //dispatch(setActiveIndexAction2(props.index));
     dispatch(setActiveIndexAction2(props.index));
+    if (svgRef.current != null && props.index == selector) {
+      console.log('cleaning up svg animation');
+      while (svgRef.current.firstChild) {
+        svgRef.current.removeChild(svgRef.current.lastChild);
+      }
+    }
     setAnimation(props.length);
     props.onClick();
   }
