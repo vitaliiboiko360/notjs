@@ -42,6 +42,14 @@ export default function TextParagraph(props) {
 
   const selector = useAppSelector(selectActiveIndex);
 
+  function cleanupSvgChildren(svgRef) {
+    if (svgRef.current == null)
+      return;
+    while (svgRef.current.firstChild) {
+      svgRef.current.removeChild(svgRef.current.lastChild);
+    }
+  }
+
   function setAnimation(length) {
     const parentRect = spanRef.current.getBoundingClientRect();
     const children = [].slice.call(spanRef.current.childNodes);
@@ -97,17 +105,9 @@ export default function TextParagraph(props) {
   }
 
   function onClick() {
-    // console.log(setActiveIndexAction2(props.index));
-    //console.log(setActiveIndex(props.index));
-    // console.log(setActiveIndex(props.index));
-    // console.log(testSetActiveIndex(props.index));
-    //dispatch(setActiveIndexAction2(props.index));
     dispatch(setActiveIndexAction2(props.index));
-    if (svgRef.current != null && props.index == selector) {
-      console.log('cleaning up svg animation');
-      while (svgRef.current.firstChild) {
-        svgRef.current.removeChild(svgRef.current.lastChild);
-      }
+    if (props.index == selector) {
+      cleanupSvgChildren(svgRef); // cleanup active animation
     }
     setAnimation(props.length);
     props.onClick();
@@ -124,6 +124,11 @@ export default function TextParagraph(props) {
   React.useEffect(() => {
     if (selector == props.index) {
       console.log(`ACTIVE COMP paragraph index=${props.index}`);
+      return;
+    }
+    if (svgRef.current.childNodes.length != 0) {
+      console.log(`we found childs in props.index=${props.index} element cleanup`);
+      cleanupSvgChildren(svgRef);
     }
   });
 
