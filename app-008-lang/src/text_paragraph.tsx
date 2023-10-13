@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useAppDispatch, useAppSelector } from './hooks.ts'
-import { testSetActiveIndex, setActiveIndex, selectActiveIndex, setActiveIndexAction2 } from './activeIndexSlice.ts';
+import { selectActiveIndex, setActiveIndexAction } from './activeIndexSlice.ts';
 
 // attributes needs to be in format {'attr':'val','attr2':'val2',...}
 function addSVGElemenReturnAnime(elementType: string, target: HTMLElement | SVGElement, attributes: Record<string, unknown> = {}, duration, to, animationId, beginAnimation) {
@@ -33,13 +33,6 @@ export default function TextParagraph(props) {
   const svgRef = React.useRef(null);
 
   const dispatch = useAppDispatch();
-  // const selector = useAppSelector((state) => {
-  //   //console.log(`SELECTOR in component index=${props.index}`);
-  //   return selectActiveIndex(state);
-  // }
-  //);
-  //console.log(`VALUE selector=${selector}`);
-
   const selector = useAppSelector(selectActiveIndex);
 
   function cleanupSvgChildren(svgRef) {
@@ -105,7 +98,7 @@ export default function TextParagraph(props) {
   }
 
   function onClick() {
-    dispatch(setActiveIndexAction2(props.index));
+    dispatch(setActiveIndexAction(props.index));
     if (props.index == selector) {
       cleanupSvgChildren(svgRef); // cleanup active animation
     }
