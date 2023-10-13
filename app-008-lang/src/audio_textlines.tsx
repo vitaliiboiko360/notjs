@@ -9,38 +9,34 @@ export default function AudioTextLines() {
   const audioRef = React.useRef(null);
   const onTimeUpdateHandler = React.useRef(null);
 
-  const updateStopTimeAudio = React.useCallback((endTime) => {
+  const updateStopTimeAudio = function (endTime) {
 
     if (onTimeUpdateHandler.current) {
       audioRef.current.removeEventListener("timeupdate", onTimeUpdateHandler.current, false);
     }
 
     const onTimeUpdateHandlerNew = () => {
-      const currentTime = audioRef.current.currentTime;
-
-      if (currentTime >= endTime) {
+      if (audioRef.current.currentTime >= endTime) {
         audioRef.current.pause();
       }
     }
 
     audioRef.current.addEventListener("timeupdate", onTimeUpdateHandlerNew, false);
     onTimeUpdateHandler.current = onTimeUpdateHandlerNew;
-  }, []);
+  }
 
-  const onClickUserPlayNewStart = React.useCallback((seconds, end) => {
-
-    //console.log(`END was set = ${end}`);
+  const onClickUserPlayNewStart = function (seconds, end) {
     updateStopTimeAudio(end);
     audioRef.current.currentTime = seconds;
     audioRef.current.play();
-  }, []);
+  };
 
   return (
     <>
-      <AudioAndSlider ref={audioRef} />
       <Container>
         <TextLines
           onClick={onClickUserPlayNewStart} />
+        <AudioAndSlider ref={audioRef} />
       </Container>
     </>
   );
