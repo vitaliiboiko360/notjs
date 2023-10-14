@@ -1,21 +1,44 @@
 import React from 'react';
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
 import AudioTextLines from './audio_textlines.tsx';
 
-const theme = createTheme({
-  typography: {
-    fontSize: 18,
-  },
-});
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 
+const router = createBrowserRouter([
+  {
+    // it renders this element
+    element: <AudioTextLines />,
+
+    // when the URL matches this segment
+    path: "/",
+
+    // with this data loaded before rendering
+    loader: async ({ request, params }) => {
+      return null;
+      // return fetch(
+      //   `/fake/api/teams/${params.teamId}.json`,
+      //   { signal: request.signal }
+      // );
+    },
+
+    // performing this mutation when data is submitted to it
+    action: async ({ request }) => {
+      return null;
+      // return updateFakeTeam(await request.formData());
+    },
+
+    // and renders this element in case something went wrong
+    //errorElement: <ErrorBoundary />,
+  },
+]);
 
 function AppContainer() {
   return (
-    <ThemeProvider theme={theme}>
-      <AudioTextLines />
-    </ThemeProvider >
+
+    <RouterProvider router={router} />
   );
 }
 

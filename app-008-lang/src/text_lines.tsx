@@ -8,7 +8,7 @@ const queryClient = new QueryClient();
 function QueryLines(props) {
   const { isLoading, error, data } = useQuery('text', () => {
     console.log('fetch text called');
-    return fetch('http://localhost:4001/data/los_tres_cerditos.json').then(res =>
+    return fetch('http://192.168.1.12:4001/data/los_tres_cerditos.json').then(res =>
       res.json()
     );
   }
