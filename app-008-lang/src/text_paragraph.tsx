@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { useAppDispatch, useAppSelector } from './hooks.ts'
-import { selectActiveIndex, setActiveIndexAction } from './activeIndexSlice.ts';
+import { useAppDispatch, useAppSelector } from './store/hooks.ts'
+import { selectActiveIndex, setActiveIndexAction } from './store/activeIndexSlice.ts';
 
 // attributes needs to be in format {'attr':'val','attr2':'val2',...}
 function addSVGElemenReturnAnime(elementType: string, target: HTMLElement | SVGElement, attributes: Record<string, unknown> = {}, duration, to, animationId, beginAnimation) {
