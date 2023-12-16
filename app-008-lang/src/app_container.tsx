@@ -1,6 +1,7 @@
 import React from 'react';
 
 import AudioTextLines from './audio_textlines.tsx';
+import Home from './home.tsx';
 
 import {
   createBrowserRouter,
@@ -10,7 +11,7 @@ import {
 const router = createBrowserRouter([
   {
     // it renders this element
-    element: <AudioTextLines />,
+    element: <Home />,
 
     // when the URL matches this segment
     path: "/",

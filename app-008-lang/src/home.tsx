@@ -20,10 +20,14 @@ function HomeWithData() {
   if (isLoading) return 'Loading...';
   if (error) return 'Error getting list of texts: ' + error.message;
 
-  const articles = data.map((element) => { `<div>${element}</div>` });
-
+  const articles = data.texts.map((element, index) => {
+    return (<React.Fragment key={index}>
+      <div><h3>{element.title}</h3></div>
+    </React.Fragment>)
+  });
+  console.log(articles.length);
   return (
-    <div class="home.grid">
+    <div className="home.grid">
       {articles}
     </div>
   );
