@@ -22,13 +22,15 @@ function HomeWithData() {
 
   const articles = data.texts.map((element, index) => {
     return (<React.Fragment key={index}>
-      <div><h3>{element.title}</h3></div>
+      <div>{element.title}</div>
     </React.Fragment>)
   });
   console.log(articles.length);
   return (
-    <div className="home.grid">
-      {articles}
+    <div className="home_grid">
+      <div className="home_center">
+        {articles}
+      </div>
     </div>
   );
 }
