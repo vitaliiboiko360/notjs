@@ -2,10 +2,14 @@
   "lenght": 10,
   "texts": [
     {
-      "title": "Me gusta leer"
+      "title": "Me gusta leer",
+      "text": "me_gusta_leer.json",
+      "audio": "text-beginner-i-like-reading.mp3"
     },
     {
-      "title": "Mi perro y yo"
+      "title": "Mi perro y yo",
+      "text": "mi_perro_y_yo.json",
+      "audio": "text-beginner-my-dog-and-i.mp3"
     }
   ]
 }
