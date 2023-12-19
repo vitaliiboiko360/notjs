@@ -10,13 +10,9 @@ import {
 
 const router = createBrowserRouter([
   {
-    // it renders this element
     element: <Home />,
-
-    // when the URL matches this segment
     path: "/",
 
-    // with this data loaded before rendering
     loader: async ({ request, params }) => {
       return null;
       // return fetch(
