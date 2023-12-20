@@ -11,6 +11,10 @@ export default function Home() {
   );
 }
 
+function makeUrlToResource(resource) {
+  return `http://192.168.1.12:4001/${resource}`;
+}
+
 function HomeWithData() {
   const { isLoading, error, data } = useQuery('homeData', () =>
     fetch('http://192.168.1.12:4001/data/list_of_texts.json').then(res =>
@@ -20,12 +24,17 @@ function HomeWithData() {
   if (isLoading) return 'Loading...';
   if (error) return 'Error getting list of texts: ' + error.message;
 
+
+
   const articles = data.texts.map((element, index) => {
+    const url = makeUrlToResource(element.text);
     return (<React.Fragment key={index}>
-      <div>{element.title}</div>
+      <a href={url} >
+        <div>{element.title}</div>
+      </a>
     </React.Fragment>)
   });
-  console.log(articles.length);
+
   return (
     <div className="home_grid">
       <div className="home_center">

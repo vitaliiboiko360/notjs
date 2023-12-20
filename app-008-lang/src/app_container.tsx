@@ -29,6 +29,13 @@ const router = createBrowserRouter([
 
     // and renders this element in case something went wrong
     //errorElement: <ErrorBoundary />,
+
+    children: [
+      {
+        path: ":",
+        element: <AudioTextLines />,
+      },
+    ],
   },
 ]);
 
