@@ -1,5 +1,9 @@
 import React from 'react';
 
+import {
+  Outlet
+} from "react-router-dom";
+
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 const queryClient = new QueryClient()
 
@@ -12,7 +16,7 @@ export default function Home() {
 }
 
 function makeUrlToResource(resource) {
-  return `http://192.168.1.12:4001/${resource}`;
+  return `http://192.168.1.12:4001/${resource.replace('.json', '')}`;
 }
 
 function HomeWithData() {
@@ -40,6 +44,7 @@ function HomeWithData() {
       <div className="home_center">
         {articles}
       </div>
+      <Outlet />
     </div>
   );
 }

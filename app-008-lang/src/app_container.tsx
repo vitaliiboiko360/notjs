@@ -32,8 +32,15 @@ const router = createBrowserRouter([
 
     children: [
       {
-        path: ":",
+        path: ":resource",
         element: <AudioTextLines />,
+        loader: async ({ request, params }) => {
+          return null;
+          // return fetch(
+          //   `/fake/api/teams/${params.teamId}.json`,
+          //   { signal: request.signal }
+          // );
+        }
       },
     ],
   },
