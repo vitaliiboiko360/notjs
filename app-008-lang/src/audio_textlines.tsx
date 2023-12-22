@@ -4,7 +4,12 @@ import Container from '@mui/material/Container';
 import TextLines from './text_lines.tsx';
 import AudioAndSlider from './audio_and_silider.tsx';
 
+import { useParams } from 'react-router-dom';
+
 export default function AudioTextLines() {
+
+  let urlParams = useParams();
+  console.log(urlParams);
 
   const audioRef = React.useRef(null);
   const onTimeUpdateHandler = React.useRef(null);
