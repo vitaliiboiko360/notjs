@@ -29,20 +29,17 @@ const router = createBrowserRouter([
 
     // and renders this element in case something went wrong
     //errorElement: <ErrorBoundary />,
-
-    children: [
-      {
-        path: ":resource",
-        element: <AudioTextLines />,
-        loader: async ({ request, params }) => {
-          return null;
-          // return fetch(
-          //   `/fake/api/teams/${params.teamId}.json`,
-          //   { signal: request.signal }
-          // );
-        }
-      },
-    ],
+  },
+  {
+    path: ":resource",
+    element: <AudioTextLines />,
+    loader: async ({ request, params }) => {
+      return null;
+      // return fetch(
+      //   `/fake/api/teams/${params.teamId}.json`,
+      //   { signal: request.signal }
+      // );
+    }
   },
 ]);
 
