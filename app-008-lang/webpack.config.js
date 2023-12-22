@@ -11,12 +11,13 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, 'js'),
-    publicPath: './js/',
+    publicPath: '/',
     filename: 'bundle.js',
   },
   devServer: {
     port: PORT,
     hot: true,
+    historyApiFallback: true,
     liveReload: true,
     watchFiles: ['src/**/*'],
     static: {
