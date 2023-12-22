@@ -8,6 +8,14 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
+import { useParams } from 'react-router-dom';
+
+function ComponentWithParams() {
+  let urlParams = useParams();
+  console.log(urlParams);
+  return <AudioTextLines />
+}
+
 const router = createBrowserRouter([
   {
     element: <Home />,
@@ -32,8 +40,9 @@ const router = createBrowserRouter([
   },
   {
     path: ":resource",
-    element: <AudioTextLines />,
+    element: <ComponentWithParams />,
     loader: async ({ request, params }) => {
+      //console.log(params)
       return null;
       // return fetch(
       //   `/fake/api/teams/${params.teamId}.json`,
