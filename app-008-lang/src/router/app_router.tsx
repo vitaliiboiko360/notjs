@@ -47,16 +47,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-function AppContainer() {
-  const { isLoading, error, data } = useQuery('homeData', () =>
-    fetch('http://192.168.1.12:4001/data/list_of_texts.json').then(res =>
-      res.json()
-    )
-  );
-  if (isLoading) return 'Loading...';
-  if (error) return 'Error getting list of texts: ' + error.message;
-
-
+function AppRouter() {
   return (
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
@@ -64,4 +55,4 @@ function AppContainer() {
   );
 }
 
-export default AppContainer;
+export default AppRouter;
