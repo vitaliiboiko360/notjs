@@ -6,8 +6,9 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import TextPlayControls from './text_play_controls.tsx';
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -33,6 +34,11 @@ function Lines(props) {
     }}
     >
         <Grid container wrap="nowrap" spacing={2}>
+        <Grid item  xs="auto">
+          <TextPlayControls
+            onClick={()=>console.log(`clicked Play on text key={key}`)}
+          />
+        </Grid>
         <Grid item xs zeroMinWidth>
             <Typography sx={{
               lineHeight: 1.3,
