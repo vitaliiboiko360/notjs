@@ -6,6 +6,7 @@ import Home from './home.tsx';
 import {
   createBrowserRouter,
   RouterProvider,
+  useParams,
 } from "react-router-dom";
 
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
@@ -37,6 +38,9 @@ const router = createBrowserRouter([
     path: ":resource",
     element: <AudioTextLines />,
     loader: async ({ request, params }) => {
+      let { resource } = useParams();
+      console.log(resource);
+      //queryClient.fetchQuery();
       //console.log(params)
       return null;
       // return fetch(
