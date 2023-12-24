@@ -40,7 +40,7 @@ const router = createBrowserRouter([
       let { resource } = params;
       console.log(resource);
       console.log('calling fetch from loader');
-      queryClient.fetchQuery([resource], () => { fetch(`http://192.168.1.12:4001/data/${resource}.json'`) });
+      queryClient.fetchQuery([resource], () => { fetch(`http://192.168.1.12:4001/data/${resource}.json`) });
       //console.log(params)
       return null;
     }
