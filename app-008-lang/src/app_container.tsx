@@ -2,6 +2,7 @@ import React from 'react';
 
 import AudioTextLines from './audio_textlines.tsx';
 import Home from './home.tsx';
+import ErrorPage from './error/error.tsx'
 
 import {
   createBrowserRouter,
@@ -40,10 +41,9 @@ const router = createBrowserRouter([
       let { resource } = params;
       console.log(resource);
       console.log('calling fetch from loader');
-      queryClient.fetchQuery([resource], () => { fetch(`http://192.168.1.12:4001/data/${resource}.json`) });
-      //console.log(params)
-      return null;
-    }
+      await queryClient.fetchQuery([resource], () => { fetch(`http://192.168.1.12:4001/data/${resource}.json`) });
+    },
+    errorElement: <ErrorPage />
   },
 ]);
 
