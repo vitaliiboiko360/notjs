@@ -3,6 +3,10 @@ import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 
 import ClickLines from './click_lines.tsx';
 
+import {
+  useLoaderData,
+} from "react-router-dom";
+
 const queryClient = new QueryClient();
 
 function QueryLines(props) {
@@ -24,11 +28,10 @@ function QueryLines(props) {
 }
 
 export default function TextLines(props) {
-  console.log('wraping Query and rendering TextLines')
+  const data = useLoaderData();
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <QueryLines
-        onClick={props.onClick} />
-    </QueryClientProvider >
-  );
+    <ClickLines
+      onClick={props.onClick}
+      lines={data} />);
 }
