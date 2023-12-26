@@ -41,18 +41,22 @@ const router = createBrowserRouter([
       let { resource } = params;
       console.log(resource);
       console.log('calling fetch from loader');
-      let error = false;
-      queryClient.fetchQuery([resource], () => { fetch(`http://192.168.1.12:4001/data/${resource}.json`) })
-        .catch(() => {
-          error = true;
-        });
-
-      if (error) {
-        throw Error("Some error");
+      try {
+        const data = await queryClient.fetchQuery([resource],
+          async () => {
+            const response = await fetch(`http://192.168.1.12:4001/data/${resource}.json`)
+            if (!response.ok) {
+              throw new Error(response.statusText);
+            }
+            return response.json()
+          });
+        return data;
       }
-      return null;
+      catch (error) {
+        throw Error(`Some error ${error}`);
+      }
     },
-    errorElement: <ErrorPage />
+    errorElement: <ErrorPage />,
   },
 ]);
 
