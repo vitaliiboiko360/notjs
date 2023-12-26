@@ -53,7 +53,7 @@ const router = createBrowserRouter([
         return data;
       }
       catch (error) {
-        throw Error(`Some error ${error}`);
+        throw Error(`Error ${error}`);
       }
     },
     errorElement: <ErrorPage />,
