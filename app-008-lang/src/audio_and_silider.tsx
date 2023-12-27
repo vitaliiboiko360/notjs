@@ -37,10 +37,6 @@ const AudioAndSlider = React.forwardRef((props, audioRef) => {
 
   return (<>
     <Audio ref={audioRef} {...props} />
-    <SliderAudioPlayseek
-      currentTime={currentTime}
-      totalTime={totalTime}
-    />
   </>);
 });
 

@@ -2,6 +2,9 @@ import React from 'react';
 
 import Container from '@mui/material/Container';
 import TextLines from './text_lines.tsx';
+import AudioAndSlider from './audio_and_silider.tsx';
+
+import { useParams } from 'react-router-dom';
 
 export default function AudioTextLines() {
 
@@ -38,6 +41,7 @@ export default function AudioTextLines() {
       <Container>
         <TextLines
           onClick={onClickUserPlayNewStart} />
+        <AudioAndSlider ref={audioRef} />
       </Container>
     </>
   );
