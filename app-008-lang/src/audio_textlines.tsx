@@ -4,7 +4,7 @@ import Container from '@mui/material/Container';
 import TextLines from './text_lines.tsx';
 import AudioAndSlider from './audio_and_silider.tsx';
 
-import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default function AudioTextLines() {
 
@@ -17,6 +17,7 @@ export default function AudioTextLines() {
   const updateStopTimeAudio = function (endTime) {
 
     if (onTimeUpdateHandler.current) {
+      console.log('ref onTimeUpdateHandler is not null');
       audioRef.current.removeEventListener("timeupdate", onTimeUpdateHandler.current, false);
     }
 
@@ -38,6 +39,7 @@ export default function AudioTextLines() {
 
   return (
     <>
+      <Link to="/">---Back Home</Link>
       <Container>
         <TextLines
           onClick={onClickUserPlayNewStart} />
