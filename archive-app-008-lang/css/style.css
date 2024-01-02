@@ -1,0 +1,11 @@
+.home_grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.home_center {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 100px;
+}
