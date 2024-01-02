@@ -17,6 +17,8 @@ const AudioAndSlider = React.forwardRef((props, audioRef) => {
     audioRef.current.addEventListener("loadedmetadata", onLoadedMetadata, false);
 
     return () => {
+      if (!audioRef.current)
+        return;
       audioRef.current.removeEventListener("loadedmetadata", onLoadedMetadata, false);
     };
   }, []);
@@ -31,12 +33,18 @@ const AudioAndSlider = React.forwardRef((props, audioRef) => {
     audioRef.current.addEventListener("timeupdate", onTimeUpdateHandler, false);
 
     return () => {
+      if (!audioRef.current)
+        return;
       audioRef.current.removeEventListener("timeupdate", onTimeUpdateHandler, false);
     };
   }, []);
 
   return (<>
     <Audio ref={audioRef} {...props} />
+    <SliderAudioPlayseek
+      currentTime={currentTime}
+      totalTime={totalTime}
+    />
   </>);
 });
 
