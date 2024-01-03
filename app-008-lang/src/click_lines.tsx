@@ -8,7 +8,14 @@ function ClickableLine(props) {
   const onClick = () => {
     props.onClick(props.start, props.end);
   };
-  return (<TextParagraph active={props.active} onClick={onClick} text={props.text} length={props.end - props.start} index={props.index} />);
+  return (<TextParagraph
+    active={props.active}
+    onClick={onClick}
+    text={props.text}
+    length={props.end - props.start}
+    index={props.index}
+    endParagraph={props.endParagraph}
+  />);
 }
 
 export default function ClickLines(props) {
@@ -24,7 +31,9 @@ export default function ClickLines(props) {
         start={textEntry.start}
         end={textEntry.end}
         onClick={props.onClick}
-        index={index} />
+        index={index}
+        endParagraph={textEntry.endParagraph}
+      />
     </React.Fragment>);
   });
 

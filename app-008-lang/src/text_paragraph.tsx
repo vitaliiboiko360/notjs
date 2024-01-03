@@ -130,10 +130,18 @@ export default function TextParagraph(props) {
     return <span key={index + 1}>{w + ' '}</span>;
   });
 
+
+  function ConditionalLineBreak(props) {
+    if (props.endParagraph)
+      return (<><br /><br /></>);
+    return (<></>)
+  }
+
   return (<>
     <div key={props.index} style={{ display: 'inline' }}>
       <svg ref={svgRef} style={{ position: 'absolute', zIndex: '-1' }}></svg>
       <span ref={spanRef} style={{ fontSize: 26, display: 'inline', }} onClick={onClick}>{wordsInSpans}</span>
+      <ConditionalLineBreak endParagraph={props.endParagraph} />
     </div >
   </>);
 }

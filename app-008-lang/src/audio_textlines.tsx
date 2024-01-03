@@ -47,7 +47,7 @@ export default function AudioTextLines() {
   return (
     <>
       <Container sx={{ marginTop: '30px' }}>
-        <Link style={{ textDecoration: 'none', marginBottom: '30px' }} to="/"><BackHomeButton /></Link>
+        <Link style={{ textDecoration: 'none', marginBottom: '30px', color: 'inherit' }} to="/"><BackHomeButton /></Link>
         <TextLines
           onClick={onClickUserPlayNewStart} />
         <AudioAndSlider ref={audioRef} audio={data.audio} />
