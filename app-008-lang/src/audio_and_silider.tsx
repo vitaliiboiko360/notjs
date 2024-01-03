@@ -13,7 +13,7 @@ const AudioAndSlider = React.forwardRef((props, audioRef) => {
   React.useEffect(() => {
 
     const onLoadedMetadata = () => {
-      const totalTime = Math.ceil(audioRef.current.duration);
+      const totalTime = toFixed(audioRef.current.duration, 2);
       setTotalTime(totalTime);
     }
 

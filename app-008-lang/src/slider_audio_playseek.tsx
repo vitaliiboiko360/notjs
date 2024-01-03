@@ -9,12 +9,6 @@ export default function SliderAudioPlayseek(props) {
   const [position, setPosition] = React.useState(0);
   const theme = useTheme();
 
-  function formatDuration(value: number) {
-    const minute = Math.floor(value / 60);
-    const secondLeft = value - minute * 60;
-    return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft} `;
-  }
-
   const TinyText = styled(Typography)({
     fontSize: '0.75rem',
     opacity: 0.38,
@@ -63,12 +57,12 @@ export default function SliderAudioPlayseek(props) {
         marginLeft: 0,
         display: 'inline',
         float: 'left'
-      }}>{formatDuration(props.currentTime)}</TinyText>
+      }}>{props.currentTime}</TinyText>
       <TinyText sx={{
         marginLeft: 'auto',
         marginRight: 0,
         display: 'inline',
         float: 'right'
-      }}>{formatDuration(props.totalTime)}</TinyText>
+      }}>{props.totalTime}</TinyText>
     </>);
 }
