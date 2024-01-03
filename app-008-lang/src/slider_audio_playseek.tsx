@@ -4,14 +4,13 @@ import Slider from '@mui/material/Slider';
 import { styled, useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
-export default function SliderAudioPlayseek(props) {
+const SliderAudioPlayseek = React.forwardRef((props, ref) => {
 
-  const [position, setPosition] = React.useState(0);
   const theme = useTheme();
 
   const TinyText = styled(Typography)({
-    fontSize: '0.75rem',
-    opacity: 0.38,
+    fontSize: '1.5 rem',
+    opacity: 0.7,
     fontWeight: 500,
     letterSpacing: 0.2,
   });
@@ -23,9 +22,10 @@ export default function SliderAudioPlayseek(props) {
         size="small"
         value={props.currentTime}
         min={0}
-        step={1}
+        step={0.1}
         max={props.totalTime}
-        onChange={(_, value) => setPosition(value as number)}
+        valueLabelDisplay='auto'
+        onChange={(_, value) => ref.current.currentTime = value}
         sx={{
           color: theme.palette.mode === 'dark' ? '#fff' : 'rgba(0,0,0,0.87)',
           height: 4,
@@ -65,4 +65,6 @@ export default function SliderAudioPlayseek(props) {
         float: 'right'
       }}>{props.totalTime}</TinyText>
     </>);
-}
+});
+
+export default SliderAudioPlayseek;
