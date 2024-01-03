@@ -19,20 +19,11 @@ const router = createBrowserRouter([
 
     loader: async ({ request, params }) => {
       return null;
-      // return fetch(
-      //   `/fake/api/teams/${params.teamId}.json`,
-      //   { signal: request.signal }
-      // );
     },
 
-    // performing this mutation when data is submitted to it
     action: async ({ request }) => {
       return null;
-      // return updateFakeTeam(await request.formData());
     },
-
-    // and renders this element in case something went wrong
-    //errorElement: <ErrorBoundary />,
   },
   {
     path: ":resource",
