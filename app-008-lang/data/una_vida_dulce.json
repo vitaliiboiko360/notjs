@@ -39,7 +39,8 @@
     {
       "text": "Todos los miércoles, ceno en casa de mis padres y mi madre hace una tarta.",
       "start": 0,
-      "end": 0
+      "end": 0,
+      "endParagraph": true
     },
     {
       "text": "Me gustan las tartas grandes, pero mi madre solo hace tartas pequeñas.",
@@ -64,7 +65,8 @@
     {
       "text": "Creo que es una buena idea: es un equilibrio entre vida dulce y vida sana.",
       "start": 0,
-      "end": 0
+      "end": 0,
+      "endParagraph": true
     },
     {
       "text": "A veces, intento hacer postres en casa.",

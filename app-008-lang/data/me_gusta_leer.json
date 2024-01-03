@@ -24,7 +24,8 @@
     {
       "text": "Soy especialista en noticias científicas y todos los días escribo un artículo.",
       "start": 0,
-      "end": 0
+      "end": 0,
+      "endParagraph": true
     },
     {
       "text": "Yo siempre compro libros en esta librería.",
@@ -54,7 +55,8 @@
     {
       "text": "Entonces, yo pregunto a Teresa y ella siempre dice “Los mejores libros son los de Cervantes y Gabriel García Márquez”.",
       "start": 0,
-      "end": 0
+      "end": 0,
+      "endParagraph": true
     },
     {
       "text": "Por la noche, después de cenar, voy al salón a descansar.",

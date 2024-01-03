@@ -44,7 +44,8 @@
     {
       "text": "Mi jefe es alérgico a los perros.",
       "start": 0,
-      "end": 0
+      "end": 0,
+      "endParagraph": true
     },
     {
       "text": "Tom siempre quiere jugar en el jardín.",
@@ -79,7 +80,8 @@
     {
       "text": "Tom es muy inteligente y tiene un gran corazón.",
       "start": 0,
-      "end": 0
+      "end": 0,
+      "endParagraph": true
     },
     {
       "text": "Por la noche vemos juntos la televisión.",

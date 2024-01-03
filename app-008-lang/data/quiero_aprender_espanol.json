@@ -29,7 +29,8 @@
     {
       "text": "Para lograr mi objetivo, estudio tres días por semana: los lunes, miércoles y viernes.",
       "start": 0,
-      "end": 0
+      "end": 0,
+      "endParagraph": true
     },
     {
       "text": "Mis amigos dicen que aprender idiomas es difícil.",
@@ -59,7 +60,8 @@
     {
       "text": "Pero si tienes motivación, todo es sencillo.",
       "start": 0,
-      "end": 0
+      "end": 0,
+      "endParagraph": true
     },
     {
       "text": "Ahora, además de estudiar español por la noche, también estudio durante el día.",

@@ -49,7 +49,8 @@
     {
       "text": "Es una pena, porque me gusta mucho el café.",
       "start": 0,
-      "end": 0
+      "end": 0,
+      "endParagraph": true
     },
     {
       "text": "Hacer deporte es bueno para dormir mejor.",
@@ -79,7 +80,8 @@
     {
       "text": "Por eso, tengo dos reglas para dormir bien: no puedo tomar café y no puedo leer en la cama.",
       "start": 0,
-      "end": 0
+      "end": 0,
+      "endParagraph": true
     },
     {
       "text": "Mis dos reglas son buenas, pero no funcionan siempre.",
