@@ -10,6 +10,21 @@
       "title": "Mi perro y yo",
       "text": "mi_perro_y_yo.json",
       "audio": "text-beginner-my-dog-and-i.mp3"
+    },
+    {
+      "title": "Quiero aprender español",
+      "text": "quiero_aprender_espanol.json",
+      "audio": "text-beginner-I-want-to-learn-spanish.mp3"
+    },
+    {
+      "title": "Contar ovejas",
+      "text": "contar_ovejas.json",
+      "audio": "text-beginner-counting-sheep.mp3"
+    },
+    {
+      "title": "Una vida dulce",
+      "text": "una_vida_dulce.json",
+      "audio": "text-beginner-a-sweet-life.mp3"
     }
   ]
 }
