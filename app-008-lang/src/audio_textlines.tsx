@@ -6,6 +6,10 @@ import AudioAndSlider from './audio_and_silider.tsx';
 
 import { Link } from 'react-router-dom';
 
+import {
+  useLoaderData,
+} from "react-router-dom";
+
 export default function AudioTextLines() {
 
   // let urlParams = useParams();
@@ -37,13 +41,15 @@ export default function AudioTextLines() {
     audioRef.current.play();
   };
 
+  const data = useLoaderData();
+
   return (
     <>
       <Link to="/">---Back Home</Link>
       <Container>
         <TextLines
           onClick={onClickUserPlayNewStart} />
-        <AudioAndSlider ref={audioRef} />
+        <AudioAndSlider ref={audioRef} audio={data.audio} />
       </Container>
     </>
   );

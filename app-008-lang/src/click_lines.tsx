@@ -29,6 +29,9 @@ export default function ClickLines(props) {
   });
 
   return (<>
-    <Provider store={store}><div>{textLines}</div></Provider>
+    <Provider store={store}>
+      <h2>{textLines[0]}</h2>
+      <div>{textLines.slice(1)}</div>
+    </Provider>
   </>);
 }
