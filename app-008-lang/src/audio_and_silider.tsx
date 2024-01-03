@@ -2,6 +2,7 @@ import React from 'react';
 
 import SliderAudioPlayseek from './slider_audio_playseek.tsx';
 import Audio from './audio.tsx';
+import PlayPauseButton from './play_pause_button.tsx'
 
 const AudioAndSlider = React.forwardRef((props, audioRef) => {
   const [totalTime, setTotalTime] = React.useState(0);
@@ -41,6 +42,9 @@ const AudioAndSlider = React.forwardRef((props, audioRef) => {
 
   return (<>
     <Audio ref={audioRef} {...props} />
+    <PlayPauseButton
+      ref={audioRef}
+    />
     <SliderAudioPlayseek
       currentTime={currentTime}
       totalTime={totalTime}
