@@ -30,7 +30,7 @@ export default function ClickLines(props) {
 
   return (<>
     <Provider store={store}>
-      <h2>{textLines[0]}</h2>
+      <h2 style={{ textAlign: 'center' }}>{textLines[0]}</h2>
       <div>{textLines.slice(1)}</div>
     </Provider>
   </>);

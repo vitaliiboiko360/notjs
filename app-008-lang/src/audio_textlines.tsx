@@ -3,6 +3,7 @@ import React from 'react';
 import Container from '@mui/material/Container';
 import TextLines from './text_lines.tsx';
 import AudioAndSlider from './audio_and_silider.tsx';
+import BackHomeButton from './back_home_button.tsx';
 
 import { Link } from 'react-router-dom';
 
@@ -45,8 +46,8 @@ export default function AudioTextLines() {
 
   return (
     <>
-      <Link to="/">---Back Home</Link>
-      <Container>
+      <Container sx={{ marginTop: '30px' }}>
+        <Link style={{ textDecoration: 'none', marginBottom: '30px' }} to="/"><BackHomeButton /></Link>
         <TextLines
           onClick={onClickUserPlayNewStart} />
         <AudioAndSlider ref={audioRef} audio={data.audio} />
