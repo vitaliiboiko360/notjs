@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useQuery } from 'react-query'
+import HomeEntry from './home_entry';
 
 function makeUrlToResource(resource) {
   return `http://192.168.1.12:4001/${resource.replace('.json', '')}`;
@@ -18,14 +19,15 @@ export default function Home() {
   const articles = data.texts.map((element, index) => {
     const url = makeUrlToResource(element.text);
     return (<React.Fragment key={index}>
-      <a href={url} >
-        <div>{element.title}</div>
-      </a>
+      <HomeEntry title={element.title} href={url} />
     </React.Fragment>)
   });
 
   return (
     <div className="home_grid">
+      <div className='home_center'>
+        <h3>Short Stories</h3>
+      </div>
       <div className="home_center">
         {articles}
       </div>
