@@ -1,19 +1,6 @@
 import React from 'react';
 
-import {
-  Outlet
-} from "react-router-dom";
-
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
-// const queryClient = new QueryClient()
-
-// export default function Home() {
-//   return (
-//     <QueryClientProvider client={queryClient}>
-//       <HomeWithData />
-//     </QueryClientProvider>
-//   );
-// }
+import { useQuery } from 'react-query'
 
 function makeUrlToResource(resource) {
   return `http://192.168.1.12:4001/${resource.replace('.json', '')}`;
