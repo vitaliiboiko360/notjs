@@ -4,7 +4,7 @@ import { useQuery } from 'react-query'
 import HomeEntry from './home_entry';
 
 function makeUrlToResource(resource) {
-  return `http://192.168.1.12:4001/${resource.replace('.json', '')}`;
+  return `http://192.168.1.12:4001/${resource}`;
 }
 
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
   if (error) return 'Error getting list of texts: ' + error.message;
 
   const articles = data.texts.map((element, index) => {
-    const url = makeUrlToResource(element.text);
+    const url = makeUrlToResource(element.resource);
     return (<React.Fragment key={index}>
       <HomeEntry title={element.title} href={url} />
     </React.Fragment>)
