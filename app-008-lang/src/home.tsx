@@ -3,9 +3,7 @@ import React from 'react';
 import { useQuery } from 'react-query'
 import HomeEntry from './home_entry';
 
-function makeUrlToResource(resource) {
-  return `http://192.168.1.12:4001/${resource}`;
-}
+import { makeUrlToResource } from './util.ts'
 
 export default function Home() {
   const { isLoading, error, data } = useQuery('homeData', () =>
@@ -19,7 +17,10 @@ export default function Home() {
   const articles = data.texts.map((element, index) => {
     const url = makeUrlToResource(element.resource);
     return (<React.Fragment key={index}>
-      <HomeEntry title={element.title} href={url} />
+      <HomeEntry
+        title={element.title}
+        href={url}
+        artwork={element.artwork} />
     </React.Fragment>)
   });
 
