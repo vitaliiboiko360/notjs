@@ -29,6 +29,7 @@ export default function AudioTextLines() {
     const onTimeUpdateHandlerNew = () => {
       if (audioRef.current.currentTime >= endTime) {
         audioRef.current.pause();
+        audioRef.current.removeEventListener("timeupdate", onTimeUpdateHandler.current, false);
       }
     }
 
