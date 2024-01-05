@@ -7,16 +7,27 @@ import PauseRoundedIcon from '@mui/icons-material/PauseRounded';
 
 const PlayPauseButton = forwardRef((props, ref) => {
 
-  const [paused, setPaused] = React.useState(false);
+  const [pauseButton, setPauseButton] = React.useState(false);
+
+  React.useEffect(() => {
+    ref?.current.addEventListener("pause", () => setPauseButton(false), false);
+    ref?.current.addEventListener("play", () => setPauseButton(true), false);
+    return () => {
+      if (!ref.current)
+        return;
+      ref?.current.removeEventListener("pause", () => setPauseButton(true), false);
+      ref?.current.removeEventListener("play", () => setPauseButton(false), false);
+    };
+  }, []);
 
   return (
     <div style={{ float: 'left', clear: 'none' }}>
       <IconButton
-        aria-label={paused ? 'play' : 'pause'}
+        aria-label={pauseButton ? 'pause' : 'play'}
         sx={{ mx: 1 }}
         onClick={() => {
-          setPaused((val) => !val);
-          if (paused) {
+          setPauseButton((val) => !val);
+          if (pauseButton) {
             ref.current.pause();
           } else {
             ref.current.play();
@@ -24,7 +35,7 @@ const PlayPauseButton = forwardRef((props, ref) => {
         }
         }
       >
-        {paused ? <PauseRoundedIcon /> : <PlayArrowRoundedIcon />}
+        {pauseButton ? <PauseRoundedIcon /> : <PlayArrowRoundedIcon />}
       </IconButton>
     </div >
   )
