@@ -25,13 +25,13 @@ export default function Home() {
   });
 
   return (
-    <div className="home_grid">
+    <>
       <div className='home_center'>
         <h3>Short Stories</h3>
       </div>
-      <div className="home_center">
+      <div className="home-entries-container">
         {articles}
       </div>
-    </div>
+    </>
   );
 }
