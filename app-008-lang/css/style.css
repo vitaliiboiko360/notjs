@@ -1,16 +1,16 @@
-.home_grid {
+.home-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 }
 
-.home_center {
+.home-center {
   grid-column: 2;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-auto-rows: auto;
 }
 
-.home_grid {
+.home-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 }
@@ -18,6 +18,10 @@
 .artwork img {
   /* border-radius: 35%; */
   width: 10rem;
+}
+
+.home-title {
+  display: grid;
 }
 
 .home-entries-container {

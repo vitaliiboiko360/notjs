@@ -26,8 +26,9 @@ export default function Home() {
 
   return (
     <>
-      <div className='home_center'>
-        <h3>Short Stories</h3>
+      <div className="home-title">
+        <div className='home-center'><h3>Short Stories</h3>
+        </div>
       </div>
       <div className="home-entries-container">
         {articles}
