@@ -30,8 +30,10 @@ export default function Home() {
         <div className='home-center'><h3>Short Stories</h3>
         </div>
       </div>
-      <div className="home-entries-container">
-        {articles}
+      <div classNmame="home-container">
+        <div className="home-entries">
+          {articles}
+        </div>
       </div>
     </>
   );
