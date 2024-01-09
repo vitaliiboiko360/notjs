@@ -30,9 +30,11 @@ export default function Home() {
         <div className='home-center'><h3>Short Stories</h3>
         </div>
       </div>
-      <div classNmame="home-container">
-        <div className="home-entries">
-          {articles}
+      <div className="centered">
+        <div className="home-container">
+          <div className="home-entries">
+            {articles}
+          </div>
         </div>
       </div>
     </>
