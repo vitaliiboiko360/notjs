@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import {
   useLoaderData,
 } from "react-router-dom";
+import PlaybackRateDropdown from './various_controls/playback_rate.tsx';
 
 export default function AudioTextLines() {
 
@@ -49,6 +50,7 @@ export default function AudioTextLines() {
     <>
       <Container sx={{ marginTop: '30px' }}>
         <Link style={{ textDecoration: 'none', marginBottom: '30px', color: 'inherit' }} to="/"><BackHomeButton /></Link>
+        <PlaybackRateDropdown ref={audioRef} />
         <TextLines
           onClick={onClickUserPlayNewStart} />
         <AudioAndSlider ref={audioRef} audio={data.audio} />
