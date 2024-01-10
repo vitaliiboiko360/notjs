@@ -11,7 +11,6 @@ const AudioAndSlider = React.forwardRef((props, audioRef) => {
   const [currentTime, setCurrentTime] = React.useState(0);
 
   React.useEffect(() => {
-
     const onLoadedMetadata = () => {
       const totalTime = toFixed(audioRef.current.duration, 2);
       setTotalTime(totalTime);
