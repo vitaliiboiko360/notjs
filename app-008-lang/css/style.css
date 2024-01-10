@@ -24,6 +24,10 @@
   display: grid;
 }
 
+body {
+  font-family: 'Roboto';
+}
+
 @media only screen and (min-width: 50em) {
   .home-container {
     width: 1000px;
@@ -61,6 +65,7 @@
 
 /* Presentation styles */
 .home-entries>* {
-  max-width: 280px;
+  max-width: 333px;
   flex: 270px;
+  margin-bottom: 33px;
 }
