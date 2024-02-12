@@ -19,14 +19,14 @@ function App() {
     setHeight(getHeight);
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     window.addEventListener('resize', onResize, { passive: true });
-    return ()=>{window.removeEventListener('resize', onResize)};
+    return () => { window.removeEventListener('resize', onResize) };
   });
 
-  return (<>
-  <p>height:${height/2} width:{width/2}</p>
-  <Page width={width} height={height} />
+  return (<><div style={{ height: height, width: width }}>
+    <Page width={width} height={height} />
+  </div>
   </>);
 }
 
