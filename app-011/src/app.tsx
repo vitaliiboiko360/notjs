@@ -24,8 +24,8 @@ function App() {
     return () => { window.removeEventListener('resize', onResize) };
   });
 
-  return (<><div style={{ height: height, width: width }}>
-    <Page width={width} height={height} />
+  return (<><div>
+    <Page height={height} width={width} />
   </div>
   </>);
 }
