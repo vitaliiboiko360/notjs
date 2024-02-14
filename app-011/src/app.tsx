@@ -3,7 +3,7 @@ const useEffect = React.useEffect;
 const useState = React.useState;
 const useCallback = React.useCallback;
 
-import Page from './page.tsx';
+import Page0 from './page0.tsx';
 
 function App() {
   console.log('app render');
@@ -25,7 +25,7 @@ function App() {
   });
 
   return (<><div>
-    <Page height={height} width={width} />
+    <Page0 height={height} width={width} />
   </div>
   </>);
 }
