@@ -131,7 +131,7 @@ export default function Page(props) {
             main.style.display = 'none';
           }} style={style} role="button">Так</button>
         </div>
-        <div style={{ flexShrink: 0, textAlign: 'left', borderLeft: '2px solid transparent' }}>
+        <div style={{ textAlign: 'left', borderLeft: '2px solid transparent', textWrap: 'wrap' }}>
           <button ref={ref} onClick={() => {
             let newFontSize = fontSize + 1;
             setFontSize(newFontSize);
@@ -145,7 +145,7 @@ export default function Page(props) {
             // yes.style.width = dims.width;
             // yes.style.height = dims.height;
             console.log(dims);
-          }} style={style2} role="button">{rejections[index]}</button>
+          }} style={{ ...style2, textWrap: 'wrap', whiteSpace: 'normal' }} role="button">{rejections[index]}</button>
         </div>
       </div>
     </div >
