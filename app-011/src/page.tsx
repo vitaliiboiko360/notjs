@@ -112,7 +112,7 @@ export default function Page(props) {
         fontWeight: '600',
         fontFamily: '-apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji"'
       }} >
-        <h3 style={{ textAlign: 'center' }} id='question'> Ідем гуляти на день св.Vалентіна ?</h3>
+        <h3 style={{ textAlign: 'center' }} id='question'> Ідем гуляти на день св.Vалентина ?</h3>
       </div>
     </div >
     <div id='yesButt' >
@@ -131,7 +131,7 @@ export default function Page(props) {
             main.style.display = 'none';
           }} style={style} role="button">Так</button>
         </div>
-        <div style={{ flexShrink: 0, textAlign: 'left', borderLeft: '2px solid transparent' }}>
+        <div style={{ textAlign: 'left', borderLeft: '2px solid transparent' }}>
           <button ref={ref} onClick={() => {
             let newFontSize = fontSize + 1;
             setFontSize(newFontSize);
@@ -145,7 +145,7 @@ export default function Page(props) {
             // yes.style.width = dims.width;
             // yes.style.height = dims.height;
             console.log(dims);
-          }} style={style2} role="button">{rejections[index]}</button>
+          }} style={{ ...style2, textWrap: 'wrap', whiteSpace: 'normal' }} role="button">{rejections[index]}</button>
         </div>
       </div>
     </div >
