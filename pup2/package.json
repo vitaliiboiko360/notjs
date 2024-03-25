@@ -1,0 +1,25 @@
+{
+  "name": "pup2",
+  "version": "1",
+  "description": "browse dictionary for you",
+  "main": "./main.js",
+  "bin": "./main.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "_",
+    "lint": "eslint src/*.ts"
+  },
+  "keywords": [],
+  "author": "me",
+  "devDependencies": {
+    "@types/puppeteer": "^5.4.0",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
+    "eslint": "^7.14.0"
+  },
+  "dependencies": {
+    "colors": "^1.4.0",
+    "puppeteer": "^5.5.0",
+    "winston": "^3.13.0"
+  }
+}
