@@ -19,7 +19,7 @@ async function main() {
 
   const page = (await browser.pages())[0];
 
-  logger.info('Navigating to login page...');
+  logger.info('Go to page');
   await page.goto('https://translate.google.com/', { waitUntil: 'load' });
 
 }
