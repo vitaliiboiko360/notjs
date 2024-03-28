@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer';
 import { logger } from './Logger';
+import { getWordsJson } from './WordsBrowser';
 
 async function main() {
   logger.info('Launching headless Chrome');
@@ -21,7 +22,7 @@ async function main() {
 
   logger.info('Go to page');
   await page.goto('https://translate.google.com/', { waitUntil: 'load' });
-
+  getWordsJson(page, '');
 }
 
 main();
