@@ -12,11 +12,14 @@ function run(func: Function, message: string) {
 export async function getWordsJson(page: puppeteer.Page, strInput: string): Promise<Object> {
   const inputTextFieldBox = '.QFw9Te textarea';
 
-  run(async () => await page.waitForSelector(inputTextFieldBox, {
-    visible: true
-  }), 'page.waitForSelector');
+  let elementHandle = await page.waitForSelector(inputTextFieldBox, { visible: true });
 
   run(async () => await page.type(inputTextFieldBox, "¿Te gusta leer?"), 'page.type');
 
+  //await page.waitForSelector(inputTextFieldBox, { visible: true });
+  await elementHandle.focus();
+
+  await page.evaluate(textarea => textarea.setSelectionRange(0, 3), elementHandle);
+  logger.info('after evaluate');
   return {};
 }
