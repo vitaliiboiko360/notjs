@@ -10,6 +10,7 @@ async function main() {
     headless: false,
     userDataDir: '/home/user1/.config/google-chrome/Default',
     defaultViewport: null,
+    devtools: true,
     args: [
       '--user-data-dir="/home/user1/.config/google-chrome/Default"',
       '--disable-dev-shm-usage',
