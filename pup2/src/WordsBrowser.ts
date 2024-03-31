@@ -32,19 +32,30 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
     let textArea = ta[0];
     textArea.focus();
 
+
+    const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
     localInput
       .split(' ')
       .reduce(
-        async (prevPromise: Promise<number>, word: string, index: number, array: [string]) => {
-          const func = () => {
-            console.log(`new promise index=${index}`);
-            let start = (index == 0) ? 0 : array[index - 1].length;
-            let end = start + word.length;
-            textArea.focus();
-            textArea.setSelectionRange(start, end);
-            console.log(`setSelectionRange(${start}, ${end})`);
-          };
-          return prevPromise.then(() => setTimeout(func, 5000));
+        async (prevPromise: Promise<void>, word: string, index: number, array: [string]) => {
+          await prevPromise;
+          return wait(3000).then(
+            () => {
+              console.log(`new promise index=${index}`);
+              let start = (index > 0)
+                ? array.slice(0, index)
+                  .reduce(
+                    (t: number, v: string): number => {
+                      return t + v.length + 1; /*+1 for space*/
+                    }, 0
+                  )
+                : 0;
+              let end = start + word.length;
+              textArea.focus();
+              textArea.setSelectionRange(start, end);
+              console.log(`setSelectionRange(${start}, ${end})`);
+            });
         }, Promise.resolve());
 
   }, inputTextFieldBox, localInput);
