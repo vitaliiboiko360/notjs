@@ -21,6 +21,7 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
 
   run(async () => await page.type(inputTextFieldBox, localInput), 'page.type');
   logger.info('after type');
+
   await page.evaluate((selector, localInput) => {
     let ta = document.querySelectorAll(selector);
     console.log(`ta length ${ta.length}`);
@@ -30,18 +31,24 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
     console.log(`localInput ${localInput}\n${(ta[0])}`);
     let textArea = ta[0];
     textArea.focus();
-    localInput.split(' ').reduce((start: number, word: string, index: number) => {
-      let end = start + word.length;
-      setTimeout((start: number, end: number) => {
 
-        textArea.setSelectionRange(start, end);
-        textArea.focus();
-        console.log(`setSelectionRange(${start}, ${end})`);
-      }, 3000 * (index + 1), start, end);
-      start = end;
-      return start;
-    }, 0);
+    localInput
+      .split(' ')
+      .reduce(
+        async (prevPromise: Promise<number>, word: string, index: number, array: [string]) => {
+          const func = () => {
+            console.log(`new promise index=${index}`);
+            let start = (index == 0) ? 0 : array[index - 1].length;
+            let end = start + word.length;
+            textArea.focus();
+            textArea.setSelectionRange(start, end);
+            console.log(`setSelectionRange(${start}, ${end})`);
+          };
+          return prevPromise.then(() => setTimeout(func, 5000));
+        }, Promise.resolve());
+
   }, inputTextFieldBox, localInput);
+
   logger.info('after evaluate');
   return {};
 }
