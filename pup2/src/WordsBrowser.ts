@@ -45,30 +45,34 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
     await button.click();
   }
 
+  await page.waitForSelector(inputTextFieldBox, { visible: true })
+    .then(async elementHandle => await elementHandle.click());
 
-  // await page.evaluate((selector, localInput) => {
-  //   // const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-  //   // let ta = document.querySelectorAll(selector);
-  //   // console.log(`ta length ${ta.length}`);
-  //   // if (ta.length == 0) {
-  //   //   return;
-  //   // }
-  //   // console.log(`2 localInput ${localInput}\n${(ta[0])}`);
-  //   // let textArea = ta[0];
+  await page.evaluate((selector, localInput) => {
+    const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+    let ta = document.querySelectorAll(selector);
+    console.log(`ta length ${ta.length}`);
+    if (ta.length == 0) {
+      return;
+    }
+    console.log(`2 localInput ${localInput}\n${(ta[0])}`);
+    let textArea = ta[0];
 
-  //   // localInput
-  //   //   .split(' ')
-  //   //   .reduce(
-  //   //     async (prevPromise: Promise<number>, word: string, index: number, array: [string]) => {
-  //   //       let start = await prevPromise;
-  //   //       return wait(3000).then(
-  //   //         () => {
-  //   //           let end = start + word.length;
-  //   //           //textArea.setSelectionRange(start, end);
-  //   //           return end + 1;
-  //   //         });
-  //   //     }, Promise.resolve(0));
-  // }, inputTextFieldBox, localInput);
+    localInput
+      .split(' ')
+      .reduce(
+        async (prevPromise: Promise<number>, word: string, index: number, array: [string]) => {
+          let start = await prevPromise;
+          return wait(3000).then(
+            () => {
+              let end = start + word.length;
+              console.log('selecting')
+              textArea.focus();
+              textArea.setSelectionRange(start, end);
+              return end + 1;
+            });
+        }, Promise.resolve(0));
+  }, inputTextFieldBox, localInput);
 
   return {};
 }
