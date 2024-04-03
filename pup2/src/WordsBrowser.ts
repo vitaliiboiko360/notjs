@@ -58,20 +58,23 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
     console.log(`2 localInput ${localInput}\n${(ta[0])}`);
     let textArea = ta[0];
 
-    localInput
-      .split(' ')
-      .reduce(
-        async (prevPromise: Promise<number>, word: string, index: number, array: [string]) => {
-          let start = await prevPromise;
-          return wait(3000).then(
-            () => {
-              let end = start + word.length;
-              console.log('selecting')
-              textArea.focus();
-              textArea.setSelectionRange(start, end);
-              return end + 1;
-            });
-        }, Promise.resolve(0));
+    textArea.focus();
+    textArea.setSelectionRange(0, localInput[0].length);
+
+    //   localInput
+    //     .split(' ')
+    //     .reduce(
+    //       async (prevPromise: Promise<number>, word: string, index: number, array: [string]) => {
+    //         let start = await prevPromise;
+    //         return wait(3000).then(
+    //           () => {
+    //             let end = start + word.length;
+    //             console.log('selecting')
+    //             textArea.focus();
+    //             textArea.setSelectionRange(start, end);
+    //             return end + 1;
+    //           });
+    //       }, Promise.resolve(0));
   }, inputTextFieldBox, localInput);
 
   return {};
