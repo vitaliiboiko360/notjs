@@ -10,9 +10,10 @@ async function main() {
     headless: false,
     userDataDir: '/home/user1/.config/google-chrome/Default',
     defaultViewport: null,
-    devtools: true,
+    devtools: false,
     args: [
       '--user-data-dir="/home/user1/.config/google-chrome/Default"',
+      '--hide-crash-restore-bubble',
       '--disable-dev-shm-usage',
       '--fast-start',
       '--no-sandbox'
@@ -20,7 +21,7 @@ async function main() {
   });
 
   const page = (await browser.pages())[0];
-
+  await page.bringToFront();
   logger.info('Go to page');
   await page.goto('https://translate.google.com/', { waitUntil: 'load' });
   getWordsJson(page, '');
