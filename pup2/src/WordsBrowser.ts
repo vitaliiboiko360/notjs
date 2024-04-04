@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer';
 import { logger } from './Logger';
 
 function wait(ms: number) {
-  return new Promise((r) => setTimeout(r, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function run(func: Function, message: string) {
@@ -38,12 +38,12 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
   }, inputTextFieldBox, localInput);
   logger.info('after 1 evaluate');
 
-  let seeDictButton = ".VfPpkd-StrnGf-rymPhb.DMZ54e.vQXW9e";
-
-
+  const seeDictButton = ".VfPpkd-StrnGf-rymPhb.DMZ54e.vQXW9e";
   const divOuterButtonSeeDictionary = "div.VfPpkd-xl07Ob-XxIAqe.VfPpkd-xl07Ob.q6oraf.P77izf.g4ZIhe.VfPpkd-xl07Ob-XxIAqe-OWXEXe-uxVfW-FNFY6c-uFfGwd.VfPpkd-xl07Ob-XxIAqe-OWXEXe-FNFY6c";
-  await page.waitForSelector(divOuterButtonSeeDictionary, { visible: true });
-  await page.click(divOuterButtonSeeDictionary);
+  await page.waitForSelector(divOuterButtonSeeDictionary, { visible: true })
+    .then(async () => {
+      await page.click(divOuterButtonSeeDictionary)
+    });
 
   // if (buttonElementHandle) {
   //   console.log('buttonElementHandle')
@@ -52,14 +52,14 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
   // const outerDivTextArea = 'div.QFw9Te';
   let intpuTextArea = await page.waitForSelector(inputTextFieldBox, { visible: true });
 
-
   // run(async () => await page.focus(inputTextFieldBox), 'focus');
 
-
   // run(async () => await page.click(inputTextFieldBox), 'click(inputTextFieldBox)');
-  await page.evaluateHandle(textArea => textArea.focus(), intpuTextArea);
-  run(async () => await page.click(inputTextFieldBox), 'click');
-  await page.evaluateHandle(textArea => textArea.click(), intpuTextArea);
+  // await page.evaluateHandle(textArea => textArea.focus(), intpuTextArea);
+  await wait(3000)
+    .then(() => run(async () => await page.click(inputTextFieldBox)
+      , 'click'));
+  // await page.evaluateHandle(textArea => textArea.click(), intpuTextArea);
 
   await page.evaluate((selector, localInput) => {
     const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -71,14 +71,7 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
     console.log(`2`);
     console.log(document.activeElement);
 
-    let textAreaArray = Array.from(ta);
-
-    let textArea = textAreaArray.find(t => t.hasAttribute('aria-label'));
-    if (!textArea) {
-      console.log('no textarea')
-      return;
-    }
-    textArea.focus();
+    let textArea = ta[0];
 
     console.log(document.activeElement);
 
@@ -91,8 +84,9 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
             () => {
               let end = start + word.length;
               console.log(`setSelectionRange(${start}, ${end})`);
-              textArea.setSelectionRange(start, end);
               textArea.focus();
+              textArea.setSelectionRange(start, end);
+
               return end + 1;
             });
         }, Promise.resolve(0));
