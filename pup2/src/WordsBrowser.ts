@@ -22,7 +22,7 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
   run(async () => await page.type(inputTextFieldBox, localInput), 'page.type');
   logger.info('after type');
 
-  await page.evaluate((selector, localInput) => {
+  const selectFirstWord = async (selector: string, localInput: string) => {
     const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
     let ta = document.querySelectorAll(selector);
     console.log(`ta length ${ta.length}`);
@@ -30,20 +30,35 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
       return;
     }
     console.log(`1 localInput ${localInput}\n${(ta[0])}`);
-    let textArea = ta[0];
-    wait(1000)
+    let textArea: HTMLInputElement = ta[0] as HTMLInputElement;
+    await wait(1500)
       .then(() => {
         textArea.setSelectionRange(0, localInput.split(' ')[0].length);
       });
-  }, inputTextFieldBox, localInput);
+  };
+
+  await page.evaluate(selectFirstWord, inputTextFieldBox, localInput);
   logger.info('after 1 evaluate');
 
   const seeDictButton = ".VfPpkd-StrnGf-rymPhb.DMZ54e.vQXW9e";
   const divOuterButtonSeeDictionary = "div.VfPpkd-xl07Ob-XxIAqe.VfPpkd-xl07Ob.q6oraf.P77izf.g4ZIhe.VfPpkd-xl07Ob-XxIAqe-OWXEXe-uxVfW-FNFY6c-uFfGwd.VfPpkd-xl07Ob-XxIAqe-OWXEXe-FNFY6c";
-  await page.waitForSelector(divOuterButtonSeeDictionary, { visible: true })
-    .then(async () => {
-      await page.click(divOuterButtonSeeDictionary)
-    });
+  const clickSeeDictButon = async () => {
+    console.log('in the clickSeeDictButon');
+    await page.waitForSelector(seeDictButton, { visible: true })
+      .then(async () => {
+        console.log('in the clickSeeDictButon.waitForSelector.then');
+        await page.click(seeDictButton)
+      });
+  };
+
+  try {
+    console.log('in the try');
+    await clickSeeDictButon();
+  } catch {
+    console.log('in the catch');
+    await page.evaluate(selectFirstWord, inputTextFieldBox, localInput);
+    await clickSeeDictButon();
+  }
 
   await page.waitForSelector(inputTextFieldBox, { visible: true });
 
@@ -64,7 +79,9 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
       .reduce((accumulator: [number], word: string, index: number) => {
         accumulator.push((index > 0) ? word.length + accumulator[index - 1] : word.length);
         return accumulator;
-      });
+      }, []);
+
+    console.log(endWordsBoundaries);
 
     let textArea = ta[0];
     endWordsBoundaries
@@ -77,7 +94,7 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
           });
       });
 
-  });
+  }, inputTextFieldBox, localInput);
 
   return {};
 }
