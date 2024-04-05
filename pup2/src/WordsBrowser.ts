@@ -45,52 +45,39 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
       await page.click(divOuterButtonSeeDictionary)
     });
 
-  // if (buttonElementHandle) {
-  //   console.log('buttonElementHandle')
-  //   await buttonElementHandle.click();
-  // }
-  // const outerDivTextArea = 'div.QFw9Te';
-  let intpuTextArea = await page.waitForSelector(inputTextFieldBox, { visible: true });
+  await page.waitForSelector(inputTextFieldBox, { visible: true });
 
-  // run(async () => await page.focus(inputTextFieldBox), 'focus');
-
-  // run(async () => await page.click(inputTextFieldBox), 'click(inputTextFieldBox)');
-  // await page.evaluateHandle(textArea => textArea.focus(), intpuTextArea);
   await wait(3000)
     .then(() => run(async () => await page.click(inputTextFieldBox)
       , 'click'));
-  // await page.evaluateHandle(textArea => textArea.click(), intpuTextArea);
 
   await page.evaluate((selector, localInput) => {
     const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
     let ta = document.getElementsByTagName('textarea');
-    console.log(`ta length ${ta.length}`);
+    console.log(`2 ta length ${ta.length}`);
     if (ta.length == 0) {
       return;
     }
-    console.log(`2`);
-    console.log(document.activeElement);
+
+    let endWordsBoundaries = localInput
+      .split(' ')
+      .reduce((accumulator: [number], word: string, index: number) => {
+        accumulator.push((index > 0) ? word.length + accumulator[index - 1] : word.length);
+        return accumulator;
+      });
 
     let textArea = ta[0];
+    endWordsBoundaries
+      .forEach(async (endWordSelectionPosition: number, index: number, array: [number]) => {
+        await wait(3000)
+          .then(() => {
+            let start = index > 0 ? array[index - 1] + 1 : 0; // +1 for space
+            textArea.focus();
+            textArea.setSelectionRange(start, endWordSelectionPosition);
+          });
+      });
 
-    console.log(document.activeElement);
-
-    localInput
-      .split(' ')
-      .reduce(
-        async (prevPromise: Promise<number>, word: string, index: number, array: [string]) => {
-          let start = await prevPromise;
-          return wait(3000).then(
-            () => {
-              let end = start + word.length;
-              console.log(`setSelectionRange(${start}, ${end})`);
-              textArea.focus();
-              textArea.setSelectionRange(start, end);
-
-              return end + 1;
-            });
-        }, Promise.resolve(0));
-  }, inputTextFieldBox, localInput);
+  });
 
   return {};
 }
