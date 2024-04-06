@@ -89,15 +89,19 @@ export async function selectEachWordConsequntly(page: puppeteer.Page, inputStrin
     console.log(endWordsBoundaries);
 
     let textArea = ta[0];
-    endWordsBoundaries
-      .forEach(async (endWordSelectionPosition: number, index: number, array: [number]) => {
+    (async () => {
+      for (let index = 0; index < endWordsBoundaries.length; index++) {
+        let endPos = endWordsBoundaries[index]
         await wait(3000)
           .then(() => {
-            let start = index > 0 ? array[index - 1] + index : 0; // +index for spaces
+            let start = index > 0 ? endWordsBoundaries[index - 1] + index : 0; // +index for spaces
+            let end = endPos + index;
+            console.log(`setSelectionRange ${start} ${end}`);
             textArea.focus();
-            textArea.setSelectionRange(start, endWordSelectionPosition);
+            textArea.setSelectionRange(start, end);
           });
-      });
+      }
+    })();
 
   }, inputString);
 }
