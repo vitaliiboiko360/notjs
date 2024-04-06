@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 import { logger } from './Logger';
-import { getWordsJson } from './WordsBrowser';
+import { getWordsJson, selectEachWordConsequntly } from './WordsBrowser';
 import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 
@@ -23,7 +23,7 @@ async function main() {
       '--no-sandbox'
     ]
   });
-
+  const localInput = "¿Te gusta leer?";
   const page = (await browser.pages())[0];
   await page.bringToFront();
   logger.info('Go to page');
@@ -32,7 +32,7 @@ async function main() {
   while (true) {
     const answer: string = await rl.question('Run iteration again? type y if yes');
     if (answer == 'y') {
-      getWordsJson(page, '');
+      selectEachWordConsequntly(page, localInput);
     }
   }
 }

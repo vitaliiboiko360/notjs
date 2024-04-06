@@ -66,7 +66,12 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
     .then(() => run(async () => await page.click(inputTextFieldBox)
       , 'click'));
 
-  await page.evaluate((selector, localInput) => {
+  selectEachWordConsequntly(page, localInput);
+  return {};
+}
+
+export async function selectEachWordConsequntly(page: puppeteer.Page, inputString: string) {
+  await page.evaluate((localInput) => {
     const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
     let ta = document.getElementsByTagName('textarea');
     console.log(`2 ta length ${ta.length}`);
@@ -94,7 +99,5 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
           });
       });
 
-  }, inputTextFieldBox, localInput);
-
-  return {};
+  }, inputString);
 }
