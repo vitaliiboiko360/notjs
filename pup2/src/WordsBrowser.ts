@@ -67,6 +67,7 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
       , 'click'));
 
   await page.evaluate((selector, localInput) => {
+    const localInput = "¿Te gusta leer?";
     const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
     let ta = document.getElementsByTagName('textarea');
     console.log(`2 ta length ${ta.length}`);
@@ -88,7 +89,7 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
       .forEach(async (endWordSelectionPosition: number, index: number, array: [number]) => {
         await wait(3000)
           .then(() => {
-            let start = index > 0 ? array[index - 1] + 1 : 0; // +1 for space
+            let start = index > 0 ? array[index - 1] + (1 * index) : 0; // +1 for space
             textArea.focus();
             textArea.setSelectionRange(start, endWordSelectionPosition);
           });

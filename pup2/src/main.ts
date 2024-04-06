@@ -1,6 +1,10 @@
 import puppeteer from 'puppeteer';
 import { logger } from './Logger';
 import { getWordsJson } from './WordsBrowser';
+import * as readline from 'node:readline/promises';
+import { stdin as input, stdout as output } from 'node:process';
+
+const rl = readline.createInterface({ input, output });
 
 async function main() {
   logger.info('Launching headless Chrome');
@@ -25,6 +29,12 @@ async function main() {
   logger.info('Go to page');
   await page.goto('https://translate.google.com/', { waitUntil: 'load' });
   getWordsJson(page, '');
+  while (true) {
+    const answer: string = await rl.question('Run iteration again? type y if yes');
+    if (answer == 'y') {
+      getWordsJson(page, '');
+    }
+  }
 }
 
 main();
