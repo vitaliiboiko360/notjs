@@ -86,8 +86,6 @@ export async function selectEachWordConsequntly(page: puppeteer.Page, inputStrin
         return accumulator;
       }, []);
 
-    console.log(endWordsBoundaries);
-
     let textArea = ta[0];
     (async () => {
       for (let index = 0; index < endWordsBoundaries.length; index++) {
@@ -102,6 +100,13 @@ export async function selectEachWordConsequntly(page: puppeteer.Page, inputStrin
           });
       }
     })();
-
   }, inputString);
+}
+
+async function getWordTranslations(page: puppeteer.Page, word: string): Promise<Object> {
+  return await page.evaluate((word) => {
+    let retObj: Object = { 'word': word };
+
+    return retObj;
+  }, word);
 }

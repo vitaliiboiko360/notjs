@@ -30,7 +30,7 @@ async function main() {
   await page.goto('https://translate.google.com/', { waitUntil: 'load' });
   getWordsJson(page, '');
   while (true) {
-    const answer: string = await rl.question('Run iteration again? type y if yes');
+    const answer: string = await rl.question('Run iteration again? type y if yes ');
     if (answer == 'y') {
       selectEachWordConsequntly(page, localInput);
     }
