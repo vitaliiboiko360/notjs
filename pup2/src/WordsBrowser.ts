@@ -107,6 +107,8 @@ async function getWordTranslations(page: puppeteer.Page, word: string): Promise<
   return await page.evaluate((word) => {
     let retObj: Object = { 'word': word };
 
+
+
     return retObj;
   }, word);
 }
