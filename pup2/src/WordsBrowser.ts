@@ -57,16 +57,15 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
       })
       .catch(async () => {
         console.log(`no click button found`);
-        await page.evaluate(selectFirstWord, inputTextFieldBox, inputString);
-        await clickSeeDictButon();
+        // await page.evaluate(selectFirstWord, inputTextFieldBox, inputString);
+        // await clickSeeDictButon();
       });
   };
 
-  await clickSeeDictButon();
-
-  let translations = await page.waitForSelector('.Dwvecf', { visible: true, timeout: 5000 });
-  if (!translations) {
-    logger.info(`no translations`);
+  try {
+    await page.waitForSelector('.Dwvecf', { visible: true, timeout: 1000 });
+  } catch {
+    await clickSeeDictButon();
   }
 
   await page.waitForSelector(inputTextFieldBox, { visible: true });
