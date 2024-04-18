@@ -23,16 +23,17 @@ async function main() {
       '--no-sandbox'
     ]
   });
-  const localInput = "¿Te gusta leer?";
+  let index = 0;
+  const localInput = ["¿Te gusta leer?", "Yo leo un libro todas las semanas.", "Y a veces, leo dos libros."];
   const page = (await browser.pages())[0];
   await page.bringToFront();
   logger.info('Go to page');
   await page.goto('https://translate.google.com/', { waitUntil: 'load' });
-  getWordsJson(page, '');
+  await getWordsJson(page, localInput[index]);
   while (true) {
-    const answer: string = await rl.question('Run iteration again? type y if yes ');
+    const answer: string = await rl.question('Run next iteration? type y if yes ');
     if (answer == 'y') {
-      selectEachWordConsequntly(page, localInput);
+      getWordsJson(page, localInput[index++ % localInput.length]);
     }
   }
 }

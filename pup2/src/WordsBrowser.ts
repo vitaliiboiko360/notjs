@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer';
 import { logger } from './Logger';
+import { log } from 'winston';
 
 function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -13,9 +14,12 @@ function run(func: Function, message: string) {
   }
 }
 
-export async function getWordsJson(page: puppeteer.Page, strInput: string): Promise<Object> {
+export async function getWordsJson(page: puppeteer.Page, inputString: string): Promise<Object> {
+  if (inputString.length == 0) {
+    return {};
+  }
+
   const inputTextFieldBox = '.QFw9Te textarea';
-  const localInput = "¿Te gusta leer?";
 
   let inputTextArea = await page.waitForSelector(inputTextFieldBox, { visible: true });
 
@@ -23,42 +27,47 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
   await inputTextArea.click({ clickCount: 3 });
   await inputTextArea.press('Backspace');
   logger.info('after clear & before type');
-  run(async () => await page.type(inputTextFieldBox, localInput), 'page.type');
+  run(async () => await page.type(inputTextFieldBox, inputString), 'page.type');
   logger.info('after type');
 
-  const selectFirstWord = async (selector: string, localInput: string) => {
+  const selectFirstWord = async (selector: string, inputString: string) => {
     const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
     let ta = document.querySelectorAll(selector);
     console.log(`ta length ${ta.length}`);
     if (ta.length == 0) {
       return;
     }
-    console.log(`1 localInput ${localInput}\n${(ta[0])}`);
+    console.log(`1 inputString ${inputString}\n${(ta[0])}`);
     let textArea: HTMLInputElement = ta[0] as HTMLInputElement;
     await wait(1500)
       .then(() => {
-        textArea.setSelectionRange(0, localInput.split(' ')[0].length);
+        textArea.setSelectionRange(0, inputString.split(' ')[0].length);
       });
   };
 
-  await page.evaluate(selectFirstWord, inputTextFieldBox, localInput);
+  await page.evaluate(selectFirstWord, inputTextFieldBox, inputString);
   logger.info('after 1 evaluate');
 
   const seeDictButton = ".VfPpkd-StrnGf-rymPhb.DMZ54e.vQXW9e";
   const divOuterButtonSeeDictionary = "div.VfPpkd-xl07Ob-XxIAqe.VfPpkd-xl07Ob.q6oraf.P77izf.g4ZIhe.VfPpkd-xl07Ob-XxIAqe-OWXEXe-uxVfW-FNFY6c-uFfGwd.VfPpkd-xl07Ob-XxIAqe-OWXEXe-FNFY6c";
   const clickSeeDictButon = async () => {
-    await page.waitForSelector(seeDictButton, { visible: true })
+    await page.waitForSelector(seeDictButton, { visible: true, timeout: 5000 })
       .then(async () => {
         await page.click(seeDictButton)
       })
       .catch(async () => {
         console.log(`no click button found`);
-        await page.evaluate(selectFirstWord, inputTextFieldBox, localInput);
+        await page.evaluate(selectFirstWord, inputTextFieldBox, inputString);
         await clickSeeDictButon();
       });
   };
 
   await clickSeeDictButon();
+
+  let translations = await page.waitForSelector('.Dwvecf', { visible: true, timeout: 5000 });
+  if (!translations) {
+    logger.info(`no translations`);
+  }
 
   await page.waitForSelector(inputTextFieldBox, { visible: true });
 
@@ -66,7 +75,7 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
     .then(() => run(async () => await page.click(inputTextFieldBox)
       , 'click'));
 
-  selectEachWordConsequntly(page, localInput);
+  selectEachWordConsequntly(page, inputString);
   return {};
 }
 
