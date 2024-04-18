@@ -17,8 +17,12 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
   const inputTextFieldBox = '.QFw9Te textarea';
   const localInput = "¿Te gusta leer?";
 
-  await page.waitForSelector(inputTextFieldBox, { visible: true });
+  let inputTextArea = await page.waitForSelector(inputTextFieldBox, { visible: true });
 
+  logger.info('before clear');
+  await inputTextArea.click({ clickCount: 3 });
+  await inputTextArea.press('Backspace');
+  logger.info('after clear & before type');
   run(async () => await page.type(inputTextFieldBox, localInput), 'page.type');
   logger.info('after type');
 
@@ -43,22 +47,18 @@ export async function getWordsJson(page: puppeteer.Page, strInput: string): Prom
   const seeDictButton = ".VfPpkd-StrnGf-rymPhb.DMZ54e.vQXW9e";
   const divOuterButtonSeeDictionary = "div.VfPpkd-xl07Ob-XxIAqe.VfPpkd-xl07Ob.q6oraf.P77izf.g4ZIhe.VfPpkd-xl07Ob-XxIAqe-OWXEXe-uxVfW-FNFY6c-uFfGwd.VfPpkd-xl07Ob-XxIAqe-OWXEXe-FNFY6c";
   const clickSeeDictButon = async () => {
-    console.log('in the clickSeeDictButon');
     await page.waitForSelector(seeDictButton, { visible: true })
       .then(async () => {
-        console.log('in the clickSeeDictButon.waitForSelector.then');
         await page.click(seeDictButton)
+      })
+      .catch(async () => {
+        console.log(`no click button found`);
+        await page.evaluate(selectFirstWord, inputTextFieldBox, localInput);
+        await clickSeeDictButon();
       });
   };
 
-  try {
-    console.log('in the try');
-    await clickSeeDictButon();
-  } catch {
-    console.log('in the catch');
-    await page.evaluate(selectFirstWord, inputTextFieldBox, localInput);
-    await clickSeeDictButon();
-  }
+  await clickSeeDictButon();
 
   await page.waitForSelector(inputTextFieldBox, { visible: true });
 
