@@ -33,6 +33,7 @@ async function main() {
   while (true) {
     const answer: string = await rl.question('Run next iteration? type y if yes ');
     if (answer == 'y') {
+      console.log('\n');
       getWordsJson(page, localInput[++index % localInput.length]);
     }
   }

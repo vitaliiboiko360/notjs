@@ -41,6 +41,7 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
     let textArea: HTMLInputElement = ta[0] as HTMLInputElement;
     await wait(1500)
       .then(() => {
+        textArea.focus();
         textArea.setSelectionRange(0, inputString.split(' ')[0].length);
       });
   };
@@ -57,8 +58,15 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
       })
       .catch(async () => {
         console.log(`no click button found`);
-        // await page.evaluate(selectFirstWord, inputTextFieldBox, inputString);
-        // await clickSeeDictButon();
+        await wait(2000)
+          .then(() => run(async () => await page.click(inputTextFieldBox)
+            , 'click'));
+        await page.evaluate(selectFirstWord, inputTextFieldBox, inputString);
+        try {
+          await page.waitForSelector('.Dwvecf', { visible: true, timeout: 1000 });
+        } catch {
+          await clickSeeDictButon();
+        }
       });
   };
 
@@ -74,12 +82,13 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
     .then(() => run(async () => await page.click(inputTextFieldBox)
       , 'click'));
 
-  selectEachWordConsequntly(page, inputString);
+  await selectEachWordConsequntly(page, inputString);
+  console.log(`we done with for loop with await`);
   return {};
 }
 
 export async function selectEachWordConsequntly(page: puppeteer.Page, inputString: string) {
-  await page.evaluate((localInput) => {
+  await page.evaluate(async (localInput) => {
     const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
     let ta = document.getElementsByTagName('textarea');
     console.log(`2 ta length ${ta.length}`);
@@ -95,7 +104,7 @@ export async function selectEachWordConsequntly(page: puppeteer.Page, inputStrin
       }, []);
 
     let textArea = ta[0];
-    (async () => {
+    const iterateSelectWords = async () => {
       for (let index = 0; index < endWordsBoundaries.length; index++) {
         let endPos = endWordsBoundaries[index]
         await wait(3000)
@@ -107,7 +116,8 @@ export async function selectEachWordConsequntly(page: puppeteer.Page, inputStrin
             textArea.setSelectionRange(start, end);
           });
       }
-    })();
+    };
+    await iterateSelectWords();
   }, inputString);
 }
 
