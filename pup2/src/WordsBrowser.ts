@@ -14,6 +14,8 @@ function run(func: Function, message: string) {
   }
 }
 
+const translationDefinistionsSelector = '.Dwvecf';
+
 export async function getWordsJson(page: puppeteer.Page, inputString: string): Promise<Object> {
   if (inputString.length == 0) {
     return {};
@@ -63,7 +65,7 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
             , 'click'));
         await page.evaluate(selectFirstWord, inputTextFieldBox, inputString);
         try {
-          await page.waitForSelector('.Dwvecf', { visible: true, timeout: 1000 });
+          await page.waitForSelector(translationDefinistionsSelector, { visible: true, timeout: 1000 });
         } catch {
           await clickSeeDictButon();
         }
@@ -71,7 +73,7 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
   };
 
   try {
-    await page.waitForSelector('.Dwvecf', { visible: true, timeout: 1000 });
+    await page.waitForSelector(translationDefinistionsSelector, { visible: true, timeout: 1000 });
   } catch {
     await clickSeeDictButon();
   }
@@ -84,6 +86,8 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
 
   await selectEachWordConsequntly(page, inputString);
   console.log(`we done with for loop with await`);
+
+  getSentenceTranslation(page);
   return {};
 }
 
@@ -104,7 +108,7 @@ export async function selectEachWordConsequntly(page: puppeteer.Page, inputStrin
       }, []);
 
     let textArea = ta[0];
-    const iterateSelectWords = async () => {
+    (async () => {
       for (let index = 0; index < endWordsBoundaries.length; index++) {
         let endPos = endWordsBoundaries[index]
         await wait(3000)
@@ -116,14 +120,28 @@ export async function selectEachWordConsequntly(page: puppeteer.Page, inputStrin
             textArea.setSelectionRange(start, end);
           });
       }
-    };
-    await iterateSelectWords();
+    })();
   }, inputString);
+}
+
+async function getSentenceTranslation(page: puppeteer.Page): Promise<Object> {
+  return await page.evaluate(() => {
+    const wholeSentenceTranslation = 'wholeSentenceTranslation';
+    const translateSentenceSelector = 'ryNqvb';
+
+    let retObj: { wholeSentenceTranslation: string } = { wholeSentenceTranslation: '' };
+    let translateLineElements = document.getElementsByClassName(translateSentenceSelector);
+    if (translateLineElements.length > 0) {
+      retObj[wholeSentenceTranslation] = translateLineElements[0].textContent || '';
+    }
+    return retObj;
+  });
 }
 
 async function getWordTranslations(page: puppeteer.Page, word: string): Promise<Object> {
   return await page.evaluate((word) => {
     let retObj: Object = { 'word': word };
+    let transDefsNodes = document.getElementsByClassName(translationDefinistionsSelector);
 
 
 
