@@ -40,12 +40,12 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
 
         let buttonsNodes = panelNode?.querySelectorAll('button');
         let spanishButton = [...buttonsNodes].find(button => {
-          if (button.textContent == 'Spanish') {
-            return true;
-          }
-          return false;
+          return (button.textContent == 'Spanish'
+            && button.getAttribute('aria-selected') == 'false'
+          ) ? true : false;
         });
-        spanishButton.click();
+        if (spanishButton)
+          spanishButton.click();
       }, inputTextLanguageButtonPanel);
     });
 
@@ -109,8 +109,8 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
   await selectEachWordConsequntly(page, inputString);
   console.log(`we done with for loop with await`);
 
-  getSentenceTranslation(page);
-  return {};
+  let lineTranslation = getSentenceTranslation(page);
+  return { ...lineTranslation };
 }
 
 export async function selectEachWordConsequntly(page: puppeteer.Page, inputString: string) {
