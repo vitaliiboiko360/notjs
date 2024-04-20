@@ -23,6 +23,8 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
 
   const inputTextFieldBox = '.QFw9Te textarea';
 
+  const inputTextLanguageButtonPanel = 'div.akczyd';
+
   let inputTextArea = await page.waitForSelector(inputTextFieldBox, { visible: true });
 
   logger.info('before clear');
@@ -30,7 +32,27 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
   await inputTextArea.press('Backspace');
   logger.info('after clear & before type');
   run(async () => await page.type(inputTextFieldBox, inputString), 'page.type');
-  logger.info('after type');
+
+  await wait(2000)
+    .then(async () => {
+      await page.evaluate((buttonsPanelSelector) => {
+        let panelNode = document.querySelector(buttonsPanelSelector);
+
+        let buttonsNodes = panelNode?.querySelectorAll('button');
+        let spanishButton = [...buttonsNodes].find(button => {
+          if (button.textContent == 'Spanish') {
+            return true;
+          }
+          return false;
+        });
+        spanishButton.click();
+      }, inputTextLanguageButtonPanel);
+    });
+
+  await wait(2000)
+    .then(() => {
+      logger.info('after type');
+    });
 
   const selectFirstWord = async (selector: string, inputString: string) => {
     const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -108,7 +130,7 @@ export async function selectEachWordConsequntly(page: puppeteer.Page, inputStrin
       }, []);
 
     let textArea = ta[0];
-    (async () => {
+    const selectEachWords = async () => {
       for (let index = 0; index < endWordsBoundaries.length; index++) {
         let endPos = endWordsBoundaries[index]
         await wait(3000)
@@ -120,7 +142,8 @@ export async function selectEachWordConsequntly(page: puppeteer.Page, inputStrin
             textArea.setSelectionRange(start, end);
           });
       }
-    })();
+    };
+    await selectEachWords();
   }, inputString);
 }
 
@@ -150,6 +173,9 @@ async function getWordTranslations(page: puppeteer.Page, word: string): Promise<
       }
     });
 
+    if (translations) {
+
+    }
 
     return retObj;
   }, word);
