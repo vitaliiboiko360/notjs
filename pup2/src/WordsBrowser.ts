@@ -167,7 +167,7 @@ async function getSentenceTranslation(page: puppeteer.Page): Promise<Object> {
 }
 
 const getWordTranslations = (word: string) => {
-  let retObj: { 'word': string, 'data': [string] } = { 'word': word, 'data': [''] };
+  let retObj: { 'word': string, 'data': string[] } = { 'word': word, 'data': [] };
   let translations = document.querySelector('div.GQpbTd');
   if (!translations) {
     return retObj;
