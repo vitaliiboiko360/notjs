@@ -140,6 +140,11 @@ export async function selectEachWordConsequntly(page: puppeteer.Page, inputStrin
             console.log(`setSelectionRange ${start} ${end}`);
             textArea.focus();
             textArea.setSelectionRange(start, end);
+            let inputWord = window.getSelection().toString();
+            if (inputWord) {
+              let resultWord = getWordTranslations(window.getSelection().toString());
+              console.log(resultWord);
+            }
           });
       }
     };
@@ -161,22 +166,19 @@ async function getSentenceTranslation(page: puppeteer.Page): Promise<Object> {
   });
 }
 
-async function getWordTranslations(page: puppeteer.Page, word: string): Promise<Object> {
-  return await page.evaluate((word) => {
-    let retObj: Object = { 'word': word };
-    let transDefsNodes = document.querySelectorAll(translationDefinistionsSelector);
-
-    let translations = [...transDefsNodes].find((element) => {
-      let header = element.querySelector('h3.nYkDR');
-      if (header?.textContent?.includes('Translations')) {
-        return true;
-      }
-    });
-
-    if (translations) {
-
-    }
-
+const getWordTranslations = (word: string) => {
+  let retObj: { 'word': string, 'data': [string] } = { 'word': word, 'data': [''] };
+  let translations = document.querySelector('div.GQpbTd');
+  if (!translations) {
     return retObj;
-  }, word);
-}
+  }
+
+  let tableTranslation = translations.getElementsByTagName('*');
+  for (let i = -1, l = tableTranslation.length; ++i < l;) {
+    let text = tableTranslation[i].textContent;
+    if (text) {
+      retObj['data'].push(text);
+    }
+  }
+  return retObj;
+};
