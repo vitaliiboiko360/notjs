@@ -106,35 +106,26 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
     .then(() => run(async () => await page.click(inputTextFieldBox)
       , 'click'));
 
-  await selectEachWordConsequntly(page, inputString);
+  let arrayOfTranslations = await getWordTranslations(page, inputString);
   console.log(`we done with for loop with await`);
 
   let lineTranslation = getSentenceTranslation(page);
-  return { ...lineTranslation };
+  return { ...lineTranslation, 'translations': arrayOfTranslations };
 }
 
-export async function selectEachWordConsequntly(page: puppeteer.Page, inputString: string) {
-  await page.evaluate(async (localInput) => {
+export async function getWordTranslations(page: puppeteer.Page, inputString: string) {
+  return await page.evaluate(async (localInput) => {
 
     const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-    interface WordTranslations { 'word': string, data: string[] };
+    interface WordTranslations {
+      'word': string,
+      'translationString': string
+    };
 
-    function getWordTranslations(word: string): WordTranslations {
-      let retObj: WordTranslations = { 'word': word, 'data': [] };
+    function getStringTranslations(): string {
       let translations = document.querySelector('div.GQpbTd');
-      if (!translations) {
-        return retObj;
-      }
-
-      let tableTranslation = translations.getElementsByTagName('*');
-      for (let i = -1, l = tableTranslation.length; ++i < l;) {
-        let text = tableTranslation[i].textContent;
-        if (text) {
-          retObj['data'].push(text);
-        }
-      }
-      return retObj;
+      return translations?.textContent || '';
     };
 
 
@@ -152,6 +143,7 @@ export async function selectEachWordConsequntly(page: puppeteer.Page, inputStrin
       }, []);
 
     let textArea = ta[0];
+    let ret: WordTranslations[] = [];
     const selectEachWords = async () => {
       for (let index = 0; index < endWordsBoundaries.length; index++) {
         let endPos = endWordsBoundaries[index]
@@ -163,12 +155,13 @@ export async function selectEachWordConsequntly(page: puppeteer.Page, inputStrin
             textArea.focus();
             textArea.setSelectionRange(start, end);
             let inputWord = localInput.substring(start, end);
-            let resultWord = getWordTranslations(inputWord);
-            console.log(resultWord);
+            let resultWord = getStringTranslations();
+            ret.push({ 'word': inputWord, 'translationString': resultWord });
           });
       }
     };
     await selectEachWords();
+    return ret;
   }, inputString);
 }
 
