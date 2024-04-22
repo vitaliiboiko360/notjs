@@ -115,7 +115,29 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
 
 export async function selectEachWordConsequntly(page: puppeteer.Page, inputString: string) {
   await page.evaluate(async (localInput) => {
+
     const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    interface WordTranslations { 'word': string, data: string[] };
+
+    function getWordTranslations(word: string): WordTranslations {
+      let retObj: WordTranslations = { 'word': word, 'data': [] };
+      let translations = document.querySelector('div.GQpbTd');
+      if (!translations) {
+        return retObj;
+      }
+
+      let tableTranslation = translations.getElementsByTagName('*');
+      for (let i = -1, l = tableTranslation.length; ++i < l;) {
+        let text = tableTranslation[i].textContent;
+        if (text) {
+          retObj['data'].push(text);
+        }
+      }
+      return retObj;
+    };
+
+
     let ta = document.getElementsByTagName('textarea');
     console.log(`2 ta length ${ta.length}`);
     if (ta.length == 0) {
@@ -140,11 +162,9 @@ export async function selectEachWordConsequntly(page: puppeteer.Page, inputStrin
             console.log(`setSelectionRange ${start} ${end}`);
             textArea.focus();
             textArea.setSelectionRange(start, end);
-            let inputWord = window.getSelection().toString();
-            if (inputWord) {
-              let resultWord = getWordTranslations(window.getSelection().toString());
-              console.log(resultWord);
-            }
+            let inputWord = localInput.substring(start, end);
+            let resultWord = getWordTranslations(inputWord);
+            console.log(resultWord);
           });
       }
     };
@@ -165,20 +185,3 @@ async function getSentenceTranslation(page: puppeteer.Page): Promise<Object> {
     return retObj;
   });
 }
-
-const getWordTranslations = (word: string) => {
-  let retObj: { 'word': string, 'data': string[] } = { 'word': word, 'data': [] };
-  let translations = document.querySelector('div.GQpbTd');
-  if (!translations) {
-    return retObj;
-  }
-
-  let tableTranslation = translations.getElementsByTagName('*');
-  for (let i = -1, l = tableTranslation.length; ++i < l;) {
-    let text = tableTranslation[i].textContent;
-    if (text) {
-      retObj['data'].push(text);
-    }
-  }
-  return retObj;
-};
