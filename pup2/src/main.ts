@@ -32,13 +32,13 @@ async function main() {
   await page.goto('https://translate.google.com/', { waitUntil: 'load' });
 
   let result = await getWordsJson(page, localInput[index]);
-  console.log(`\n${JSON.stringify(result)}\n`);
+  console.log(`\n${JSON.stringify(result, null, 2)}\n`);
   while (true) {
     const answer: string = await rl.question('Run next iteration? type y if yes ');
     if (answer == 'y') {
       console.log('\n');
       let result = await getWordsJson(page, localInput[++index % localInput.length]);
-      console.log(`\n${JSON.stringify(result)}\n`);
+      console.log(`\n${JSON.stringify(result, null, 2)}\n`);
     }
     if (answer == 'q') {
       process.exit();

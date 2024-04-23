@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 import { logger } from './Logger';
-import { log } from 'winston';
+import { child, log } from 'winston';
 
 function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -123,11 +123,26 @@ export async function getWordTranslations(page: puppeteer.Page, inputString: str
       'translationString': string
     };
 
-    function getStringTranslations(): string {
+    function getStringTranslations(): string[] {
       let translations = document.querySelector('div.GQpbTd');
-      return translations?.textContent || '';
-    };
+      if (!translations) {
+        console.log(`returned empty translations`);
+        return [];
+      }
 
+      let tdadaElements = translations.querySelectorAll('tbody');
+      let ret: string[] = [];
+      //console.log(`tdadaElements.length ${tdadaElements.length}`)
+      tdadaElements.forEach((tbody, index) => {
+        //console.log(index);
+        for (let i = -1, l = tbody.childNodes.length; ++i < l;) {
+          let element = tbody.childNodes[i];
+          ret.push(element.textContent || '');
+        }
+        ret.push('\\n');
+      });
+      return ret;
+    };
 
     let ta = document.getElementsByTagName('textarea');
     console.log(`2 ta length ${ta.length}`);
@@ -156,7 +171,7 @@ export async function getWordTranslations(page: puppeteer.Page, inputString: str
             textArea.setSelectionRange(start, end);
             let inputWord = localInput.substring(start, end);
             let resultWord = getStringTranslations();
-            ret.push({ 'word': inputWord, 'translationString': resultWord });
+            ret.push({ 'word': inputWord, 'translationString': resultWord.join(' ') });
           });
       }
     };
