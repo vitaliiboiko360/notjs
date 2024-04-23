@@ -109,7 +109,7 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
   let arrayOfTranslations = await getWordTranslations(page, inputString);
   console.log(`we done with for loop with await`);
 
-  let lineTranslation = getSentenceTranslation(page);
+  let lineTranslation = await getSentenceTranslation(page);
   return { ...lineTranslation, 'translations': arrayOfTranslations };
 }
 

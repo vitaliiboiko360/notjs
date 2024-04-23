@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import process from 'node:process';
 import { logger } from './Logger';
-import { getWordsJson, selectEachWordConsequntly } from './WordsBrowser';
+import { getWordsJson } from './WordsBrowser';
 import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 
@@ -30,14 +30,15 @@ async function main() {
   await page.bringToFront();
   logger.info('Go to page');
   await page.goto('https://translate.google.com/', { waitUntil: 'load' });
+
   let result = await getWordsJson(page, localInput[index]);
-  console.log(`\n${result}\n`);
+  console.log(`\n${JSON.stringify(result)}\n`);
   while (true) {
     const answer: string = await rl.question('Run next iteration? type y if yes ');
     if (answer == 'y') {
       console.log('\n');
       let result = await getWordsJson(page, localInput[++index % localInput.length]);
-      console.log(`\n${result}\n`);
+      console.log(`\n${JSON.stringify(result)}\n`);
     }
     if (answer == 'q') {
       process.exit();
