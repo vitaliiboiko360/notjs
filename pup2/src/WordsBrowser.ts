@@ -120,26 +120,43 @@ export async function getWordTranslations(page: puppeteer.Page, inputString: str
 
     interface WordTranslations {
       'word': string,
-      'translationString': string
+      'translationString': Object
     };
 
-    function getStringTranslations(): string[] {
+    function getStringTranslations(): Object {
       let translations = document.querySelector('div.GQpbTd');
       if (!translations) {
         console.log(`returned empty translations`);
         return [];
       }
-
+      interface WordTranslation { word: string, translations: string, frequency: string };
       let tdadaElements = translations.querySelectorAll('tbody');
-      let ret: string[] = [];
-      //console.log(`tdadaElements.length ${tdadaElements.length}`)
+      let ret: { partOfSpeech: string, words: WordTranslation[] } = { partOfSpeech: '', words: [] };
       tdadaElements.forEach((tbody, index) => {
-        //console.log(index);
-        for (let i = -1, l = tbody.childNodes.length; ++i < l;) {
-          let element = tbody.childNodes[i];
-          ret.push(element.textContent || '');
-        }
-        ret.push('\n');
+        let tableRows = tbody.querySelectorAll('tr');
+        tableRows.forEach(tr => {
+          let wordTranslation: WordTranslation = { word: '', translations: '', frequency: '' };
+          let tableHeader = tr.querySelectorAll('th');
+          tableHeader.forEach(th => {
+            if (th.classList.contains('yYp8Hb')) {
+              ret['partOfSpeech'] = th.textContent || '';
+            }
+            if (th.classList.contains('S18kfe')) {
+              wordTranslation['word'] = th.textContent || '';
+            }
+          });
+
+          let tableData = tr.querySelectorAll('td');
+          tableData.forEach((td) => {
+            if (td.classList.contains('xex4Kc')) {
+              wordTranslation['translations'] = td.textContent || '';
+            }
+            if (td.classList.contains('ROtxYd')) {
+              wordTranslation['frequency'] = td.textContent || '';
+            }
+          });
+          ret['words'].push(wordTranslation);
+        });
       });
       return ret;
     };
@@ -162,7 +179,7 @@ export async function getWordTranslations(page: puppeteer.Page, inputString: str
     const selectEachWords = async () => {
       for (let index = 0; index < endWordsBoundaries.length; index++) {
         let endPos = endWordsBoundaries[index]
-        await wait(1000)
+        await wait(2000)
           .then(async () => {
             let start = index > 0 ? endWordsBoundaries[index - 1] + index : 0; // +index for spaces
             let end = endPos + index;
@@ -171,10 +188,10 @@ export async function getWordTranslations(page: puppeteer.Page, inputString: str
             textArea.setSelectionRange(start, end);
             let inputWord = localInput.substring(start, end);
 
-            await wait(2000)
+            await wait(1500)
               .then(() => {
                 let resultWord = getStringTranslations();
-                ret.push({ 'word': inputWord, 'translationString': resultWord.join(' ') });
+                ret.push({ 'word': inputWord, 'translationString': resultWord });
               });
           });
       }
