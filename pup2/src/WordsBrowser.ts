@@ -139,7 +139,7 @@ export async function getWordTranslations(page: puppeteer.Page, inputString: str
           let element = tbody.childNodes[i];
           ret.push(element.textContent || '');
         }
-        ret.push('\\n');
+        ret.push('\n');
       });
       return ret;
     };
@@ -162,16 +162,20 @@ export async function getWordTranslations(page: puppeteer.Page, inputString: str
     const selectEachWords = async () => {
       for (let index = 0; index < endWordsBoundaries.length; index++) {
         let endPos = endWordsBoundaries[index]
-        await wait(3000)
-          .then(() => {
+        await wait(1000)
+          .then(async () => {
             let start = index > 0 ? endWordsBoundaries[index - 1] + index : 0; // +index for spaces
             let end = endPos + index;
             console.log(`setSelectionRange ${start} ${end}`);
             textArea.focus();
             textArea.setSelectionRange(start, end);
             let inputWord = localInput.substring(start, end);
-            let resultWord = getStringTranslations();
-            ret.push({ 'word': inputWord, 'translationString': resultWord.join(' ') });
+
+            await wait(2000)
+              .then(() => {
+                let resultWord = getStringTranslations();
+                ret.push({ 'word': inputWord, 'translationString': resultWord.join(' ') });
+              });
           });
       }
     };
