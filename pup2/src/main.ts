@@ -31,14 +31,16 @@ async function main() {
   logger.info('Go to page');
   await page.goto('https://translate.google.com/', { waitUntil: 'load' });
 
-  let result = await getWordsJson(page, localInput[index]);
-  console.log(`\n${JSON.stringify(result, null, 2)}\n`);
+  async function getResultAndOutput(page: puppeteer.Page, inputString: string) {
+    let result = await getWordsJson(page, inputString);
+    console.log(`\n${JSON.stringify(result, null, 2)}\n`);
+  }
+
+  await getResultAndOutput(page, localInput[index])
   while (true) {
     const answer: string = await rl.question('Run next iteration? type y if yes ');
     if (answer == 'y') {
-      console.log('\n');
-      let result = await getWordsJson(page, localInput[++index % localInput.length]);
-      console.log(`\n${JSON.stringify(result, null, 2)}\n`);
+      await getResultAndOutput(page, localInput[++index % localInput.length]);
     }
     if (answer == 'q') {
       process.exit();

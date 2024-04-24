@@ -119,20 +119,24 @@ export async function getWordTranslations(page: puppeteer.Page, inputString: str
     const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
     interface WordTranslations {
-      'word': string,
-      'translationString': Object
+      originalWord: string,
+      translations: Object
     };
 
-    function getStringTranslations(): Object {
-      let translations = document.querySelector('div.GQpbTd');
-      if (!translations) {
+    interface WordFullTranslations { partOfSpeech: string, words: WordTranslation[] };
+    interface WordTranslation { word: string, translations: string, frequency: string };
+
+    function getStringTranslations(): WordFullTranslations[] {
+      let translationsNode = document.querySelector('div.GQpbTd');
+      let translations: WordFullTranslations[] = [];
+      if (!translationsNode) {
         console.log(`returned empty translations`);
-        return [];
+        return [{ partOfSpeech: '', words: [] }];
       }
-      interface WordTranslation { word: string, translations: string, frequency: string };
-      let tdadaElements = translations.querySelectorAll('tbody');
-      let ret: { partOfSpeech: string, words: WordTranslation[] } = { partOfSpeech: '', words: [] };
-      tdadaElements.forEach((tbody, index) => {
+
+      let tdadaElements = translationsNode.querySelectorAll('tbody');
+      tdadaElements.forEach((tbody) => {
+        let ret: WordFullTranslations = { partOfSpeech: '', words: [] };
         let tableRows = tbody.querySelectorAll('tr');
         tableRows.forEach(tr => {
           let wordTranslation: WordTranslation = { word: '', translations: '', frequency: '' };
@@ -157,8 +161,9 @@ export async function getWordTranslations(page: puppeteer.Page, inputString: str
           });
           ret['words'].push(wordTranslation);
         });
+        translations.push(ret);
       });
-      return ret;
+      return translations.length ? translations : [{ partOfSpeech: '', words: [] }];
     };
 
     let ta = document.getElementsByTagName('textarea');
@@ -187,11 +192,10 @@ export async function getWordTranslations(page: puppeteer.Page, inputString: str
             textArea.focus();
             textArea.setSelectionRange(start, end);
             let inputWord = localInput.substring(start, end);
-
             await wait(1500)
               .then(() => {
-                let resultWord = getStringTranslations();
-                ret.push({ 'word': inputWord, 'translationString': resultWord });
+                let resultWordObj = getStringTranslations();
+                ret.push({ 'originalWord': inputWord, 'translations': resultWordObj });
               });
           });
       }
