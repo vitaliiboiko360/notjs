@@ -1,6 +1,5 @@
 import puppeteer from 'puppeteer';
 import { logger } from './Logger';
-import { child, log } from 'winston';
 
 function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -22,15 +21,12 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
   }
 
   const inputTextFieldBox = '.QFw9Te textarea';
-
   const inputTextLanguageButtonPanel = 'div.akczyd';
-
   let inputTextArea = await page.waitForSelector(inputTextFieldBox, { visible: true });
 
   logger.info('before clear');
   await inputTextArea.click({ clickCount: 3 });
   await inputTextArea.press('Backspace');
-  logger.info('after clear & before type');
   run(async () => await page.type(inputTextFieldBox, inputString), 'page.type');
 
   await wait(2000)
@@ -49,10 +45,7 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
       }, inputTextLanguageButtonPanel);
     });
 
-  await wait(2000)
-    .then(() => {
-      logger.info('after type');
-    });
+  await wait(2000);
 
   const selectFirstWord = async (selector: string, inputString: string) => {
     const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -71,10 +64,8 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
   };
 
   await page.evaluate(selectFirstWord, inputTextFieldBox, inputString);
-  logger.info('after 1 evaluate');
 
   const seeDictButton = ".VfPpkd-StrnGf-rymPhb.DMZ54e.vQXW9e";
-  const divOuterButtonSeeDictionary = "div.VfPpkd-xl07Ob-XxIAqe.VfPpkd-xl07Ob.q6oraf.P77izf.g4ZIhe.VfPpkd-xl07Ob-XxIAqe-OWXEXe-uxVfW-FNFY6c-uFfGwd.VfPpkd-xl07Ob-XxIAqe-OWXEXe-FNFY6c";
   const clickSeeDictButon = async () => {
     await page.waitForSelector(seeDictButton, { visible: true, timeout: 5000 })
       .then(async () => {
@@ -107,8 +98,6 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
       , 'click'));
 
   let arrayOfTranslations = await getWordTranslations(page, inputString);
-  console.log(`we done with for loop with await`);
-
   let lineTranslation = await getSentenceTranslation(page);
   return { ...lineTranslation, 'translations': arrayOfTranslations };
 }
@@ -130,7 +119,6 @@ export async function getWordTranslations(page: puppeteer.Page, inputString: str
       let translationsNode = document.querySelector('div.GQpbTd');
       let translations: WordFullTranslations[] = [];
       if (!translationsNode) {
-        console.log(`returned empty translations`);
         return [{ partOfSpeech: '', words: [] }];
       }
 
@@ -167,7 +155,6 @@ export async function getWordTranslations(page: puppeteer.Page, inputString: str
     };
 
     let ta = document.getElementsByTagName('textarea');
-    console.log(`2 ta length ${ta.length}`);
     if (ta.length == 0) {
       return;
     }
@@ -188,7 +175,6 @@ export async function getWordTranslations(page: puppeteer.Page, inputString: str
           .then(async () => {
             let start = index > 0 ? endWordsBoundaries[index - 1] + index : 0; // +index for spaces
             let end = endPos + index;
-            console.log(`setSelectionRange ${start} ${end}`);
             textArea.focus();
             textArea.setSelectionRange(start, end);
             let inputWord = localInput.substring(start, end);
