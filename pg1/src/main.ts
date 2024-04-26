@@ -1,7 +1,6 @@
 
 import pg from 'pg';
 
-const pgTypes = require('pg').types
 const { Client } = pg;
 
 const clientConfig = {
