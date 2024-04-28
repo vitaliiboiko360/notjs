@@ -1,5 +1,9 @@
 
 import pg from 'pg';
+import * as readline from 'node:readline/promises';
+import { stdin as input, stdout as output } from 'node:process';
+
+const rl = readline.createInterface({ input, output });
 
 const { Client } = pg;
 
@@ -14,11 +18,22 @@ const clientConfig = {
   keepAlive: true,
 };
 
-
 const client = new Client(clientConfig)
 await client.connect()
 
-const res = await client.query('SELECT NOW()');
-console.log(res);
-
-await client.end();
+while (true) {
+  const answer: string = await rl.question('r - run, q - quit');
+  if (answer == 'r') {
+    try {
+      const res = await client.query('SELECT NOW()');
+      console.log(res);
+    } catch {
+      console.log('error');
+    }
+    continue;
+  }
+  if (answer == 'q') {
+    await client.end();
+    process.exit();
+  }
+}
