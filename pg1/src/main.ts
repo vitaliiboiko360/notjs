@@ -4,6 +4,7 @@ import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import process from 'node:process';
 
 const rl = readline.createInterface({ input, output });
 
@@ -49,20 +50,32 @@ async function loadJsonFileToDb(fileName: string, dbClient: pg.Client) {
   }
 }
 
+const endClientAndProcess = async (client: pg.Client) => {
+  await client.end();
+  process.exit();
+};
+
+if (process.argv.length > 1) {
+
+}
+
 while (true) {
-  const answer: string = await rl.question('r - run,\nq - quit,\nl - load data to db\n');
-  if (answer == 'r') {
+  const answer: string = await rl.question('q - quit,\nl - load data to db\n');
+  if (answer.length > 1) {
     try {
-      const res = await client.query('SELECT NOW()');
-      console.log(res);
+      console.log(`you've entered query:\n${answer}\n`);
+      const answer2: string = await rl.question('to execute query enter - y');
+      if (answer2 == 'y') {
+        const res = await client.query(answer);
+        console.log(res);
+      }
     } catch {
       console.log('error');
     }
     continue;
   }
   if (answer == 'q') {
-    await client.end();
-    process.exit();
+    endClientAndProcess(client);
   }
   if (answer == 'l') {
     loadJsonFileToDb(inputJsonFilePath, client);
