@@ -24,11 +24,9 @@ const clientConfig = {
 const client = new Client(clientConfig);
 await client.connect();
 
-const inputJsonFilePath = '/home/user1/ndwdir/lang-learner/data/me_gusta_leer.json';
-
 async function loadJsonFileToDb(fileName: string, dbClient: pg.Client) {
-  const data = await fs.readFile(inputJsonFilePath);
-  const justFileName = path.basename(inputJsonFilePath, path.extname(inputJsonFilePath));
+  const data = await fs.readFile(fileName);
+  const justFileName = path.basename(fileName, path.extname(fileName));
   try {
     console.log('BEGIN');
     await dbClient.query('BEGIN')
@@ -80,8 +78,5 @@ while (true) {
   }
   if (answer == 'q') {
     endClientAndProcess(client);
-  }
-  if (answer == 'l') {
-    loadJsonFileToDb(inputJsonFilePath, client);
   }
 }
