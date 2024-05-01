@@ -55,8 +55,12 @@ const endClientAndProcess = async (client: pg.Client) => {
   process.exit();
 };
 
-if (process.argv.length > 1) {
-
+if (process.argv.length > 2) {
+  const shouldBeFilePath = process.argv[2];
+  console.log(`have supplied second argument\nshould be path ${shouldBeFilePath}\n`);
+  const answer = await rl.question('to execute query enter - y\n');
+  if (answer == 'y')
+    loadJsonFileToDb(shouldBeFilePath, client);
 }
 
 while (true) {
@@ -64,7 +68,7 @@ while (true) {
   if (answer.length > 1) {
     try {
       console.log(`you've entered query:\n${answer}\n`);
-      const answer2: string = await rl.question('to execute query enter - y');
+      const answer2: string = await rl.question('to execute query enter - y\n');
       if (answer2 == 'y') {
         const res = await client.query(answer);
         console.log(res);
