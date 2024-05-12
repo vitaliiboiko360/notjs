@@ -24,7 +24,6 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
   const inputTextLanguageButtonPanel = 'div.akczyd';
   let inputTextArea = await page.waitForSelector(inputTextFieldBox, { visible: true });
 
-  logger.info('before clear');
   await inputTextArea.click({ clickCount: 3 });
   await inputTextArea.press('Backspace');
   run(async () => await page.type(inputTextFieldBox, inputString), 'page.type');
@@ -50,11 +49,11 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
   const selectFirstWord = async (selector: string, inputString: string) => {
     const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
     let ta = document.querySelectorAll(selector);
-    console.log(`ta length ${ta.length}`);
+
     if (ta.length == 0) {
       return;
     }
-    console.log(`1 inputString ${inputString}\n${(ta[0])}`);
+
     let textArea: HTMLInputElement = ta[0] as HTMLInputElement;
     await wait(1500)
       .then(() => {
@@ -72,7 +71,7 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
         await page.click(seeDictButton)
       })
       .catch(async () => {
-        console.log(`no click button found`);
+
         await wait(2000)
           .then(() => run(async () => await page.click(inputTextFieldBox)
             , 'click'));
@@ -113,7 +112,7 @@ export async function getWordTranslations(page: puppeteer.Page, inputString: str
     };
 
     interface WordFullTranslations { partOfSpeech: string, words: WordTranslation[] };
-    interface WordTranslation { word: string, translations: string, frequency: string };
+    interface WordTranslation { englishWord: string, spanishWords: string, frequency: string };
 
     function getStringTranslations(): WordFullTranslations[] {
       let translationsNode = document.querySelector('div.GQpbTd');
@@ -127,21 +126,21 @@ export async function getWordTranslations(page: puppeteer.Page, inputString: str
         let ret: WordFullTranslations = { partOfSpeech: '', words: [] };
         let tableRows = tbody.querySelectorAll('tr');
         tableRows.forEach(tr => {
-          let wordTranslation: WordTranslation = { word: '', translations: '', frequency: '' };
+          let wordTranslation: WordTranslation = { englishWord: '', spanishWords: '', frequency: '' };
           let tableHeader = tr.querySelectorAll('th');
           tableHeader.forEach(th => {
             if (th.classList.contains('yYp8Hb')) {
               ret['partOfSpeech'] = th.textContent || '';
             }
             if (th.classList.contains('S18kfe')) {
-              wordTranslation['word'] = th.textContent || '';
+              wordTranslation['englishWord'] = th.textContent?.trim() || '';
             }
           });
 
           let tableData = tr.querySelectorAll('td');
           tableData.forEach((td) => {
             if (td.classList.contains('xex4Kc')) {
-              wordTranslation['translations'] = td.textContent || '';
+              wordTranslation['spanishWords'] = td.textContent || '';
             }
             if (td.classList.contains('ROtxYd')) {
               wordTranslation['frequency'] = td.textContent || '';
@@ -193,13 +192,13 @@ export async function getWordTranslations(page: puppeteer.Page, inputString: str
 
 async function getSentenceTranslation(page: puppeteer.Page): Promise<Object> {
   return await page.evaluate(() => {
-    const wholeSentenceTranslation = 'wholeSentenceTranslation';
+    const sentenceEnglishTranslation = 'sentenceEnglishTranslation';
     const translateSentenceSelector = 'ryNqvb';
 
-    let retObj: { wholeSentenceTranslation: string } = { wholeSentenceTranslation: '' };
+    let retObj: { sentenceEnglishTranslation: string } = { sentenceEnglishTranslation: '' };
     let translateLineElements = document.getElementsByClassName(translateSentenceSelector);
     if (translateLineElements.length > 0) {
-      retObj[wholeSentenceTranslation] = translateLineElements[0].textContent || '';
+      retObj[sentenceEnglishTranslation] = translateLineElements[0].textContent || '';
     }
     return retObj;
   });

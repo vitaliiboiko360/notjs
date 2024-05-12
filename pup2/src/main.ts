@@ -24,11 +24,15 @@ async function main() {
       '--no-sandbox'
     ]
   });
+
   let index = 0;
   const localInput = ["¿Te gusta leer?", "Yo leo un libro todas las semanas.", "Y a veces, leo dos libros."];
+
   const page = (await browser.pages())[0];
   await page.bringToFront();
+
   logger.info('Go to page');
+
   await page.goto('https://translate.google.com/', { waitUntil: 'load' });
 
   async function getResultAndOutput(page: puppeteer.Page, inputString: string) {
