@@ -5,12 +5,21 @@ import { getWordsJson } from './WordsBrowser';
 import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 import fs from 'node:fs';
+import getTranslations from './GetTranslation';
 
 const rl = readline.createInterface({ input, output });
 
 async function main() {
 
   let config = fs.readFileSync(__dirname + '/../config.conf', 'utf8');
+  let listOfTextsJson: { texts: [{ resource: string }] } = JSON.parse(fs.readFileSync(config, 'utf8'));
+  let listOfTexts = listOfTextsJson.texts.map(item => item.resource);
+  logger.info(`we found followind texts: \n${listOfTexts.join('\n')}\n`);
+
+  const answer: string = await rl.question('type y to stop script\n');
+  if (answer == 'y') {
+    process.exit();
+  }
 
   logger.info('Launching headless Chrome');
 
@@ -36,19 +45,10 @@ async function main() {
 
   await page.goto('https://translate.google.com/', { waitUntil: 'load' });
 
-
-  let index = 0;
-  const localInput = ["¿Te gusta leer?", "Yo leo un libro todas las semanas.", "Y a veces, leo dos libros."];
-
-  async function getResultAndOutput(page: puppeteer.Page, inputString: string) {
-    let result = await getWordsJson(page, inputString);
-    console.log(`\n${JSON.stringify(result, null, 2)}\n`);
-  }
-
   while (true) {
     const answer: string = await rl.question('Run next iteration? type y if yes ');
     if (answer == 'y') {
-      await getResultAndOutput(page, localInput[index++ % localInput.length]);
+      await getTranslations(page);
     }
     if (answer == 'q') {
       process.exit();
