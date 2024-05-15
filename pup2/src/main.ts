@@ -1,16 +1,20 @@
 import puppeteer from 'puppeteer';
 import process from 'node:process';
 import { logger } from './Logger';
-import { getWordsJson } from './WordsBrowser';
+
 import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 import fs from 'node:fs';
 import getTranslations from './GetTranslation';
 
+import path from 'node:path';
+
 const rl = readline.createInterface({ input, output });
 
 async function main() {
 
+  // config 
+  //
   let config = fs.readFileSync(__dirname + '/../config.conf', 'utf8');
   let listOfTextsJson: { texts: [{ resource: string }] } = JSON.parse(fs.readFileSync(config, 'utf8'));
   let listOfTexts = listOfTextsJson.texts.map(item => item.resource);
@@ -21,8 +25,9 @@ async function main() {
     process.exit();
   }
 
+  // browser
+  //
   logger.info('Launching headless Chrome');
-
   const browser = await puppeteer.launch({
     executablePath: '/opt/google/chrome/google-chrome',
     headless: false,
@@ -45,8 +50,14 @@ async function main() {
 
   await page.goto('https://translate.google.com/', { waitUntil: 'load' });
 
+  let fileFolder = path.dirname(config);
+
+  let index = 0;
   while (true) {
-    const answer: string = await rl.question('Run next iteration? type y if yes ');
+    let fileName = listOfTexts[index++];
+    let filePath = path.join(fileFolder, fileName + '.json');
+
+    const answer: string = await rl.question(`process file:\n\t"${filePath}"\npress y to proceed\n`);
     if (answer == 'y') {
       await getTranslations(page);
     }
