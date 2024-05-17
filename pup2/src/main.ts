@@ -11,22 +11,19 @@ import path from 'node:path';
 
 const rl = readline.createInterface({ input, output });
 
+let config: { intpuFilePath: string, dbConfig: {} } = JSON.parse(fs.readFileSync(__dirname + '/../config.json', 'utf8'));
+
 async function main() {
 
-  // config 
-  //
-  let config = fs.readFileSync(__dirname + '/../config.conf', 'utf8');
-  let listOfTextsJson: { texts: [{ resource: string }] } = JSON.parse(fs.readFileSync(config, 'utf8'));
+  let listOfTextsJson: { texts: [{ resource: string }] } = JSON.parse(fs.readFileSync(config.intpuFilePath, 'utf8'));
   let listOfTexts = listOfTextsJson.texts.map(item => item.resource);
-  logger.info(`we found followind texts: \n${listOfTexts.join('\n')}\n`);
+  logger.info(`we found following texts: \n${listOfTexts.join('\n')}\n`);
 
   const answer: string = await rl.question('type y to stop script\n');
   if (answer == 'y') {
     process.exit();
   }
 
-  // browser
-  //
   logger.info('Launching headless Chrome');
   const browser = await puppeteer.launch({
     executablePath: '/opt/google/chrome/google-chrome',
@@ -54,7 +51,7 @@ async function main() {
 
   let index = 0;
   while (true) {
-    let fileName = listOfTexts[index++];
+    let fileName = listOfTexts[index++ % listOfTexts.length];
     let filePath = path.join(fileFolder, fileName + '.json');
 
     const answer: string = await rl.question(`process file:\n\t"${filePath}"\npress y to proceed\n`);
