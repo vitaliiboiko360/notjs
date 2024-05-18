@@ -1,0 +1,14 @@
+{
+  "main": "./main.js",
+  "bin": "./main.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "test": "_",
+    "lint": "eslint src/*.ts"
+  },
+  "dependencies": {
+    "@types/pg": "^8.11.5",
+    "pg": "^8.11.5"
+  }
+}
