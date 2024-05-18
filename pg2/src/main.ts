@@ -5,12 +5,17 @@ import { stdin as input, stdout as output } from 'node:process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
+import { fileURLToPath } from 'url';
 
 const rl = readline.createInterface({ input, output });
 
 const { Client } = pg;
 
-const clientConfig = JSON.parse(await fs.readFile('../dbConfig.json', 'utf8'));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const pathToDbConfig = path.join(__dirname, '../dbConfig.json');
+const clientConfig = JSON.parse(await fs.readFile(pathToDbConfig, 'utf8'));
 
 const client = new Client(clientConfig);
 await client.connect();
@@ -44,11 +49,17 @@ const endClientAndProcess = async (client: pg.Client) => {
   process.exit();
 };
 
-const listOfFilesJson = JSON.parse(await fs.readFile('../../lang-learner/data/list_of_texts.json', 'utf8'));
-
+const listOfFilesJson: { texts: [{ resource: string }] } = JSON.parse(await fs.readFile('../../lang-learner/data/list_of_texts.json', 'utf8'));
+const listOfFileNames = listOfFilesJson.texts.map(el => el.resource);
+console.log(`list of files:\n\n${listOfFileNames.join('\n')}\n\n`);
+let index = 0;
 while (true) {
-  const answer: string = await rl.question('q - quit,\nl - load data to db\n');
-  if (answer.length > 1) {
+  let fileName = listOfFileNames[index % listOfFileNames.length];
+
+  let filePath = path.join('$HOME/ndwdir/lang-learner/data/', fileName + '.json');
+
+  const answer: string = await rl.question(`press y to load file ${filePath}\n`);
+  if (answer == 'y') {
     try {
       console.log(`you've entered query:\n${answer}\n`);
       const answer2: string = await rl.question('to execute query enter - y\n');
