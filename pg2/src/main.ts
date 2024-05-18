@@ -6,6 +6,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'url';
+import { env } from 'node:process';
 
 const rl = readline.createInterface({ input, output });
 
@@ -54,19 +55,14 @@ const listOfFileNames = listOfFilesJson.texts.map(el => el.resource);
 console.log(`list of files:\n\n${listOfFileNames.join('\n')}\n\n`);
 let index = 0;
 while (true) {
-  let fileName = listOfFileNames[index % listOfFileNames.length];
+  let fileName = listOfFileNames[++index % listOfFileNames.length];
 
-  let filePath = path.join('$HOME/ndwdir/lang-learner/data/', fileName + '.json');
+  let filePath = path.join(path.resolve(env.HOME || '', './ndwdir/lang-learner/data/'), fileName + '.json');
 
   const answer: string = await rl.question(`press y to load file ${filePath}\n`);
   if (answer == 'y') {
     try {
-      console.log(`you've entered query:\n${answer}\n`);
-      const answer2: string = await rl.question('to execute query enter - y\n');
-      if (answer2 == 'y') {
-        const res = await client.query(answer);
-        console.log(res);
-      }
+      loadJsonFileToDb(filePath, client);
     } catch {
       console.log('error');
     }
