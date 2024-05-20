@@ -1,24 +1,21 @@
 import pg from 'pg';
 
-const clientConfig = {
-  host: "192.168.1.3",
-  port: 5432,
-  user: "",
-  database: "learntospeak",
-  password: "5b553db13b5157677f76394ace066fbe",
-  ssl: false,
-  application_name: "db client",
-  keepAlive: true,
-};
+import fs from 'node:fs/promises';
+import path from 'node:path'
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const pathToDbConfig = path.join(__dirname, '../dbConfig.json');
+const clientConfig = JSON.parse(await fs.readFile(pathToDbConfig, 'utf8'));
 
 const { Client } = pg;
-
 const client = new Client(clientConfig);
-await client.connect();
 
-export default async function loadJsonFileToDb(fileName: string, dbClient: pg.Client) {
-  const data = await fs.readFile(fileName);
-  const justFileName = path.basename(fileName, path.extname(fileName));
+export default async function loadJsonFileToDb(data: string, dbClient: pg.Client) {
+  await client.connect();
+
   try {
     console.log('BEGIN');
     await dbClient.query('BEGIN')
