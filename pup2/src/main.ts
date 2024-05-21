@@ -7,8 +7,6 @@ import { stdin as input, stdout as output } from 'node:process';
 import fs from 'node:fs';
 import getTranslations from './GetTranslation';
 
-import path from 'node:path';
-
 const rl = readline.createInterface({ input, output });
 
 let config: { intpuFilePath: string, dbConfig: {} } = JSON.parse(fs.readFileSync(__dirname + '/../config.json', 'utf8'));
@@ -47,16 +45,13 @@ async function main() {
 
   await page.goto('https://translate.google.com/', { waitUntil: 'load' });
 
-  let fileFolder = path.dirname(config);
 
   let index = 0;
   while (true) {
     let fileName = listOfTexts[index++ % listOfTexts.length];
-    let filePath = path.join(fileFolder, fileName + '.json');
-
-    const answer: string = await rl.question(`process file:\n\t"${filePath}"\npress y to proceed\n`);
+    const answer: string = await rl.question(`process file:\n\t"${fileName}"\npress y to proceed\n`);
     if (answer == 'y') {
-      await getTranslations(page);
+      await getTranslations(page, fileName);
     }
     if (answer == 'q') {
       process.exit();

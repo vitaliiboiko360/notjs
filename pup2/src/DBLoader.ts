@@ -13,26 +13,21 @@ const clientConfig = JSON.parse(await fs.readFile(pathToDbConfig, 'utf8'));
 const { Client } = pg;
 const client = new Client(clientConfig);
 
-export default async function loadJsonFileToDb(data: string, dbClient: pg.Client) {
+export default async function loadJsonFileFromDb(fileName: string): Promise<Object> {
   await client.connect();
-
+  const queryText = 'SELECT spanish_stories(text_lines_json) WHERE file_name_noext == $1';
   try {
-    console.log('BEGIN');
-    await dbClient.query('BEGIN')
-    const queryText = 'INSERT INTO spanish_stories(text_lines_json) VALUES($1) RETURNING id'
-    const res = await dbClient.query(queryText, [data]);
+    console.log(`trying to query with fileName=${fileName}\n`);
+    const res = await dbClient.query(queryText, [fileName]);
+    client.end();
     if (res.rows.length > 0) {
-      const id = res.rows[0].id;
-      console.log(`UPDATE WHERE id=${id}`);
-
-      const queryText2 = 'UPDATE spanish_stories SET file_name_noext=$1 WHERE id=$2';
-
-      await dbClient.query(queryText2, [justFileName, id])
+      const jsonOutput = res.rows[0].text_lines_json;
+      console.log(`jsonOutput=${jsonOutput}`);
+      return jsonOutput;
     }
-    await dbClient.query('COMMIT');
   } catch (e) {
     console.log(e);
-    console.log('ROLLBACK');
-    await dbClient.query('ROLLBACK')
   }
+  client.end();
+  return {};
 }
