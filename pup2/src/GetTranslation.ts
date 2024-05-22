@@ -7,7 +7,7 @@ const rl = readline.createInterface({ input, output });
 
 export default async function getTranslations(page: puppeteer.Page, inputFileName: string) {
   let inputJson: any = await loadJsonFileFromDb(inputFileName);
-  let textLines = inputJson.lines.map(element: { text: string } => element.text);
+  let textLines = inputJson.lines.map((element: { text: string }) => element.text);
 
   let index = 0;
   while (true) {

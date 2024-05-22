@@ -4,6 +4,8 @@ import fs from 'node:fs/promises';
 import path from 'node:path'
 import { fileURLToPath } from 'url';
 
+console.log(`DBLoader`);
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -18,8 +20,8 @@ export default async function loadJsonFileFromDb(fileName: string): Promise<Obje
   const queryText = 'SELECT spanish_stories(text_lines_json) WHERE file_name_noext == $1';
   try {
     console.log(`trying to query with fileName=${fileName}\n`);
-    const res = await dbClient.query(queryText, [fileName]);
-    client.end();
+    const res = await client.query(queryText, [fileName]);
+    await client.end();
     if (res.rows.length > 0) {
       const jsonOutput = res.rows[0].text_lines_json;
       console.log(`jsonOutput=${jsonOutput}`);
@@ -28,6 +30,6 @@ export default async function loadJsonFileFromDb(fileName: string): Promise<Obje
   } catch (e) {
     console.log(e);
   }
-  client.end();
+  await client.end();
   return {};
 }
