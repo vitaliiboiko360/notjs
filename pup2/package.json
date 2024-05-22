@@ -4,6 +4,7 @@
   "description": "browse dictionary for you",
   "main": "./main.js",
   "bin": "./main.js",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "test": "_",
@@ -12,6 +13,7 @@
   "keywords": [],
   "author": "me",
   "devDependencies": {
+    "@types/pg": "^8.11.6",
     "@types/puppeteer": "^5.4.0",
     "@typescript-eslint/eslint-plugin": "^4.9.0",
     "@typescript-eslint/parser": "^4.9.0",
@@ -19,6 +21,7 @@
   },
   "dependencies": {
     "colors": "^1.4.0",
+    "pg": "^8.11.5",
     "puppeteer": "^5.5.0",
     "winston": "^3.13.0"
   }
