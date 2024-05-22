@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
-import { getWordsJson } from './WordsBrowser';
-import loadJsonFileFromDb from './DBLoader';
+import { getWordsJson } from './WordsBrowser.js';
+import loadJsonFileFromDb from './DBLoader.js';
 import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 const rl = readline.createInterface({ input, output });

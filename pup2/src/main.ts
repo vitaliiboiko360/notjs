@@ -1,15 +1,15 @@
 import puppeteer from 'puppeteer';
 import process from 'node:process';
-import { logger } from './Logger';
+import { logger } from './Logger.js';
 
 import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 import fs from 'node:fs';
-import getTranslations from './GetTranslation';
+import getTranslations from './GetTranslation.js';
 
 const rl = readline.createInterface({ input, output });
 
-let config: { intpuFilePath: string, dbConfig: {} } = JSON.parse(fs.readFileSync(__dirname + '/../config.json', 'utf8'));
+let config: { intpuFilePath: string, dbConfig: {} } = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 
 async function main() {
 

@@ -1,5 +1,5 @@
 import puppeteer from 'puppeteer';
-import { logger } from './Logger';
+import { logger } from './Logger.js';
 
 function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
