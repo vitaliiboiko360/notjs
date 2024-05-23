@@ -17,11 +17,6 @@ async function main() {
   let listOfTexts = listOfTextsJson.texts.map(item => item.resource);
   logger.info(`we found following texts: \n${listOfTexts.join('\n')}\n`);
 
-  const answer: string = await rl.question('type y to stop script\n');
-  if (answer == 'y') {
-    process.exit();
-  }
-
   logger.info('Launching headless Chrome');
   const browser = await puppeteer.launch({
     executablePath: '/opt/google/chrome/google-chrome',

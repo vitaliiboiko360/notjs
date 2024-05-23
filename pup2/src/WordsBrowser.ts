@@ -16,7 +16,7 @@ function run(func: Function, message: string) {
 const translationDefinistionsSelector = '.Dwvecf';
 
 export async function getWordsJson(page: puppeteer.Page, inputString: string): Promise<Object> {
-  if (inputString.length == 0) {
+  if (inputString == null || inputString.length == 0) {
     return {};
   }
 

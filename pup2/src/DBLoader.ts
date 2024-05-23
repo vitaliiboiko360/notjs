@@ -3,6 +3,7 @@ import pg from 'pg';
 import fs from 'node:fs/promises';
 import path from 'node:path'
 import { fileURLToPath } from 'url';
+import { cli } from 'winston/lib/winston/config';
 
 console.log(`DBLoader`);
 
@@ -17,13 +18,13 @@ const client = new Client(clientConfig);
 
 export default async function loadJsonFileFromDb(fileName: string): Promise<Object> {
   await client.connect();
-  const queryText = 'SELECT spanish_stories(text_lines_json) WHERE file_name_noext == $1';
+  const queryText = 'SELECT text_lines_json FROM spanish_stories WHERE file_name_noext = $1';
   try {
     console.log(`trying to query with fileName=${fileName}\n`);
     const res = await client.query(queryText, [fileName]);
     await client.end();
     if (res.rows.length > 0) {
-      const jsonOutput = res.rows[0].text_lines_json;
+      let jsonOutput = res.rows[0].text_lines_json;
       console.log(`jsonOutput=${jsonOutput}`);
       return jsonOutput;
     }
@@ -31,5 +32,12 @@ export default async function loadJsonFileFromDb(fileName: string): Promise<Obje
     console.log(e);
   }
   await client.end();
-  return {};
+  return { lines: [] };
+}
+
+export async function loadJsonTranslationToDb(translationObject: Object) {
+  await client.connect();
+  const queryText = 'INSERT INTO spanish_stories $1 WHERE file_name'
+
+  await client.end();
 }
