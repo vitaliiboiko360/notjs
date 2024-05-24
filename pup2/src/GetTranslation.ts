@@ -1,6 +1,6 @@
 import puppeteer from 'puppeteer';
 import { getWordsJson } from './WordsBrowser.js';
-import loadJsonFileFromDb from './DBLoader.js';
+import loadJsonFileFromDb, { loadJsonTranslationToDb } from './DBLoader.js';
 import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 import { transport } from 'winston';
@@ -8,7 +8,7 @@ const rl = readline.createInterface({ input, output });
 
 declare type translation = { originalLine: string, translation: {} };
 
-export default async function getTranslations(page: puppeteer.Page, inputFileName: string): Promise<Object> {
+export default async function getAndLoadTranslations(page: puppeteer.Page, inputFileName: string) {
   let inputJson: any = await loadJsonFileFromDb(inputFileName);
   let textLines = inputJson.lines.map((element: { text: string }) => element.text);
 
@@ -18,6 +18,4 @@ export default async function getTranslations(page: puppeteer.Page, inputFileNam
     let result = await getWordsJson(page, inputString);
     resultsJson.translations.push({ originalLine: inputString, translation: result });
   }
-  console.log(resultsJson);
-  return resultsJson;
 }

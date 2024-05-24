@@ -5,7 +5,7 @@ import { logger } from './Logger.js';
 import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 import fs from 'node:fs';
-import getTranslations from './GetTranslation.js';
+import getAndLoadTranslations from './GetTranslation.js';
 
 const rl = readline.createInterface({ input, output });
 
@@ -46,7 +46,7 @@ async function main() {
     let fileName = listOfTexts[index++ % listOfTexts.length];
     const answer: string = await rl.question(`process file:\n\t"${fileName}"\npress y to proceed\n`);
     if (answer == 'y') {
-      await getTranslations(page, fileName);
+      await getAndLoadTranslations(page, fileName);
     }
     if (answer == 'q') {
       process.exit();
