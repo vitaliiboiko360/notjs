@@ -40,18 +40,11 @@ async function main() {
 
   await page.goto('https://translate.google.com/', { waitUntil: 'load' });
 
-
-  let index = 0;
-  while (true) {
-    let fileName = listOfTexts[index++ % listOfTexts.length];
-    const answer: string = await rl.question(`process file:\n\t"${fileName}"\npress y to proceed\n`);
-    if (answer == 'y') {
-      await getAndLoadTranslations(page, fileName);
-    }
-    if (answer == 'q') {
-      process.exit();
-    }
+  for (let i = 0; i < listOfTexts.length; i++) {
+    let fileName = listOfTexts[i];
+    await getAndLoadTranslations(page, fileName);
   }
+  process.exit();
 }
 
 main();
