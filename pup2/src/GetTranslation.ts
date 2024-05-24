@@ -18,4 +18,5 @@ export default async function getAndLoadTranslations(page: puppeteer.Page, input
     let result = await getWordsJson(page, inputString);
     resultsJson.translations.push({ originalLine: inputString, translation: result });
   }
+  loadJsonTranslationToDb(resultsJson, inputFileName);
 }
