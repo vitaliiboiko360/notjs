@@ -35,9 +35,13 @@ export default async function loadJsonFileFromDb(fileName: string): Promise<Obje
   return { lines: [] };
 }
 
-export async function loadJsonTranslationToDb(translationObject: Object) {
+export async function loadJsonTranslationToDb(translationObject: Object, fileName: string) {
   await client.connect();
-  const queryText = 'INSERT INTO spanish_stories $1 WHERE file_name'
-
+  const queryText = 'UPDATE spanish_stories SET translations_json=$1 WHERE file_name_noext=$2';
+  try {
+    await client.query(queryText, [JSON.stringify(translationObject), fileName]);
+  } catch (e) {
+    console.log(e);
+  }
   await client.end();
 }
