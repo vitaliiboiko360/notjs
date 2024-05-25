@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer';
 import { logger } from './Logger.js';
+import { silly } from 'winston';
 
 function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -82,16 +83,25 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
 
     await page.evaluate(selectWord, inputTextFieldBox, indicesPair);
 
-    let isBreak: boolean = await page.waitForSelector(seeDictButton, { visible: true, timeout: 5000 })
+    let isBreak: boolean = false;
+
+    try {
+      await page.waitForSelector(translationDefinistionsSelector, { visible: true, timeout: 1000 });
+      isBreak = true;
+    } catch {
+    }
+
+    await page.waitForSelector(seeDictButton, { visible: true, timeout: 5000 })
       .then(async () => {
         await page.click(seeDictButton);
-        return true;
+        isBreak = true;
       })
       .catch(async () => {
+        if (isBreak)
+          return;
         await wait(2000)
           .then(() => run(async () => await page.click(inputTextFieldBox)
             , 'click'));
-        return false;
       });
 
     if (isBreak)
