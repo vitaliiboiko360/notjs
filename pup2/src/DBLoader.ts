@@ -14,9 +14,9 @@ const pathToDbConfig = path.join(__dirname, '../dbConfig.json');
 const clientConfig = JSON.parse(await fs.readFile(pathToDbConfig, 'utf8'));
 
 const { Client } = pg;
-const client = new Client(clientConfig);
 
 export default async function loadJsonFileFromDb(fileName: string): Promise<Object> {
+  const client = new Client(clientConfig);
   await client.connect();
   const queryText = 'SELECT text_lines_json FROM spanish_stories WHERE file_name_noext = $1';
   try {
@@ -36,6 +36,7 @@ export default async function loadJsonFileFromDb(fileName: string): Promise<Obje
 }
 
 export async function loadJsonTranslationToDb(translationObject: Object, fileName: string) {
+  const client = new Client(clientConfig);
   await client.connect();
   const queryText = 'UPDATE spanish_stories SET translations_json=$1 WHERE file_name_noext=$2';
   try {

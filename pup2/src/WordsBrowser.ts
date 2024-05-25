@@ -15,6 +15,8 @@ function run(func: Function, message: string) {
 
 const translationDefinistionsSelector = '.Dwvecf';
 
+declare type pair = { start: number, end: number };
+
 export async function getWordsJson(page: puppeteer.Page, inputString: string): Promise<Object> {
   if (inputString == null || inputString.length == 0) {
     return {};
@@ -46,10 +48,12 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
 
   await wait(2000);
 
-  const selectFirstWord = async (selector: string, inputString: string) => {
-    const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-    let ta = document.querySelectorAll(selector);
+  //
 
+  const selectWord = async (selector: string, indicesPair: pair) => {
+    const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    let ta = document.querySelectorAll(selector);
     if (ta.length == 0) {
       return;
     }
@@ -58,37 +62,49 @@ export async function getWordsJson(page: puppeteer.Page, inputString: string): P
     await wait(1500)
       .then(() => {
         textArea.focus();
-        textArea.setSelectionRange(0, inputString.split(' ')[0].length);
+        textArea.setSelectionRange(indicesPair.start, indicesPair.end);
       });
   };
 
-  await page.evaluate(selectFirstWord, inputTextFieldBox, inputString);
+  let endWordsBoundaries = inputString
+    .split(' ')
+    .reduce((accumulator: pair[], word: string, index: number) => {
+      let startPosition = (index > 0) ? accumulator[index - 1].end + 1 : 0;
+      let endPosition = (index > 0) ? word.length + startPosition : word.length;
+      accumulator.push({ start: startPosition, end: endPosition });
+      return accumulator;
+    }, []);
 
   const seeDictButton = ".VfPpkd-StrnGf-rymPhb.DMZ54e.vQXW9e";
-  const clickSeeDictButon = async () => {
-    await page.waitForSelector(seeDictButton, { visible: true, timeout: 5000 })
+
+  for (let i = 0; i < endWordsBoundaries.length; ++i) {
+    let indicesPair = endWordsBoundaries[i];
+
+    await page.evaluate(selectWord, inputTextFieldBox, indicesPair);
+
+    let isBreak: boolean = await page.waitForSelector(seeDictButton, { visible: true, timeout: 5000 })
       .then(async () => {
-        await page.click(seeDictButton)
+        await page.click(seeDictButton);
+        return true;
       })
       .catch(async () => {
-
         await wait(2000)
           .then(() => run(async () => await page.click(inputTextFieldBox)
             , 'click'));
-        await page.evaluate(selectFirstWord, inputTextFieldBox, inputString);
-        try {
-          await page.waitForSelector(translationDefinistionsSelector, { visible: true, timeout: 1000 });
-        } catch {
-          await clickSeeDictButon();
-        }
+        return false;
       });
-  };
+
+    if (isBreak)
+      break;
+  }
 
   try {
     await page.waitForSelector(translationDefinistionsSelector, { visible: true, timeout: 1000 });
   } catch {
-    await clickSeeDictButon();
+    return {};
   }
+
+  //
 
   await page.waitForSelector(inputTextFieldBox, { visible: true });
 
