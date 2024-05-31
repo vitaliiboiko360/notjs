@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 
+const WSPORT = 8008;
 const PORT = 4001;
 
 module.exports = {
@@ -23,6 +24,12 @@ module.exports = {
       directory: path.resolve(__dirname),
       watch: true,
     },
+    proxy: [{
+      '/ws': {
+        target: `ws://localhost:${WSPORT}`,
+        ws: true // important
+      },
+    }]
   },
   resolve: {
     extensions: ['.js', '.jsx', '.tsx'],
