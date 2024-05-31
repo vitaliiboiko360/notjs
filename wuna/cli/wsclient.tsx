@@ -1,7 +1,8 @@
 import React from 'react';
 
-export default function WsClient() {
-  let webSocket = new WebSocket('ws:/localhost:4001');
+const WsClient = React.forwardRef((props, ref) => {
+  ref.current = new WebSocket('wss:/localhost:4001/wss');
   console.log('websocket created');
   return (<><p>'websocket created'</p></>);
-}
+});
+export default WsClient;
