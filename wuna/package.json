@@ -6,7 +6,7 @@
     "build:d.ts": "tsc",
     "watch": "webpack --progress --watch",
     "prepare": "npm run build && npm run build:d.ts",
-    "start": "webpack-dev-server --progress"
+    "start": "./startWebSockertServer.sh & webpack-dev-server --progress"
   },
   "dependencies": {
     "ws": "^8.17.0"
