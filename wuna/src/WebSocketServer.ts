@@ -1,7 +1,9 @@
 import WebSocket, { WebSocketServer } from 'ws';
 
+const PORT = 8008;
+
 const wss = new WebSocketServer({
-  port: 8080,
+  port: PORT,
   perMessageDeflate: {
     zlibDeflateOptions: {
       // See zlib defaults.
@@ -25,6 +27,8 @@ const wss = new WebSocketServer({
 
 wss.on('connection',
   function connection(ws) {
+    console.log('on connection');
+
     ws.on('error', console.error);
 
     ws.on('message', function message(data, isBinary) {
