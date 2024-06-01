@@ -36,28 +36,32 @@ const wss = new WebSocketServer({
 
 console.log('from ws server');
 
-wss.on('connection',
-  function onConnection(ws) {
-    console.log('on connection');
+function onConnection(ws: WebSocket) {
+  console.log('on connection');
 
-    ws.on('error', (error) => {
-      console.log(`our error= ${error}`);
-    });
-
-    ws.on('message', function message(data, isBinary) {
-      console.log(`data=${JSON.stringify(data)}`);
-      // wss.clients.forEach(
-      //   function each(client) {
-      //     if (client !== ws && client.readyState === WebSocket.OPEN) {
-      //       client.send(data, { binary: isBinary });
-      //     }
-      //   });
-    });
+  ws.on('error', (error) => {
+    console.log(`our error= ${error}`);
   });
+
+  ws.on('message', function message(data, isBinary) {
+    console.log(`data=${JSON.stringify(data)}`);
+    // wss.clients.forEach(
+    //   function each(client) {
+    //     if (client !== ws && client.readyState === WebSocket.OPEN) {
+    //       client.send(data, { binary: isBinary });
+    //     }
+    //   });
+  });
+}
+
+wss.on('connection', onConnection);
 
 server.on('upgrade', (request, socket, head) => {
   console.log('on upgrade');
-  wss.handleUpgrade(request, socket, head, function afterDoneUpgrade(ws) {
+
+  const afterDoneUpgrade = (ws: WebSocket) => {
     wss.emit('connection', ws, request);
-  });
+  }
+
+  wss.handleUpgrade(request, socket, head, afterDoneUpgrade);
 });
