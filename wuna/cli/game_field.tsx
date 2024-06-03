@@ -1,5 +1,11 @@
 import React from 'react';
 
+import SvgContainer from './svg/svg_container';
+
 export default function GameField(props) {
-  return (<svg>{props.children}</svg>);
+  return (
+    <SvgContainer>
+
+    </SvgContainer>
+  );
 }
