@@ -1,12 +1,12 @@
 import React from 'react';
 
 import SvgContainer from './svg/svg_container';
-import SvgEllipse from './svg/svg_ellipse';
+import SvgEllipseTable from './svg/svg_ellipse_table';
 
 export default function GameField(props) {
   return (
     <SvgContainer>
-      <SvgEllipse />
+      <SvgEllipseTable />
     </SvgContainer>
   );
 }
