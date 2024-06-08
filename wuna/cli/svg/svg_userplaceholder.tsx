@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function SvgUserPlaceHolder(props) {
-  return (<rect x={props.xPosition} y={props.yPosition} width="70" height="70" rx="3" fill="ghostwhite" stroke="aliceblue" strokeWidth="2" />);
+  return (<rect x={props.xPosition} y={props.yPosition} width="80" height="80" rx="7" ry="7" fill="ghostwhite" stroke="aliceblue" strokeWidth="2" />);
 }
 
 export const USER_POSITIONS = {
@@ -19,6 +19,8 @@ export const USER_POSITIONS = {
   },
   "bottom_user": {
     xPosition: 330,
-    yPosition: 750
+    yPosition: 450
   }
 }
+
+
