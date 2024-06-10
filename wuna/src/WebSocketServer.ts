@@ -44,7 +44,17 @@ function onConnection(ws: WebSocket) {
   });
 
   ws.on('message', function message(data, isBinary) {
-    console.log(`data=${JSON.stringify(data)}`);
+
+    if (isBinary) {
+      let array = new Uint16Array(data as Uint16Array);
+      console.log(`we recive binary = `);
+      for (let i = 0; i < array.length; i++) {
+        console.log(array[i]);
+      }
+    }
+    else {
+      console.log(`non binary = ${JSON.stringify(data)}`);
+    }
     // wss.clients.forEach(
     //   function each(client) {
     //     if (client !== ws && client.readyState === WebSocket.OPEN) {

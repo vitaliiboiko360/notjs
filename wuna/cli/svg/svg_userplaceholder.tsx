@@ -1,7 +1,14 @@
 import React from 'react';
 
 export default function SvgUserPlaceHolder(props) {
-  return (<rect x={props.xPosition} y={props.yPosition} width="80" height="80" rx="7" ry="7" fill="ghostwhite" stroke="lightgray" strokeWidth="2" />);
+
+  let ref = React.useRef(null);
+
+  React.useEffect(() => {
+
+  });
+
+  return (<rect ref={ref} x={props.xPosition} y={props.yPosition} width="80" height="80" rx="7" ry="7" fill="ghostwhite" stroke="lightgray" strokeWidth="2" />);
 }
 
 export const USER_POSITIONS = {
