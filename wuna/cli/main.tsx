@@ -2,12 +2,14 @@ import React from 'react';
 import WsClient from './wsclient';
 import WsSendMessage from './wssendmessage';
 import GameField from './game_field';
+import WsRecieveMessage from './wsrecivemessage';
 
 export default function Main() {
   const webSocketRef = React.useRef(null);
   return (<>
     <WsClient ref={webSocketRef} />
     <WsSendMessage ref={webSocketRef} />
+    <WsRecieveMessage ref={webSocketRef} />
     <GameField />
   </>);
 }

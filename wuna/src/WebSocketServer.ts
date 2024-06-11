@@ -72,7 +72,10 @@ function onConnection(ws: WebSocket) {
     let arrayToSend = new Uint8Array(10);
     arrayToSend[0] = getRandomNumber(0, 100);
     arrayToSend[1] = getRandomNumber(0, 100);
-    ws.send(arrayToSend, { binary: true });
+    if (ws.readyState === WebSocket.OPEN) {
+      console.log(`we are sending `, arrayToSend);
+      ws.send(arrayToSend, { binary: true });
+    }
   }, 10000);
 }
 
