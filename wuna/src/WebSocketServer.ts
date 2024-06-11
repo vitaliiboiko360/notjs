@@ -46,7 +46,7 @@ function onConnection(ws: WebSocket) {
   ws.on('message', function message(data, isBinary) {
 
     if (isBinary) {
-      let array = new Uint16Array(data as Uint16Array);
+      let array = new Uint8Array(data as Uint8Array);
       console.log(`we recive binary = `);
       for (let i = 0; i < array.length; i++) {
         console.log(array[i]);
