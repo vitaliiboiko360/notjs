@@ -1,12 +1,12 @@
 // universal
 export enum UNIVERSAL {
-  UNIVERSAL_PlusFour,
+  UNIVERSAL_PlusFour = 10,
   UNIVERSAL
 }
 
 // red, green, blue, yelow
 export enum RED {
-  RED_0 = 0,
+  RED_0 = 20,
   RED_1,
   RED_2,
   RED_3,
@@ -22,7 +22,7 @@ export enum RED {
 }
 
 export enum GREEN {
-  GREEN_0 = 0,
+  GREEN_0 = 40,
   GREEN_1,
   GREEN_2,
   GREEN_3,
@@ -38,7 +38,7 @@ export enum GREEN {
 }
 
 export enum BLUE {
-  BLUE_0 = 0,
+  BLUE_0 = 60,
   BLUE_1,
   BLUE_2,
   BLUE_3,
@@ -54,7 +54,7 @@ export enum BLUE {
 }
 
 export enum YELLOW {
-  YELLOW_0 = 0,
+  YELLOW_0 = 80,
   YELLOW_1,
   YELLOW_2,
   YELLOW_3,

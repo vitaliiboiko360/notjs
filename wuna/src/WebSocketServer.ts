@@ -36,6 +36,12 @@ const wss = new WebSocketServer({
 
 console.log('from ws server');
 
+function getRandomNumber(min: number, max: number) {
+  const minCeiled = Math.ceil(min);
+  const maxFloored = Math.floor(max);
+  return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
+}
+
 function onConnection(ws: WebSocket) {
   console.log('on connection');
 
@@ -44,7 +50,6 @@ function onConnection(ws: WebSocket) {
   });
 
   ws.on('message', function message(data, isBinary) {
-
     if (isBinary) {
       let array = new Uint8Array(data as Uint8Array);
       console.log(`we recive binary = `);
@@ -62,6 +67,13 @@ function onConnection(ws: WebSocket) {
     //     }
     //   });
   });
+
+  setInterval(() => {
+    let arrayToSend = new Uint8Array(10);
+    arrayToSend[0] = getRandomNumber(0, 100);
+    arrayToSend[1] = getRandomNumber(0, 100);
+    ws.send(arrayToSend, { binary: true });
+  }, 10000);
 }
 
 wss.on('connection', onConnection);
