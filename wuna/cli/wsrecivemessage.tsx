@@ -6,13 +6,20 @@ const WsRecieveMessage = React.forwardRef((props, webSocketRef) => {
     if (!webSocketRef.current)
       return;
 
+    const onMessage = (event) => {
+      let arBuf = new Uint8Array(event.data);
+      //console.log(`we recive `, arBuf);
+    };
+
     webSocketRef
       .current
-      .addEventListener("message",
-        (event) => {
-          let arBuf = new Uint8Array(event.data);
-          console.log(`we recive `, arBuf);
-        });
+      .addEventListener("message", onMessage);
+
+    return () => {
+      webSocketRef
+        .current
+        .removeEventListener("message", onMessage);
+    }
   }, []);
 
   return (null);
