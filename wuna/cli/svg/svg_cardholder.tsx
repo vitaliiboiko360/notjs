@@ -48,6 +48,53 @@ export default function SvgCardHolder(props) {
   }
 }
 
-function getCardToRender() {
+function getCardToRender(cardId: number) {
+  if (cardId > 50 && cardId <= 100) {
+    return <>
+      <svg
+        width="64.02916mm"
+        height="95.779167mm"
+        viewBox="0 0 64.02916 95.779167"
+        version="1.1"
+        id="svg1"
+        xmlns:svg="http://www.w3.org/2000/svg"
+      >
+        <rect
+          width="63.499996"
+          height="95.25"
+          rx="10.583333"
+          ry="10.583333"
+          x="0.23478761"
+          y="0.28714344"
+          id="rect2987"
+          style={{ fill: '#ffffff', fillOpacity: 1, fillRule: 'evenodd', stroke: '#000000', strokeWidth: 0.529167, strokeMiterlimit: 4, strokeDasharray: 'none' }} />
+        <rect
+          width="52.916664"
+          height="84.666664"
+          rx="5.2916665"
+          ry="5.2916665"
+          x="5.5264544"
+          y="5.5788107"
+          id="rect3757"
+          style="fill:#ff5555;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.05833" />
+        <path
+          d="m 47.859788,21.453795 c -23.380053,0 -42.3333325,18.953278 -42.3333325,42.333332 0,5.845016 4.7383165,10.583333 10.5833325,10.583333 23.380055,0 42.333333,-18.953278 42.333333,-42.333332 0,-5.845016 -4.738316,-10.583333 -10.583333,-10.583333 z"
+          id="path3773-0-4-8-4"
+          style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.05833" />
+        <path
+          d="m 29.868123,32.037128 -5.291667,5.291667 v 6.349999 l 5.291667,-5.291666 v 25.399999 h 5.291666 V 32.037128 Z"
+          id="rect3921"
+          style="fill:#ff5555;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.05833" />
+        <path
+          d="M 10.818122,8.2246295 8.1722885,10.870462 v 3.175 l 2.6458335,-2.645833 v 12.699999 h 2.645833 V 8.2246295 Z"
+          id="rect3921-5"
+          style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.05833" />
+        <path
+          d="m 53.151455,87.599627 2.645833,-2.64583 v -3.175004 l -2.645833,2.645834 v -12.7 h -2.645833 v 15.875 z"
+          id="rect3921-5-5"
+          style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.05833" />
+      </svg>
+    </>
+  }
 
 }
