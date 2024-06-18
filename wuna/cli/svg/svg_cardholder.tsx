@@ -29,9 +29,11 @@ export default function SvgCardHolder(props) {
   return getCard2();
 }
 
-function getCard1() {
+function getCard1(x: number, y: number) {
   return (<>
     <svg
+      x={x | 0}
+      y={y | 0}
       width="64.02916mm"
       height="95.779167mm"
       viewBox="0 0 64.02916 95.779167"
@@ -77,10 +79,12 @@ function getCard1() {
   </>);
 }
 
-function getCard2() {
+function getCard2(x: number, y: number) {
   return (
     <>
       <svg
+        x={x | 0}
+        y={y | 0}
         width="64.02916mm"
         height="95.779167mm"
         viewBox="0 0 64.02916 95.779167"
