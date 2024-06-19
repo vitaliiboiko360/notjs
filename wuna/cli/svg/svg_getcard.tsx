@@ -12,6 +12,7 @@ export function getCard1(x?: number, y?: number) {
       id="svg1"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <g transform="scale(0.3)">
       <rect
         width="63.499996"
         height="95.25"
@@ -46,6 +47,7 @@ export function getCard1(x?: number, y?: number) {
         d="m 53.151455,87.599627 2.645833,-2.64583 v -3.175004 l -2.645833,2.645834 v -12.7 h -2.645833 v 15.875 z"
         id="rect3921-5-5"
         style={{ fill: '#ffffff', fillOpacity: 1, fillRule: 'evenodd', stroke: 'none', strokeWidth: 1.05833 }} />
+    </g>
     </svg>
   </>);
 }
@@ -62,6 +64,7 @@ export function getCard2(x?: number, y?: number) {
         version="1.1"
         id="svg2"
         xmlns="http://www.w3.org/2000/svg">
+        <g transform="scale(0.3)">
         <rect
           width="63.499996"
           height="95.25"
@@ -96,6 +99,7 @@ export function getCard2(x?: number, y?: number) {
           d="m 50.535428,87.576842 c 2.931583,0 5.291666,-2.360068 5.291666,-5.29164 v -0.529157 h -2.645833 v 0.529157 c 0,1.465781 -1.180042,2.645825 -2.645833,2.645825 -1.465792,0 -2.645834,-1.180044 -2.645834,-2.645825 0,-0.596627 0.495046,-1.767481 1.012011,-2.174338 2.807123,-2.209228 2.777489,-1.844368 6.925489,-4.704783 v -3.704149 h -5.291666 -5.291667 v 2.645815 1.058334 h 2.645833 v -1.058334 h 2.645834 2.116666 c -3.275573,2.306488 -3.515095,2.250588 -6.081754,4.547493 -0.822368,0.735947 -1.326579,2.196598 -1.326579,3.389962 0,2.931572 2.360084,5.29164 5.291667,5.29164 z"
           id="rect3163-52-9-8-1-1-2-7-3-6-0-4"
           style={{ fill: '#ffffff', fillOpacity: 1, stroke: 'none', strokeWidth: 1.05833 }} />
+        </g>
       </svg >
     </>
   );
