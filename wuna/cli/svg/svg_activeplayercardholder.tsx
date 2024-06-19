@@ -1,15 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { WebSocketContext } from '../websocketprovider'
+import { WebSocketContext } from '../websocketprovider';
+import SvgActivePlayerCards from './svg_activeplayercards';
 
-import { getCard1, getCard2 } from './svg_getcard';
-
-export default function SvgCardHolder(props) {
-
-  const [whichCard, setWhichCard] = useState(0);
-
+export default function SvgActivePlayerCardHolder(props) {
+  const [whichCard, setWhichCard] = useState(-1);
   const webSocket = useContext(WebSocketContext);
-
-  React.useEffect(() => {
+  useEffect(() => {
     const onMessage = (event) => {
       let arBuf = new Uint8Array(event.data);
       console.log(arBuf[0]);
@@ -25,8 +21,9 @@ export default function SvgCardHolder(props) {
     }
   }, []);
 
-  if (whichCard > 50) {
-    return getCard1();
-  }
-  return getCard2();
+  return (<>
+    <svg x="200" y="480" width="400px" height="120px">
+      <SvgActivePlayerCards addCard={whichCard} />
+    </svg>
+  </>);
 }
