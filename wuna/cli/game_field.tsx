@@ -5,7 +5,7 @@ import SvgEllipseTable from './svg/svg_ellipse_table';
 import SvgUserPlaceHolder, { USER_POSITIONS } from './svg/svg_userplaceholder';
 import SvgCardStack from './svg/svg_cardsstack';
 import Card from './svg/svg_card';
-import SvgCardHolder from './svg/svg_cardholder';
+import SvgCardHolder from './svg/svg_activeplayercardholder';
 
 export default function GameField(props) {
   return (

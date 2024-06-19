@@ -1,39 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { WebSocketContext } from '../websocketprovider'
 
-export default function SvgCardHolder(props) {
-
-  const [whichCard, setWhichCard] = useState(0);
-
-  const webSocket = useContext(WebSocketContext);
-
-  React.useEffect(() => {
-    const onMessage = (event) => {
-      let arBuf = new Uint8Array(event.data);
-      console.log(arBuf[0]);
-      setWhichCard(arBuf[0])
-    };
-
-    webSocket
-      .addEventListener("message", onMessage);
-
-    return () => {
-      webSocket
-        .removeEventListener("message", onMessage);
-    }
-  }, []);
-
-  if (whichCard > 50) {
-    return getCard1();
-  }
-  return getCard2();
-}
-
-function getCard1(x: number, y: number) {
+export function getCard1(x?: number, y?: number) {
   return (<>
     <svg
-      x={x | 0}
-      y={y | 0}
+      x={x || 0}
+      y={y || 0}
       width="64.02916mm"
       height="95.779167mm"
       viewBox="0 0 64.02916 95.779167"
@@ -79,12 +50,12 @@ function getCard1(x: number, y: number) {
   </>);
 }
 
-function getCard2(x: number, y: number) {
+export function getCard2(x?: number, y?: number) {
   return (
     <>
       <svg
-        x={x | 0}
-        y={y | 0}
+        x={x || 0}
+        y={y || 0}
         width="64.02916mm"
         height="95.779167mm"
         viewBox="0 0 64.02916 95.779167"
