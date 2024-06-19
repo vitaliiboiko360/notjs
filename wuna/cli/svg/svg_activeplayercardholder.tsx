@@ -8,8 +8,8 @@ export default function SvgActivePlayerCardHolder(props) {
   const onMessage = useCallback((event) => {
     let arBuf = new Uint8Array(event.data);
     // console.log(arBuf[0]);
-
-    if (cardsArray.lenght < 10) {
+    // console.log(cardsArray);
+    if (cardsArray.length < 10) {
       setCardsArray([...cardsArray, arBuf[0]]);
       console.log(cardsArray);
     }

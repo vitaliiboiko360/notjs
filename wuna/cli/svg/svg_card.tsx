@@ -10,7 +10,7 @@ export default function Card(props) {
   React.useEffect(() => {
     const onMessage = (event) => {
       let arBuf = new Uint8Array(event.data);
-      console.log(arBuf[0]);
+      // console.log(arBuf[0]);
       setWhichCard(arBuf[0])
     };
 
