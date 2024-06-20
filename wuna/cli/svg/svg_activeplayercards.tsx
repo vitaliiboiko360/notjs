@@ -1,20 +1,20 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, Fragment } from 'react';
 
 import { getCard1, getCard2 } from './svg_getcard';
 
 export default function SvgActivePlayerCards(props) {
-  if (props.cardsArray.length == 0) {
+  if (props.cardArray.length == 0) {
     console.log(`init cards state in props`);
     return (<></>);
   }
 
-  console.log(`props.cardsArray.length=${props.cardsArray.length}`);
+  console.log(`props.cardsArray.length=${props.cardArray.length}`);
 
   return (<>
-    {props.cardsArray.map((card, index) => {
-      if (card > 50)
-        return getCard1(index * 20);
-      return getCard2(index * 20);
+    {props.cardArray.map((card, index) => {
+      return (<Fragment key={index}>
+        {(card > 50) ? getCard1(index * 20) : getCard2(index * 20)}
+      </Fragment>);
     })}
   </>);
 }
