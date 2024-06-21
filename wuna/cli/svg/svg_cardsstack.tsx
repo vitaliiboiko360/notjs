@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, forwardRef } from 'react';
 import Card from './svg_card';
 import { SVG_DIMENSIONS } from './svg_container';
 
@@ -10,9 +10,15 @@ const yPos = yCenter / 2;
 
 const k = 2;
 
+const SvgForCards = forwardRef((props, svgCardStack_ref)=>{
+  return (<svg ref={svgCardStack_ref} x={xPos} y={yPos} width={xCenter} height={yCenter} >
+  </svg>);
+});
+
 export default function SvgCardStack(props) {
   const svgCardStack_ref = useRef(null);
-  return (<svg ref={svgCardStack_ref} x={xPos} y={yPos} width={xCenter} height={yCenter} >
+  return (<>
+    <SvgForCards ref={svgCardStack_ref} />
     <Card ref={svgCardStack_ref} />
-  </svg>);
+  </>);
 }
