@@ -17,7 +17,7 @@ const Card = forwardRef((props, svgCardStack_ref) => {
 
     webSocket.addEventListener("message", onMessage);
 
-    return () => webSocket.removeEventLisnter("message", onMessage);
+    return () => webSocket.removeEventListener("message", onMessage);
   });
 
   if (whichCard != -1) {
