@@ -25,7 +25,9 @@ const Card = forwardRef((props, svgCardStack_ref) => {
     return;
   }
 
+  if (whichCard > 50) {
 
+  }
 
   return (<></>);
 });
