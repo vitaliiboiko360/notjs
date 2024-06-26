@@ -1,8 +1,11 @@
-import React, { useState, useContext, useEffect, forwardRef } from 'react';
-import { WebSocketContext } from '../websocketprovider'
+import React, { useState, useContext, useEffect, useRef, forwardRef } from 'react';
+import { createRoot } from 'react-dom/client';
+import { WebSocketContext } from '../websocketprovider';
+import { getCard1, getCard2 } from './svg_getcard';
 
 const Card = forwardRef((props, svgCardStack_ref) => {
   const [whichCard, setWhichCard] = useState(-1);
+  const [isRootRendered, setIsRootRendered] = useState(false);
   const webSocket = useContext(WebSocketContext);
   useEffect(() => {
     const onMessage = (event) => {
@@ -20,13 +23,19 @@ const Card = forwardRef((props, svgCardStack_ref) => {
     return () => webSocket.removeEventListener("message", onMessage);
   });
 
-  if (whichCard == -1) {
+  if (whichCard == -1 || !isRootRendered) {
     console.log(`initial state`);
     return;
   }
 
-  if (whichCard > 50) {
-
+  if (!isRootRendered) {
+    const root = createRoot(svgCardStack_ref.current);
+    setIsRootRendered(true);
+    if (whichCard > 50) {
+      root.render(getCard1());
+    } else {
+      root.render(getCard2());
+    }
   }
 
   return (<></>);
