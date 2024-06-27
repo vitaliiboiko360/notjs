@@ -5,8 +5,8 @@ import { SVG_DIMENSIONS } from './svg_container';
 const xCenter = SVG_DIMENSIONS.width / 2;
 const yCenter = SVG_DIMENSIONS.height / 2;
 
-const xPos = SVG_DIMENSIONS.width / 2;
-const yPos = SVG_DIMENSIONS.height / 2;
+const xPos = SVG_DIMENSIONS.width / 4;
+const yPos = SVG_DIMENSIONS.height / 4;
 
 const SvgForCards = forwardRef((props, svgCardStack_ref) => {
   return (<svg ref={svgCardStack_ref} x={xPos} y={yPos} width={xCenter} height={yCenter} >

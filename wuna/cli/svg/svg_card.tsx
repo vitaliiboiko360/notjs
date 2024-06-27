@@ -1,11 +1,13 @@
 import React, { useState, useContext, useEffect, useRef, forwardRef } from 'react';
-import { createRoot } from 'react-dom/client';
+import { createPortal } from 'react-dom';
 import { WebSocketContext } from '../websocketprovider';
 import { getCard1, getCard2 } from './svg_getcard';
 
+let key = 0;
+
 const Card = forwardRef((props, svgCardStack_ref) => {
   const [whichCard, setWhichCard] = useState(-1);
-  const [isRootRendered, setIsRootRendered] = useState(false);
+
   const webSocket = useContext(WebSocketContext);
   useEffect(() => {
     const onMessage = (event) => {
@@ -23,20 +25,19 @@ const Card = forwardRef((props, svgCardStack_ref) => {
     return () => webSocket.removeEventListener("message", onMessage);
   });
 
-  if (whichCard == -1 || !isRootRendered) {
+  if (whichCard == -1) {
     console.log(`initial state`);
     return;
   }
 
-  if (!isRootRendered) {
-    const root = createRoot(svgCardStack_ref.current);
-    setIsRootRendered(true);
-    if (whichCard > 50) {
-      root.render(getCard1());
-    } else {
-      root.render(getCard2());
-    }
+  let jsx = '';
+  let angle = Math.random() * 100 % 15;
+  if (whichCard > 50) {
+    jsx = <g rotate={`${angle}`}>{getCard1()}</g >;
+  } else {
+    jsx = <g rotate={`${angle}`}>{getCard2()}</g >;
   }
+  createPortal(jsx, svgCardStack_ref.current, key++);
 
   return (<></>);
 });
