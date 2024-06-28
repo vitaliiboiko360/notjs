@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect, useRef, forwardRef } from 'react';
-import { createPortal } from 'react-dom';
 import { WebSocketContext } from '../websocketprovider';
 import { getCard1, getCard2 } from './svg_getcard';
+
+import { renderToString } from 'react-dom/server';
 
 let key = 0;
 
@@ -27,17 +28,15 @@ const Card = forwardRef((props, svgCardStack_ref) => {
 
   if (whichCard == -1) {
     console.log(`initial state`);
-    return;
+    return (<></>);
   }
 
-  let jsx = '';
   let angle = Math.random() * 100 % 15;
   if (whichCard > 50) {
-    jsx = <g rotate={`${angle}`}>{getCard1()}</g >;
+    svgCardStack_ref.current.appendChild(document.createElement(renderToString(getCard1(0, angle))));
   } else {
-    jsx = <g rotate={`${angle}`}>{getCard2()}</g >;
+    svgCardStack_ref.current.appendChild(document.createElement(renderToString(getCard2(0, angle))));
   }
-  createPortal(jsx, svgCardStack_ref.current, key++);
 
   return (<></>);
 });
