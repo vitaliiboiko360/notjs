@@ -33,13 +33,11 @@ const Card = forwardRef((props, svgCardStack_ref) => {
 
   let angle = Math.random() * 100 % 15;
   if (whichCard > 50) {
-    let element = document.createElement('svg');
-    element.setAttribute('xmlns', "http://www.w3.org/2000/svg");
+    let element = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
     element.innerHTML = renderToString(getCard1(0, angle));
     svgCardStack_ref.current.appendChild(element);
   } else {
-    let element = document.createElement('svg');
-    element.setAttribute('xmlns', "http://www.w3.org/2000/svg");
+    let element = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
     element.innerHTML = renderToString(getCard2(0, angle));
     svgCardStack_ref.current.appendChild(element);
   }
