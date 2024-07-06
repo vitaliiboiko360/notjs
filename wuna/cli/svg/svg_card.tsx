@@ -1,10 +1,8 @@
 import React, { useState, useContext, useEffect, useRef, forwardRef } from 'react';
 import { WebSocketContext } from '../websocketprovider';
-import { getCard1, getCard2 } from './svg_getcard';
+import { getCard1, getCard2, getCard_2 } from './svg_getcard';
 
 import { renderToString } from 'react-dom/server';
-
-let key = 0;
 
 const Card = forwardRef((props, svgCardStack_ref) => {
   const [whichCard, setWhichCard] = useState(-1);
@@ -32,13 +30,30 @@ const Card = forwardRef((props, svgCardStack_ref) => {
   }
 
   let angle = Math.random() * 100 % 15;
+  // if (whichCard > 50) {
+  //   let element = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+  //   element.setAttribute("y", "125");
+  //   element.setAttribute("x", "175");
+  //   const rotateString = `rotate(${angle}, 45, 30)`;
+  //   element.innerHTML = renderToString(<g transform={rotateString} >{getCard1()}</g>);
+  //   svgCardStack_ref.current.appendChild(element);
+  // } else {
+  //   let element = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
+  //   element.setAttribute("y", "125");
+  //   element.setAttribute("x", "175");
+  //   const rotateString = `rotate(${angle}, 45, 30)`;
+  //   element.innerHTML = renderToString(<g transform={rotateString} >{getCard2()}</g>);
+  //   svgCardStack_ref.current.appendChild(element);
+  // }
   if (whichCard > 50) {
-    let element = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-    element.innerHTML = renderToString(getCard1(0, angle));
+    let element = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    element.setAttribute('transform', 'matrix(1.1, 0, 0, 1.1, 0, 0)'); // matrix(0, 0, 0, 0, 0, 0)
+    element.innerHTML = renderToString(getCard_2());
     svgCardStack_ref.current.appendChild(element);
   } else {
-    let element = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-    element.innerHTML = renderToString(getCard2(0, angle));
+    let element = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    element.setAttribute('transform', 'matrix(1.1, 0, 0, 1.1, 0, 0)');
+    element.innerHTML = renderToString(getCard_2());
     svgCardStack_ref.current.appendChild(element);
   }
 
