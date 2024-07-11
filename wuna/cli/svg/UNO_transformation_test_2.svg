@@ -5,7 +5,7 @@
       fill: black;
     }
   </style>
-	<g fill="none">
+	<g fill="none" transform="translate(50,50)">
     <g>
       <circle cx="20" cy="20" r="10" stroke="blue" />
       <line x1="20" y1="8" x2="20" y2="32" stroke="yellow" />
