@@ -4,6 +4,10 @@
       font: 3px sans-serif;
       fill: black;
     }
+    .mini_text_style {
+      font: 4px sans-serif;
+      fill: black;
+    }
   </style>
 	<g fill="none" transform="translate(50,50)">
     <g>
@@ -21,6 +25,7 @@
       <text x="22" y="8" class="text_style" >N</text>
       <text x="22" y="34" class="text_style" >S</text>
     </g>
+    <text x="40" y="40" id="textDisplay_0_1" class="mini_text_style">text to display</text>
 	</g>
   	<g fill="none" transform="translate(150,50)">
     <g>
