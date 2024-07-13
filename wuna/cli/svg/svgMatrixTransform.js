@@ -20,7 +20,7 @@ interval1 = setInterval(() => {
   const transformString = `matrix(${Math.cos(Math.PI * angle1)},${Math.sin(Math.PI * angle1)},${-Math.sin(Math.PI * angle1)},${Math.cos(Math.PI * angle1)},0,0)`;
   control1.setAttribute('transform', transformString);
 
-  let { x, y, width, height } = control1.getBoundingClientRect();
+  let { x, y, width, height } = control1.getBBox();
   let cx = width / 2 + x;
   let cy = height / 2 + y;
   const stringToOutput = `x: ${cx}  y:${cy}`;
