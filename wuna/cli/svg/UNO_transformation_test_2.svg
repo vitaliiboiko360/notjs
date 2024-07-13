@@ -25,10 +25,23 @@
       <text x="22" y="8" class="text_style" >N</text>
       <text x="22" y="34" class="text_style" >S</text>
     </g>
-    <g transform="translate(0, 10)">
-    <text x="0" y="40" id="textDisplay_0_1" class="mini_text_style">text to display</text>
-    <text x="0" y="47" id="textDisplay_0_2" class="mini_text_style">text to display</text>
-    <text x="0" y="54" id="textDisplay_0_3" class="mini_text_style">text to display</text>
+    <g transform="translate(0, 5)">
+    <text x="0" y="40"  class="mini_text_style">Input Matrix</text>
+    <text x="0" y="47" id="textDisplay_0_1" class="mini_text_style">text to display</text>
+    <text x="0" y="54" id="textDisplay_0_2" class="mini_text_style">text to display</text>
+    <text x="0" y="61" id="textDisplay_0_3" class="mini_text_style">text to display</text>
+    </g>
+    <g transform="translate(0,47)">
+    <text x="0" y="33"  class="mini_text_style">CTM Matrix</text>
+    <text x="0" y="40" id="textDisplay_1_1" class="mini_text_style">text to display</text>
+    <text x="0" y="47" id="textDisplay_1_2" class="mini_text_style">text to display</text>
+    <text x="0" y="54" id="textDisplay_1_3" class="mini_text_style">text to display</text>
+    </g>
+    <g transform="translate(0,80)">
+    <text x="0" y="33" class="mini_text_style">Inverse Matrix</text>
+    <text x="0" y="40" id="textDisplay_2_1" class="mini_text_style">text to display</text>
+    <text x="0" y="47" id="textDisplay_2_2" class="mini_text_style">text to display</text>
+    <text x="0" y="54" id="textDisplay_2_3" class="mini_text_style">text to display</text>
     </g>
 	</g>
   	<g fill="none" transform="translate(150,50)">
@@ -76,7 +89,7 @@
       <line x1="8" y1="20" x2="32" y2="20" stroke="green" />
     </g>
 	</g>
-  <g fill="none" transform="translate(100,150)">
+  <g fill="none" transform="translate(100,210)">
     <g>
       <circle cx="20" cy="20" r="10" stroke="blue" />
       <line x1="20" y1="8" x2="20" y2="32" stroke="yellow" />
