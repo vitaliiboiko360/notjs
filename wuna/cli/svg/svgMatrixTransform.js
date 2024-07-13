@@ -2,6 +2,8 @@ let angle1 = 0;
 let control1 = document.getElementById('controlTransform0');
 let text1 = document.getElementById('textDisplay0');
 let text1_1 = document.getElementById('textDisplay_0_1');
+let text1_2 = document.getElementById('textDisplay_0_2');
+let text1_3 = document.getElementById('textDisplay_0_3');
 
 let interval1 = setInterval(() => {
   angle1 = (angle1 + 0.1) % 2;
@@ -31,5 +33,7 @@ interval1 = setInterval(() => {
   let inverse = ctm.inverse();
 
   const stringToOutput = `a: ${inverse.a}  b:${inverse.b}\nc:${inverse.c}  d:${inverse.d}\ne:${inverse.e}  f:${inverse.f}`;
-  text1_1.textContent = stringToOutput;
-}, 1200);
+  text1_1.textContent = `a: ${inverse.a}  b:${inverse.b}`;
+  text1_2.textContent = `c: ${inverse.c}  d:${inverse.d}`;
+  text1_3.textContent = `e: ${inverse.e}  f:${inverse.f}`;
+}, 2500);
