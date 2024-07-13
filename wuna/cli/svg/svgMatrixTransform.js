@@ -12,6 +12,13 @@ let interval1 = setInterval(() => {
 
 setInterval(_ => clearInterval(interval1), 100000);
 
+function getOriginalPt(x, y, element) {
+  var matrix = element.matrix.invert(),
+    x1 = x * matrix.a + y * matrix.b + matrix.e,
+    y1 = x * matrix.c + y * matrix.d + matrix.f;
+  return { x: x1, y: y1 };
+}
+
 clearInterval(interval1);
 angle1 = 0;
 interval1 = setInterval(() => {
@@ -21,8 +28,8 @@ interval1 = setInterval(() => {
   control1.setAttribute('transform', transformString);
 
   let { x, y, width, height } = control1.getBBox();
-  let cx = width / 2 + x;
-  let cy = height / 2 + y;
+  let cx = (width / 2) + x;
+  let cy = (height / 2) + y;
   const stringToOutput = `x: ${cx}  y:${cy}`;
   text1_1.textContent = stringToOutput;
 }, 1200);
