@@ -30,6 +30,6 @@ interval1 = setInterval(() => {
   let ctm = control1.getScreenCTM();
   let inverse = ctm.inverse();
 
-  //const stringToOutput = `x: ${cx}  y:${cy}`;
-  text1_1.textContent = JSON.stringify(inverse);
+  const stringToOutput = `a: ${inverse.a}  b:${inverse.b}\nc:${inverse.c}  d:${inverse.d}\ne:${inverse.e}  f:${inverse.f}`;
+  text1_1.textContent = stringToOutput;
 }, 1200);
