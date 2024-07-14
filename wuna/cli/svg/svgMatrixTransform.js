@@ -61,11 +61,12 @@ interval1 = setInterval(() => {
   text3_3.textContent = `e: ${inverse.e}  f: ${inverse.f}`;
 }, 5500);
 
-clearInterval(interval1);
+
 index = 5;
 angles = [5, 4, 3, 2, 1, 0, 360, 359, 358, 357];
 angle1 = 0;
 let gradAngle = 0;
+clearInterval(interval1);
 interval1 = setInterval(() => {
 
   angle1 = (gradAngle / 180);
@@ -75,8 +76,9 @@ interval1 = setInterval(() => {
   let b = Math.sin(Math.PI * angle1);
   let c = -Math.sin(Math.PI * angle1);
   let d = Math.cos(Math.PI * angle1);
-  let e = Math.sin(Math.PI * angle1);
-  let f = Math.cos(Math.PI * angle1);
+  // cx·(1-cos(α))+cy·sin(α), cy·(1-cos(α))-cx·sin(α))
+  let e = (20 * (1 - Math.cos(Math.PI * angle1))) + (20 * Math.sin(Math.PI * angle1));
+  let f = (20 * (1 - Math.cos(Math.PI * angle1))) - (20 * Math.sin(Math.PI * angle1));
   const transformString = `matrix(${a},${b},${c},${d},${e},${f})`;
   control1.setAttribute('transform', transformString);
 
