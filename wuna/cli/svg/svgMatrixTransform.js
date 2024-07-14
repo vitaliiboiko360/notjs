@@ -40,8 +40,8 @@ interval1 = setInterval(() => {
   let b = Math.sin(Math.PI * angle1);
   let c = -Math.sin(Math.PI * angle1);
   let d = Math.cos(Math.PI * angle1);
-  let e = 66;
-  let f = 50;
+  let e = Math.pow((Math.sin(Math.PI * angle1) + 1), 2);
+  let f = Math.pow((Math.cos(Math.PI * angle1) + 1), 2);
   const transformString = `matrix(${a},${b},${c},${d},${e},${f})`;
   control1.setAttribute('transform', transformString);
 
