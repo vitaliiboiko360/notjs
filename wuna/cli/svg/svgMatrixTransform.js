@@ -60,3 +60,44 @@ interval1 = setInterval(() => {
   text3_2.textContent = `c: ${inverse.c}  d: ${inverse.d}`;
   text3_3.textContent = `e: ${inverse.e}  f: ${inverse.f}`;
 }, 5500);
+
+clearInterval(interval1);
+index = 5;
+angles = [5, 4, 3, 2, 1, 0, 360, 359, 358, 357];
+angle1 = 0;
+let gradAngle = 0;
+interval1 = setInterval(() => {
+
+  angle1 = (gradAngle / 180);
+  //text1.textContent = `${angle1 * 180 < 0.0001 ? 0 : angle1 * 180}`;
+  text1.textContent = `${gradAngle}`;
+  let a = Math.cos(Math.PI * angle1);
+  let b = Math.sin(Math.PI * angle1);
+  let c = -Math.sin(Math.PI * angle1);
+  let d = Math.cos(Math.PI * angle1);
+  let e = Math.sin(Math.PI * angle1);
+  let f = Math.cos(Math.PI * angle1);
+  const transformString = `matrix(${a},${b},${c},${d},${e},${f})`;
+  control1.setAttribute('transform', transformString);
+
+  let ctm = control1.getScreenCTM();
+
+  text1_1.textContent = `a: ${a}  b: ${b}`;
+  text1_2.textContent = `c: ${c}  d: ${d}`;
+  text1_3.textContent = `e: ${e}  f: ${f}`;
+
+  text2_1.textContent = `a: ${ctm.a}  b: ${ctm.b}`;
+  text2_2.textContent = `c: ${ctm.c}  d: ${ctm.d}`;
+  text2_3.textContent = `e: ${ctm.e}  f: ${ctm.f}`;
+
+  let inverse = ctm.inverse();
+
+  text3_1.textContent = `a: ${inverse.a}  b: ${inverse.b}`;
+  text3_2.textContent = `c: ${inverse.c}  d: ${inverse.d}`;
+  text3_3.textContent = `e: ${inverse.e}  f: ${inverse.f}`;
+
+
+
+  gradAngle = (gradAngle + 15) % 360;
+
+}, 1500);
