@@ -1,4 +1,7 @@
 let angle1 = 0;
+
+let control2 = document.getElementById('card1');
+
 let control1 = document.getElementById('controlTransform0');
 let text1 = document.getElementById('textDisplay0');
 let text1_1 = document.getElementById('textDisplay_0_1');
