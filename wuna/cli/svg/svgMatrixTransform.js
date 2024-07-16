@@ -1,9 +1,13 @@
 let angle1 = 0;
+let gradAngle = 0;
+let interval1 = 0;
 
-let control2 = document.getElementById('card1');
+let control1 = document.getElementById('card1');
+let text1 = document.getElementById('textDisplay1');
 
-let control1 = document.getElementById('controlTransform0');
-let text1 = document.getElementById('textDisplay0');
+let control0 = document.getElementById('controlTransform0');
+let text0 = document.getElementById('textDisplay0');
+
 let text1_1 = document.getElementById('textDisplay_0_1');
 let text1_2 = document.getElementById('textDisplay_0_2');
 let text1_3 = document.getElementById('textDisplay_0_3');
@@ -68,7 +72,7 @@ interval1 = setInterval(() => {
 index = 5;
 angles = [5, 4, 3, 2, 1, 0, 360, 359, 358, 357];
 angle1 = 0;
-let gradAngle = 0;
+
 clearInterval(interval1);
 interval1 = setInterval(() => {
 
@@ -105,4 +109,26 @@ interval1 = setInterval(() => {
 
   gradAngle = (gradAngle + 15) % 360;
 
+}, 1500);
+
+clearInterval(interval1);
+interval1 = setInterval(() => {
+
+  angle1 = (gradAngle / 180);
+  //text1.textContent = `${angle1 * 180 < 0.0001 ? 0 : angle1 * 180}`;
+  text1.textContent = `${gradAngle}`;
+  let a = Math.cos(Math.PI * angle1);
+  let b = Math.sin(Math.PI * angle1);
+  let c = -Math.sin(Math.PI * angle1);
+  let d = Math.cos(Math.PI * angle1);
+  // cx·(1-cos(α))+cy·sin(α), cy·(1-cos(α))-cx·sin(α))
+  let { x, y, width, height } = control1.getBBox();
+  let deltaX = x + (width / 2);
+  let deltaY = y + (height / 2);
+  let e = (deltaX * (1 - Math.cos(Math.PI * angle1))) + (deltaY * Math.sin(Math.PI * angle1));
+  let f = (deltaY * (1 - Math.cos(Math.PI * angle1))) - (deltaX * Math.sin(Math.PI * angle1));
+  const transformString = `matrix(${a},${b},${c},${d},${e},${f})`;
+  control1.setAttribute('transform', transformString);
+
+  gradAngle = (gradAngle + 15) % 360;
 }, 1500);
