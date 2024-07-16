@@ -2,6 +2,8 @@ let angle1 = 0;
 let gradAngle = 0;
 let interval1 = 0;
 
+let control2 = document.getElementById('control2');
+
 let control1 = document.getElementById('card1');
 let text1 = document.getElementById('textDisplay1');
 
@@ -129,6 +131,14 @@ interval1 = setInterval(() => {
   let f = (deltaY * (1 - Math.cos(Math.PI * angle1))) - (deltaX * Math.sin(Math.PI * angle1));
   const transformString = `matrix(${a},${b},${c},${d},${e},${f})`;
   control1.setAttribute('transform', transformString);
+
+  // y = − 0.04x2 + 0.5x + 0.1
+  let index = gradAngle / 15;
+  let deltaXForPoint = index * 6; // increase by 6px at a time
+  let xPoint = deltaX + deltaXForPoint;
+  let yPoint = deltaY + ((-0.04 * Math.pow(deltaXForPoint, 2)) + (0.7 * deltaXForPoint) + 0.1);
+  const transfromString2 = `matrix(1,0,0,1,${xPoint},${yPoint})`;
+  control2.setAttribute('transform', transfromString2);
 
   gradAngle = (gradAngle + 15) % 360;
 }, 1500);
