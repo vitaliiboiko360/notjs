@@ -1,5 +1,21 @@
 import React, { useState, useContext, useEffect } from 'react';
 
+function getColor(idOfCard: number) {
+  let color;
+  return color;
+}
+
+function getValue(idOfCard: number) {
+  let value;
+  return value;
+}
+
+export function getCard(idOfCard: number) {
+  let color = getColor(idOfCard);
+  let value = getValue(idOfCard);
+  return (<></>);
+}
+
 export function getCard1(x?: number, y?: number) {
   return (<>
     <svg
