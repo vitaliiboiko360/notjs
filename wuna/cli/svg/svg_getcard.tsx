@@ -1,19 +1,122 @@
 import React, { useState, useContext, useEffect } from 'react';
 
-function getColor(idOfCard: number) {
-  let color;
-  return color;
+enum COLOR {
+  BLACK = 0,
+  RED,
+  GREEN,
+  BLUE,
+  YELLOW
 }
 
-function getValue(idOfCard: number) {
-  let value;
-  return value;
+enum COLOR_OFFSETS {
+  YELLOW_OFFSET = 80,
+  BLUE_OFFSET = 60,
+  GREEN_OFFSET = 40,
+  RED_OFFSET = 20,
+  BLACK_OFFSET = 10,
+}
+
+function getColorOffset(color: number) {
+  if (color == COLOR.RED)
+    return COLOR_OFFSETS.RED_OFFSET;
+  if (color == COLOR.GREEN)
+    return COLOR_OFFSETS.GREEN_OFFSET;
+  if (color == COLOR.BLUE)
+    return COLOR_OFFSETS.BLUE_OFFSET;
+  if (color == COLOR.YELLOW)
+    return COLOR_OFFSETS.YELLOW_OFFSET;
+  return COLOR_OFFSETS.BLACK_OFFSET;
+}
+
+const NUMBER_OF_VALUES = 13;
+
+function getColor(idOfCard: number) {
+  if (idOfCard >= COLOR_OFFSETS.YELLOW_OFFSET
+    && idOfCard <= COLOR_OFFSETS.YELLOW_OFFSET + NUMBER_OF_VALUES) {
+    return COLOR.YELLOW;
+  }
+  if (idOfCard >= COLOR_OFFSETS.BLUE_OFFSET
+    && idOfCard <= COLOR_OFFSETS.BLUE_OFFSET + NUMBER_OF_VALUES) {
+    return COLOR.BLUE;
+  }
+  if (idOfCard >= COLOR_OFFSETS.GREEN_OFFSET
+    && idOfCard <= COLOR_OFFSETS.GREEN_OFFSET + NUMBER_OF_VALUES) {
+    return COLOR.GREEN;
+  }
+  if (idOfCard >= COLOR_OFFSETS.RED_OFFSET
+    && idOfCard <= COLOR_OFFSETS.RED_OFFSET + NUMBER_OF_VALUES) {
+    return COLOR.RED;
+  }
+  return COLOR.BLACK;
+}
+
+enum VALUES {
+  ZERO = 0,
+  ONE,
+  TWO,
+  THREE,
+  FOUR,
+  FIVE,
+  SIX,
+  SEVEN,
+  EIGHT,
+  NINE,
+  SKIP_MOVE,
+  REVERSE_TURN,
+  PLUS_TWO,
+}
+
+function getTopping(idOfCard: number) {
+
 }
 
 export function getCard(idOfCard: number) {
-  let color = getColor(idOfCard);
-  let value = getValue(idOfCard);
-  return (<></>);
+  const color = getColor(idOfCard);
+  const value = idOfCard - getColorOffset(color);
+  return (<g>
+    <rect
+      id="borderBox"
+      width="63.499996"
+      height="95.25"
+      rx="10.583333"
+      ry="10.583333"
+      x="0.2645835"
+      y="0.2645835"
+      style={{
+        fill: '#ffffff',
+        fillOpacity: 1,
+        fillRule: 'evenodd',
+        stroke: '#000000',
+        strokeWidth: 0.529167,
+        strokeMiterlimit: 4,
+        strokeDasharray: 'none'
+      }} />
+    <rect
+      id="solidColoredBlock"
+      width="52.916664"
+      height="84.666664"
+      rx="5.2916665"
+      ry="5.2916665"
+      x="5.5562401"
+      y="5.5562553"
+      style={{
+        fill: '#ff5555',
+        fillOpacity: 1,
+        fillRule: 'evenodd',
+        stroke: 'none',
+        strokeWidth: 1.05833
+      }} />
+    <path
+      d="m 47.889583,21.431228 c -23.38006,0 -42.3333295,18.95328 -42.3333295,42.33333 0,5.845016 4.7383095,10.583333 10.5833295,10.583333 23.38005,0 42.33333,-18.953279 42.33333,-42.333333 0,-5.84502 -4.73832,-10.58333 -10.58333,-10.58333 z"
+      style={{
+        fill: '#ffffff',
+        fillOpacity: 1,
+        fillRule: 'evenodd',
+        stroke: 'none',
+        strokeWidth: 1.05833
+      }} />
+    {getTopping(idOfCard)}
+  </g>);
 }
 
 export function getCard1(x?: number, y?: number) {
