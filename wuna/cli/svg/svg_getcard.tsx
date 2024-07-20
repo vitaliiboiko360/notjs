@@ -265,7 +265,6 @@ function getTopping(value: number, color: number) {
         x="41.917522"
         y="33.295635"
         transform="matrix(1,0,-0.27472185,0.96152374,0,0)"
-        id="rect6095-1-9-4"
         style={{
           fill: '#ffffff',
           fillOpacity: 1,
