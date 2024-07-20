@@ -50,6 +50,10 @@ function getColor(idOfCard: number) {
   return COLOR.BLACK;
 }
 
+function getColorHexString(color: number) {
+  if ()
+}
+
 enum VALUES {
   ZERO = 0,
   ONE,
@@ -203,6 +207,112 @@ function getTopping(value: number) {
           fill: '#ffffff',
           fillOpacity: 1,
           fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 1.05833
+        }} />
+    </>);
+  }
+
+  if (value == VALUES.PLUS_TWO) {
+    return (<>
+      <rect
+        width="15.874999"
+        height="24.76539"
+        rx="2.6458333"
+        ry="2.4847546"
+        x="33.602139"
+        y="41.550755"
+        transform="matrix(1,0,-0.27472185,0.96152374,0,0)"
+        id="rect6095-5-1-9"
+        style={{
+          fill: '#ffffff',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: '#000000',
+          strokeWidth: 0.53965,
+          strokeMiterlimit: 4,
+          strokeDasharray: 'none'
+        }} />
+      <rect
+        width="10.583333"
+        height="19.261961"
+        rx="2.6458199"
+        ry="2.4847422"
+        x="36.247974"
+        y="44.302525"
+        transform="matrix(1,0,-0.27472185,0.96152374,0,0)"
+        id="rect6097-3-5-4"
+        style={{
+          fill: '#ff5555',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 1.05833
+        }} />
+      <rect
+        width="15.874999"
+        height="24.76539"
+        rx="2.6458333"
+        ry="2.4847546"
+        x="41.917522"
+        y="33.295635"
+        transform="matrix(1,0,-0.27472185,0.96152374,0,0)"
+        id="rect6095-1-9-4"
+        style={{
+          fill: '#ffffff',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: '#000000',
+          strokeWidth: 0.53965,
+          strokeMiterlimit: 4,
+          strokeDasharray: 'none'
+        }} />
+      <rect
+        width="10.583333"
+        height="19.261961"
+        rx="2.6458199"
+        ry="2.4847422"
+        x="44.563358"
+        y="36.047405"
+        transform="matrix(1,0,-0.27472185,0.96152374,0,0)"
+        style={{
+          fill: '#ff5555',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 1.05833
+        }} />
+      <path
+        d="m 9.260417,13.493709 v 2.645854 H 6.614583 v 2.645791 h 2.645834 v 2.645854 h 2.645833 v -2.645854 h 2.645833 V 16.139563 H 11.90625 v -2.645854 z"
+        style={{
+          fill: '#ffffff',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 1.05833
+        }} />
+      <path
+        d="m 21.431249,8.2020626 c -2.931583,0 -5.291666,2.3600844 -5.291666,5.2916674 v 0.529166 h 2.645833 V 13.49373 c 0,-1.465792 1.180042,-2.645833 2.645833,-2.645833 1.465792,0 2.645834,1.180041 2.645834,2.645833 0,0.596635 -0.495046,1.767491 -1.01201,2.174356 -2.807124,2.209239 -2.77749,1.844379 -6.92549,4.70481 v 3.704167 h 5.291666 5.291667 V 21.43123 20.372896 h -2.645833 v 1.058334 h -2.645834 -2.116666 c 3.275573,-2.3065 3.515095,-2.250599 6.081755,-4.547521 0.822367,-0.735944 1.326578,-2.196603 1.326578,-3.389979 0,-2.931583 -2.360083,-5.2916674 -5.291667,-5.2916674 z"
+        style={{
+          fill: '#ffffff',
+          fillOpacity: 1,
+          stroke: 'none',
+          strokeWidth: 1.05833
+        }} />
+      <path
+        d="m 54.768748,82.285534 v -2.64584 h 2.645834 v -2.64572 h -2.645834 v -2.64594 h -2.645833 v 2.64594 h -2.645833 v 2.64572 h 2.645833 v 2.64584 z"
+        style={{
+          fill: '#ffffff',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 1.05833
+        }} />
+      <path
+        d="m 42.597915,87.577194 c 2.931584,0 5.291667,-2.36008 5.291667,-5.29166 v -0.52917 h -2.645833 v 0.52917 c 0,1.46579 -1.180042,2.64583 -2.645834,2.64583 -1.465791,0 -2.645833,-1.18004 -2.645833,-2.64583 0,-0.59658 0.495046,-1.76742 1.01201,-2.17435 2.807124,-2.20916 2.77749,-1.84436 6.92549,-4.70482 v -3.70417 h -5.291667 -5.291666 v 2.64584 1.05833 h 2.645833 v -1.05833 h 2.645833 2.116667 c -3.275573,2.30653 -3.515095,2.25065 -6.081755,4.54755 -0.822367,0.73597 -1.326578,2.19657 -1.326578,3.38995 0,2.93158 2.360083,5.29166 5.291666,5.29166 z"
+        style={{
+          fill: '#ffffff',
+          fillOpacity: 1,
           stroke: 'none',
           strokeWidth: 1.05833
         }} />
