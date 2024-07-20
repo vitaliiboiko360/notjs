@@ -134,7 +134,6 @@ function getTopping(value: number, color: number) {
   if (value <= VALUES.SKIP_MOVE) {
     return (<>
       <path
-        id="path1"
         d={TOPPINGS[value].path1}
         style={{
           fill: getColorHexString(color),
@@ -144,7 +143,6 @@ function getTopping(value: number, color: number) {
           strokeWidth: 1.05833
         }} />
       <path
-        id="path2"
         d={TOPPINGS[value].path2}
         style={{
           fill: '#ffffff',
@@ -154,7 +152,6 @@ function getTopping(value: number, color: number) {
           strokeWidth: 1.05833
         }} />
       <path
-        id="path3"
         d={TOPPINGS[value].path3}
         style={{
           fill: '#ffffff',
