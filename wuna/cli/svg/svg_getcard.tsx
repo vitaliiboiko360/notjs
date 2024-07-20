@@ -51,7 +51,18 @@ function getColor(idOfCard: number) {
 }
 
 function getColorHexString(color: number) {
-  if ()
+  if (color == COLOR.RED) {
+    return '#ff5555';
+  }
+  if (color == COLOR.GREEN) {
+    return '#00aa00';
+  }
+  if (color == COLOR.BLUE) {
+    return '#5555ff';
+  }
+  if (color == COLOR.YELLOW) {
+    return '#ffaa00';
+  }
 }
 
 enum VALUES {
@@ -119,14 +130,14 @@ const TOPPINGS =
   ];
 
 
-function getTopping(value: number) {
+function getTopping(value: number, color: number) {
   if (value <= VALUES.SKIP_MOVE) {
     return (<>
       <path
         id="path1"
         d={TOPPINGS[value].path1}
         style={{
-          fill: '#ff5555',
+          fill: getColorHexString(color),
           fillOpacity: 1,
           fillRule: 'evenodd',
           stroke: 'none',
@@ -162,7 +173,7 @@ function getTopping(value: number) {
         d="m 32.014581,30.691653 2.645833,2.645833 -10.583333,10.583332 c -2.645833,2.64583 -2.645833,7.9375 0,10.58333 l 5.291667,-5.29166 10.583333,-10.583336 2.645833,2.645836 V 30.691653 Z"
         id="path5973-41"
         style={{
-          fill: '#ff5555',
+          fill: getColorHexString(color),
           stroke: 'none',
           strokeWidth: 1.05833
         }} />
@@ -170,7 +181,7 @@ function getTopping(value: number) {
         d="m 32.014581,65.087488 -2.645833,-2.64584 10.583333,-10.58333 c 2.645833,-2.64583 2.645833,-7.9375 0,-10.58333 l -5.291667,5.29166 -10.583333,10.58334 -2.645833,-2.64584 v 10.58334 z"
         id="path5973-4-6"
         style={{
-          fill: '#ff5555',
+          fill: getColorHexString(color),
           stroke: 'none',
           strokeWidth: 1.05833
         }} />
@@ -243,7 +254,7 @@ function getTopping(value: number) {
         transform="matrix(1,0,-0.27472185,0.96152374,0,0)"
         id="rect6097-3-5-4"
         style={{
-          fill: '#ff5555',
+          fill: getColorHexString(color),
           fillOpacity: 1,
           fillRule: 'evenodd',
           stroke: 'none',
@@ -276,7 +287,7 @@ function getTopping(value: number) {
         y="36.047405"
         transform="matrix(1,0,-0.27472185,0.96152374,0,0)"
         style={{
-          fill: '#ff5555',
+          fill: getColorHexString(color),
           fillOpacity: 1,
           fillRule: 'evenodd',
           stroke: 'none',
@@ -350,7 +361,7 @@ export function getCard(idOfCard: number) {
       x="5.5562401"
       y="5.5562553"
       style={{
-        fill: '#ff5555',
+        fill: getColorHexString(color),
         fillOpacity: 1,
         fillRule: 'evenodd',
         stroke: 'none',
@@ -365,7 +376,7 @@ export function getCard(idOfCard: number) {
         stroke: 'none',
         strokeWidth: 1.05833
       }} />
-    {getTopping(value)}
+    {getTopping(value, color)}
   </g>);
 }
 
