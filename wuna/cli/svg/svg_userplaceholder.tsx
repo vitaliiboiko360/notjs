@@ -10,20 +10,20 @@ export default function SvgUserPlaceHolder(props) {
 
 export const USER_POSITIONS = {
   "left_user": {
-    xPosition: 40,
-    yPosition: 300
+    xPosition: 5,
+    yPosition: 250
   },
   "top_user": {
     xPosition: 400,
-    yPosition: 120
+    yPosition: 55
   },
   "right_user": {
-    xPosition: 700,
-    yPosition: 300
+    xPosition: 715,
+    yPosition: 270
   },
   "bottom_user": {
     xPosition: 330,
-    yPosition: 450
+    yPosition: 465
   }
 }
 

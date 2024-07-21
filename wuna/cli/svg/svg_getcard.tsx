@@ -871,9 +871,7 @@ function getBlackCard(value: number) {
 
 export function getCard(idOfCard: number) {
   const color = getColor(idOfCard);
-  const value = (idOfCard >= COLOR_OFFSETS.BLACK_OFFSET
-    && idOfCard < COLOR_OFFSETS.BLACK_OFFSET + BLACK_NUMBER_OF_VALUES)
-    ? idOfCard - getColorOffset(color) : idOfCard % BLACK_NUMBER_OF_VALUES;
+  const value = idOfCard - getColorOffset(color);
   if (color == COLOR.RED ||
     color == COLOR.GREEN ||
     color == COLOR.BLUE ||

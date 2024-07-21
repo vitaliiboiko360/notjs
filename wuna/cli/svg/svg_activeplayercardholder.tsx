@@ -5,12 +5,14 @@ import SvgActivePlayerCards from './svg_activeplayercards';
 export default function SvgActivePlayerCardHolder(props) {
   const [cardArray, setCardArray] = useState([]);
   const webSocket = useContext(WebSocketContext);
+
   const onMessage = useCallback((event) => {
     let arBuf = new Uint8Array(event.data);
     console.log('cardArray= ', cardArray);
 
     setCardArray([arBuf[0], arBuf[1], ...cardArray.slice(0, 10)]);
   }, [cardArray]);
+
   useEffect(() => {
     webSocket
       .addEventListener("message", onMessage);
