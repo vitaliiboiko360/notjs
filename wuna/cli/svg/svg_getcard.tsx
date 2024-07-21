@@ -138,7 +138,6 @@ const TOPPINGS =
   }
   ];
 
-
 function getColoredTopping(value: number, color: number) {
   if (value <= COLORED_VALUES.SKIP_MOVE) {
     return (<>
@@ -335,7 +334,368 @@ function getColoredTopping(value: number, color: number) {
 }
 
 function getBlackCard(value: number) {
-
+  let topping;
+  if (value == BLACK_VALUES.PLUS_FOUR) {
+    topping = <><path
+      d="m 47.889581,21.431248 c -23.380053,0 -42.3333313,18.953283 -42.3333313,42.333333 0,5.84501 4.7383163,10.58333 10.5833323,10.58333 23.380054,0 42.333332,-18.95328 42.333332,-42.33333 0,-5.845016 -4.738316,-10.583333 -10.583333,-10.583333 z"
+      style={{
+        fill: '#ffffff',
+        fillOpacity: 1,
+        fillRule: 'evenodd',
+        stroke: 'none',
+        strokeWidth: 1.05833
+      }} />
+      <path
+        d="m 21.325416,8.202071 -5.185834,10.583333 v 2.645844 h 6.35 v 2.645844 h 2.645834 v -2.645844 h 1.587499 v -2.645844 h -1.587499 v -5.291656 h -2.645834 v 5.291656 H 18.891249 L 24.077082,8.202071 Z"
+        style={{
+          fill: '#ffffff',
+          fillOpacity: 1,
+          stroke: 'none',
+          strokeWidth: 1.05833
+        }} />
+      <path
+        d="m 9.2604157,13.493727 v 2.645854 h -2.645833 v 2.645791 h 2.645833 v 2.645855 h 2.6458333 v -2.645855 h 2.645834 v -2.645791 h -2.645834 v -2.645854 z"
+        style={{
+          fill: '#ffffff',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 1.05833
+        }} />
+      <path
+        d="m 42.703748,87.577091 5.185833,-10.58333 v -2.64585 h -6.349999 v -2.64584 h -2.645834 v 2.64584 h -1.587499 v 2.64585 h 1.587499 v 5.29165 h 2.645834 v -5.29165 h 3.598333 l -5.185833,10.58333 z"
+        style={{
+          fill: '#ffffff',
+          fillOpacity: 1,
+          stroke: 'none',
+          strokeWidth: 1.05833
+        }} />
+      <path
+        d="m 54.768748,82.285431 v -2.64585 h 2.645833 v -2.64579 h -2.645833 v -2.64586 h -2.645833 v 2.64586 h -2.645834 v 2.64579 h 2.645834 v 2.64585 z"
+        style={{
+          fill: '#ffffff',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 1.05833
+        }} />
+      <g
+        transform="matrix(1.0583333,0,0,1.0583333,-698.2354,-277.40207)">
+        <rect
+          width="15"
+          height="23.40037"
+          rx="2.5"
+          ry="2.3477995"
+          x="762.46088"
+          y="306.66135"
+          transform="matrix(1,0,-0.27472185,0.96152374,0,0)"
+          style={{
+            fill: '#ffffff',
+            fillOpacity: 1,
+            fillRule: 'evenodd',
+            stroke: '#000000',
+            strokeWidth: 0.509906,
+            strokeMiterlimit: 4,
+            strokeDasharray: 'none'
+          }} />
+        <rect
+          width="10"
+          height="18.200279"
+          rx="2.4999874"
+          ry="2.3477879"
+          x="764.96088"
+          y="309.26141"
+          transform="matrix(1,0,-0.27472185,0.96152374,0,0)"
+          style={{
+            fill: '#ff5555',
+            fillOpacity: 1,
+            fillRule: 'evenodd',
+            stroke: 'none'
+          }} />
+      </g>
+      <g
+        transform="matrix(1.0583333,0,0,1.0583333,-687.65208,-285.33957)">
+        <rect
+          width="15"
+          height="23.40037"
+          rx="2.5"
+          ry="2.3477995"
+          x="762.46088"
+          y="306.66135"
+          transform="matrix(1,0,-0.27472185,0.96152374,0,0)"
+          style={{
+            fill: '#ffffff',
+            fillOpacity: 1,
+            fillRule: 'evenodd',
+            stroke: '#000000',
+            strokeWidth: 0.509906,
+            strokeMiterlimit: 4,
+            strokeDasharray: 'none'
+          }} />
+        <rect
+          width="10"
+          height="18.200279"
+          rx="2.4999874"
+          ry="2.3477879"
+          x="764.96088"
+          y="309.26141"
+          transform="matrix(1,0,-0.27472185,0.96152374,0,0)"
+          style={{
+            fill: '#5555ff',
+            fillOpacity: 1,
+            fillRule: 'evenodd',
+            stroke: 'none'
+          }} />
+      </g>
+      <g
+        transform="matrix(1.0583333,0,0,1.0583333,-690.2979,-269.46457)">
+        <rect
+          width="15"
+          height="23.40037"
+          rx="2.5"
+          ry="2.3477995"
+          x="762.46088"
+          y="306.66135"
+          transform="matrix(1,0,-0.27472185,0.96152374,0,0)"
+          style={{
+            fill: '#ffffff',
+            fillOpacity: 1,
+            fillRule: 'evenodd',
+            stroke: '#000000',
+            strokeWidth: 0.509906,
+            strokeMiterlimit: 4,
+            strokeDasharray: 'none'
+          }} />
+        <rect
+          width="10"
+          height="18.200279"
+          rx="2.4999874"
+          ry="2.3477879"
+          x="764.96088"
+          y="309.26141"
+          transform="matrix(1,0,-0.27472185,0.96152374,0,0)"
+          style={{
+            fill: '#ffaa00',
+            fillOpacity: 1,
+            fillRule: 'evenodd',
+            stroke: 'none'
+          }} />
+      </g>
+      <g
+        transform="matrix(1.0583333,0,0,1.0583333,-679.71458,-277.40206)">
+        <rect
+          width="15"
+          height="23.40037"
+          rx="2.5"
+          ry="2.3477995"
+          x="762.46088"
+          y="306.66135"
+          transform="matrix(1,0,-0.27472185,0.96152374,0,0)"
+          style={{
+            fill: '#ffffff',
+            fillOpacity: 1,
+            fillRule: 'evenodd',
+            stroke: '#000000',
+            strokeWidth: 0.509906,
+            strokeMiterlimit: 4,
+            strokeDasharray: 'none'
+          }} />
+        <rect
+          width="10"
+          height="18.200279"
+          rx="2.4999874"
+          ry="2.3477879"
+          x="764.96088"
+          y="309.26141"
+          transform="matrix(1,0,-0.27472185,0.96152374,0,0)"
+          style={{
+            fill: '#55aa55',
+            fillOpacity: 1,
+            fillRule: 'evenodd',
+            stroke: 'none'
+          }} />
+      </g></>;
+  } else if (value == BLACK_VALUES.UNIVERSAL) {
+    topping = <><path
+      d="m 47.889582,21.431233 c -23.380065,0 -42.3333329,18.953279 -42.3333329,42.333338 0,5.84501 4.7383169,10.58333 10.5833339,10.58333 23.380064,0 42.333336,-18.95328 42.333336,-42.333334 0,-5.845017 -4.738321,-10.583334 -10.583337,-10.583334 z"
+      style={{
+        fill: '#ffffff',
+        fillOpacity: 1,
+        fillRule: 'evenodd',
+        stroke: 'none',
+        strokeWidth: 0.264583
+      }} />
+      <path
+        d="m 8.6651041,47.889566 c -1.987736,4.905873 -3.108855,10.256135 -3.108855,15.875005 0,5.84501 4.7383169,10.58333 10.5833339,10.58333 L 32.014582,47.889566 Z"
+        style={{
+          fill: '#ffaa00',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 0.264583
+        }} />
+      <path
+        d="M 32.014582,47.889566 16.139583,74.347901 c 17.761188,0 32.941259,-10.9509 39.224478,-26.458335 z"
+        style={{
+          fill: '#00aa00',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 0.264583
+        }} />
+      <path
+        d="m 47.889582,21.431233 c -17.761188,0 -32.941259,10.950903 -39.2244779,26.458333 H 32.014582 Z"
+        style={{
+          fill: '#ff5555',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 0.264583
+        }} />
+      <path
+        d="m 47.889582,21.431233 -15.875,26.458333 h 23.349479 c 1.987735,-4.905872 3.108858,-10.256139 3.108858,-15.874999 0,-5.845017 -4.738321,-10.583334 -10.583337,-10.583334 z"
+        style={{
+          fill: '#5555ff',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 0.264583
+        }} />
+      <path
+        d="m 8.9792961,14.81661 c -0.49694,1.226469 -0.777213,2.564035 -0.777213,3.96875 0,1.461254 1.184592,2.645834 2.6458329,2.645834 l 3.96875,-6.614584 z"
+        style={{
+          fill: '#ffaa00',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 0.264583
+        }} />
+      <path
+        d="m 14.816666,14.81661 -3.96875,6.614584 c 4.44029,0 8.235315,-2.737726 9.80612,-6.614584 z"
+        style={{
+          fill: '#00aa00',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 0.264583
+        }} />
+      <path
+        d="m 18.785416,8.2020272 c -4.44029,0 -8.235315,2.7377258 -9.8061199,6.6145828 h 5.8373699 z"
+        style={{
+          fill: '#ff5555',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 0.264583
+        }} />
+      <path
+        d="m 18.785416,8.2020272 -3.96875,6.6145828 h 5.83737 c 0.49694,-1.226468 0.777213,-2.564034 0.777213,-3.96875 0,-1.4612538 -1.184592,-2.6458328 -2.645833,-2.6458328 z"
+        style={{
+          fill: '#5555ff',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 0.264583
+        }} />
+      <path
+        d="m 43.375129,80.962441 c -0.49694,1.22647 -0.777213,2.56404 -0.777213,3.96875 0,1.46126 1.184592,2.64584 2.645833,2.64584 l 3.96875,-6.61459 z"
+        style={{
+          fill: '#ffaa00',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 0.264583
+        }} />
+      <path
+        d="m 49.212499,80.962441 -3.96875,6.61459 c 4.44029,0 8.235315,-2.73773 9.80612,-6.61459 z"
+        style={{
+          fill: '#00aa00',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 0.264583
+        }} />
+      <path
+        d="m 53.181249,74.347861 c -4.440291,0 -8.235315,2.73772 -9.80612,6.61458 h 5.83737 z"
+        style={{
+          fill: '#ff5555',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 0.264583
+        }} />
+      <path
+        d="m 53.181249,74.347861 -3.96875,6.61458 h 5.83737 c 0.49694,-1.22647 0.777213,-2.56403 0.777213,-3.96875 0,-1.46125 -1.184592,-2.64583 -2.645833,-2.64583 z"
+        style={{
+          fill: '#5555ff',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 0.264583
+        }} />
+      <path
+        d="m 47.889582,21.43122 c -17.761188,0 -32.941259,10.950903 -39.2244779,26.458333 -1.987736,4.905872 -3.108855,10.256138 -3.108855,15.874998 0,5.84502 4.7383169,10.58334 10.5833339,10.58334 17.761188,0 32.941259,-10.95091 39.224478,-26.458338 1.987735,-4.905872 3.108858,-10.256139 3.108858,-15.875 0,-5.845016 -4.738321,-10.583333 -10.583337,-10.583333 z"
+        style={{
+          fill: 'none',
+          stroke: '#ffffff',
+          strokeWidth: 1.05833,
+          strokeMiterlimit: 4,
+          strokeDasharray: 'none'
+        }} />
+      <path
+        d="m 18.785416,8.2020542 c -4.44029,0 -8.235315,2.7377248 -9.8061199,6.6145828 -0.49694,1.226468 -0.777213,2.564035 -0.777213,3.96875 0,1.461254 1.184592,2.645833 2.6458329,2.645833 4.44029,0 8.235315,-2.737726 9.80612,-6.614583 0.49694,-1.226468 0.777213,-2.564035 0.777213,-3.96875 0,-1.4612538 -1.184592,-2.6458328 -2.645833,-2.6458328 z"
+        style={{
+          fill: 'none',
+          stroke: '#ffffff',
+          strokeWidth: 1.05833,
+          strokeMiterlimit: 4,
+          strokeDasharray: 'none'
+        }} />
+      <path
+        d="m 53.181249,74.347891 c -4.440291,0 -8.235315,2.73772 -9.80612,6.61458 -0.49694,1.22647 -0.777213,2.56403 -0.777213,3.96875 0,1.46125 1.184592,2.64583 2.645833,2.64583 4.44029,0 8.235315,-2.73772 9.80612,-6.61458 0.49694,-1.22647 0.777213,-2.56404 0.777213,-3.96875 0,-1.46126 -1.184592,-2.64583 -2.645833,-2.64583 z"
+        style={{
+          fill: 'none',
+          stroke: '#ffffff',
+          strokeWidth: 1.05833,
+          strokeMiterlimit: 4,
+          strokeDasharray: 'none'
+        }} /></>;
+  } else {
+    topping = '';
+  }
+  return (<g>
+    <rect
+      width="63.5"
+      height="95.25"
+      rx="10.583333"
+      ry="10.583333"
+      x="0.2645835"
+      y="0.2645835"
+      style={{
+        fill: '#ffffff',
+        fillOpacity: 1,
+        fillRule: 'evenodd',
+        stroke: '#000000',
+        strokeWidth: 0.529167,
+        strokeMiterlimit: 4,
+        strokeDasharray: 'none'
+      }} />
+    <rect
+      width="52.916664"
+      height="84.666664"
+      rx="5.2916665"
+      ry="5.2916665"
+      x="5.5562401"
+      y="5.5562553"
+      style={{
+        fill: '#000000',
+        fillOpacity: 1,
+        fillRule: 'evenodd',
+        stroke: 'none',
+        strokeWidth: 1.05833
+      }} />
+    {topping}
+  </g>);
 }
 
 export function getCard(idOfCard: number) {
@@ -347,7 +707,7 @@ export function getCard(idOfCard: number) {
     color == COLOR.YELLOW) {
     return (<g>
       <rect
-        width="63.499996"
+        width="63.5"
         height="95.25"
         rx="10.583333"
         ry="10.583333"
