@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, Fragment } from 'react';
 
-import { getCard1, getCard2 } from './svg_getcard';
+import { getCard1, getCard2, getCard } from './svg_getcard';
 
 export default function SvgActivePlayerCards(props) {
   if (props.cardArray.length == 0) {
@@ -12,8 +12,11 @@ export default function SvgActivePlayerCards(props) {
 
   return (<>
     {props.cardArray.map((card, index) => {
+      const transformString = `translate(${index * 20})`; // 20px -> step to the right on X axe
       return (<Fragment key={index}>
-        {(card > 50) ? getCard1(index * 20) : getCard2(index * 20)}
+        <g transform={transformString} >
+          {getCard(card)}
+        </g>
       </Fragment>);
     })}
   </>);

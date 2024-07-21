@@ -169,7 +169,6 @@ function getColoredTopping(value: number, color: number) {
           stroke: 'none',
           strokeWidth: 1.05833
         }} />
-
     </>);
   }
 
@@ -336,11 +335,7 @@ function getColoredTopping(value: number, color: number) {
 
 function getBlackCard(value: number) {
   let topping;
-  let normValue = (value >= COLOR_OFFSETS.BLACK_OFFSET
-    && value < COLOR_OFFSETS.BLACK_OFFSET + BLACK_NUMBER_OF_VALUES)
-    ? value
-    : value % BLACK_NUMBER_OF_VALUES;
-  if (normValue == BLACK_VALUES.PLUS_FOUR) {
+  if (value == BLACK_VALUES.PLUS_FOUR) {
     topping = <><path
       d="m 47.889581,21.431248 c -23.380053,0 -42.3333313,18.953283 -42.3333313,42.333333 0,5.84501 4.7383163,10.58333 10.5833323,10.58333 23.380054,0 42.333332,-18.95328 42.333332,-42.33333 0,-5.845016 -4.738316,-10.583333 -10.583333,-10.583333 z"
       style={{
@@ -520,7 +515,7 @@ function getBlackCard(value: number) {
             stroke: 'none'
           }} />
       </g></>;
-  } else if (normValue == BLACK_VALUES.UNIVERSAL) {
+  } else if (value == BLACK_VALUES.UNIVERSAL) {
     topping = <><path
       d="m 47.889582,21.431233 c -23.380065,0 -42.3333329,18.953279 -42.3333329,42.333338 0,5.84501 4.7383169,10.58333 10.5833339,10.58333 23.380064,0 42.333336,-18.95328 42.333336,-42.333334 0,-5.845017 -4.738321,-10.583334 -10.583337,-10.583334 z"
       style={{

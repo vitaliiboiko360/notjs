@@ -8,8 +8,8 @@ export default function SvgActivePlayerCardHolder(props) {
   const onMessage = useCallback((event) => {
     let arBuf = new Uint8Array(event.data);
     console.log('cardArray= ', cardArray);
-    if (cardArray.length < 10)
-      setCardArray([...cardArray, arBuf[0]]);
+
+    setCardArray([arBuf[0], arBuf[1], ...cardArray.slice(0, 10)]);
   }, [cardArray]);
   useEffect(() => {
     webSocket
@@ -22,8 +22,8 @@ export default function SvgActivePlayerCardHolder(props) {
   }, [cardArray]);
 
   return (<>
-    <svg x="200" y="480" width="400px" height="120px">
+    <g transform="translate(300,400)">
       <SvgActivePlayerCards cardArray={cardArray} />
-    </svg>
+    </g>
   </>);
 }
