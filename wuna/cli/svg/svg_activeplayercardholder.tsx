@@ -24,7 +24,7 @@ export default function SvgActivePlayerCardHolder(props) {
   }, [cardArray]);
 
   return (<>
-    <g transform="translate(300,400)">
+    <g transform="translate(270,400)">
       <SvgActivePlayerCards cardArray={cardArray} />
     </g>
   </>);
