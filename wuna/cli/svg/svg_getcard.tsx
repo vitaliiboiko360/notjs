@@ -51,6 +51,9 @@ function getColor(idOfCard: number) {
 }
 
 function getColorHexString(color: number) {
+  if (color == COLOR.BLACK) {
+    return '#000000';
+  }
   if (color == COLOR.RED) {
     return '#ff5555';
   }
@@ -65,7 +68,13 @@ function getColorHexString(color: number) {
   }
 }
 
-enum VALUES {
+enum BLACK_VALUES {
+  PLUS_FOUR = 0,
+  UNIVERSAL,
+  BACK_BLACK
+}
+
+enum COLORED_VALUES {
   ZERO = 0,
   ONE,
   TWO,
@@ -130,8 +139,8 @@ const TOPPINGS =
   ];
 
 
-function getTopping(value: number, color: number) {
-  if (value <= VALUES.SKIP_MOVE) {
+function getColoredTopping(value: number, color: number) {
+  if (value <= COLORED_VALUES.SKIP_MOVE) {
     return (<>
       <path
         d={TOPPINGS[value].path1}
@@ -164,7 +173,7 @@ function getTopping(value: number, color: number) {
     </>);
   }
 
-  if (value == VALUES.REVERSE_TURN) {
+  if (value == COLORED_VALUES.REVERSE_TURN) {
     return (<>
       <path
         d="m 32.014581,30.691653 2.645833,2.645833 -10.583333,10.583332 c -2.645833,2.64583 -2.645833,7.9375 0,10.58333 l 5.291667,-5.29166 10.583333,-10.583336 2.645833,2.645836 V 30.691653 Z"
@@ -221,7 +230,7 @@ function getTopping(value: number, color: number) {
     </>);
   }
 
-  if (value == VALUES.PLUS_TWO) {
+  if (value == COLORED_VALUES.PLUS_TWO) {
     return (<>
       <rect
         width="15.874999"
@@ -231,7 +240,6 @@ function getTopping(value: number, color: number) {
         x="33.602139"
         y="41.550755"
         transform="matrix(1,0,-0.27472185,0.96152374,0,0)"
-        id="rect6095-5-1-9"
         style={{
           fill: '#ffffff',
           fillOpacity: 1,
@@ -249,7 +257,6 @@ function getTopping(value: number, color: number) {
         x="36.247974"
         y="44.302525"
         transform="matrix(1,0,-0.27472185,0.96152374,0,0)"
-        id="rect6097-3-5-4"
         style={{
           fill: getColorHexString(color),
           fillOpacity: 1,
@@ -327,53 +334,62 @@ function getTopping(value: number, color: number) {
   }
 }
 
+function getBlackCard(value: number) {
+
+}
+
 export function getCard(idOfCard: number) {
   const color = getColor(idOfCard);
   const value = idOfCard - getColorOffset(color);
-  return (<g>
-    <rect
-      id="borderBox"
-      width="63.499996"
-      height="95.25"
-      rx="10.583333"
-      ry="10.583333"
-      x="0.2645835"
-      y="0.2645835"
-      style={{
-        fill: '#ffffff',
-        fillOpacity: 1,
-        fillRule: 'evenodd',
-        stroke: '#000000',
-        strokeWidth: 0.529167,
-        strokeMiterlimit: 4,
-        strokeDasharray: 'none'
-      }} />
-    <rect
-      id="solidColoredBlock"
-      width="52.916664"
-      height="84.666664"
-      rx="5.2916665"
-      ry="5.2916665"
-      x="5.5562401"
-      y="5.5562553"
-      style={{
-        fill: getColorHexString(color),
-        fillOpacity: 1,
-        fillRule: 'evenodd',
-        stroke: 'none',
-        strokeWidth: 1.05833
-      }} />
-    <path
-      d="m 47.889583,21.431228 c -23.38006,0 -42.3333295,18.95328 -42.3333295,42.33333 0,5.845016 4.7383095,10.583333 10.5833295,10.583333 23.38005,0 42.33333,-18.953279 42.33333,-42.333333 0,-5.84502 -4.73832,-10.58333 -10.58333,-10.58333 z"
-      style={{
-        fill: '#ffffff',
-        fillOpacity: 1,
-        fillRule: 'evenodd',
-        stroke: 'none',
-        strokeWidth: 1.05833
-      }} />
-    {getTopping(value, color)}
-  </g>);
+  if (color == COLOR.RED ||
+    color == COLOR.GREEN ||
+    color == COLOR.BLUE ||
+    color == COLOR.YELLOW) {
+    return (<g>
+      <rect
+        width="63.499996"
+        height="95.25"
+        rx="10.583333"
+        ry="10.583333"
+        x="0.2645835"
+        y="0.2645835"
+        style={{
+          fill: '#ffffff',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: '#000000',
+          strokeWidth: 0.529167,
+          strokeMiterlimit: 4,
+          strokeDasharray: 'none'
+        }} />
+      <rect
+        width="52.916664"
+        height="84.666664"
+        rx="5.2916665"
+        ry="5.2916665"
+        x="5.5562401"
+        y="5.5562553"
+        style={{
+          fill: getColorHexString(color),
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 1.05833
+        }} />
+      <path
+        d="m 47.889583,21.431228 c -23.38006,0 -42.3333295,18.95328 -42.3333295,42.33333 0,5.845016 4.7383095,10.583333 10.5833295,10.583333 23.38005,0 42.33333,-18.953279 42.33333,-42.333333 0,-5.84502 -4.73832,-10.58333 -10.58333,-10.58333 z"
+        style={{
+          fill: '#ffffff',
+          fillOpacity: 1,
+          fillRule: 'evenodd',
+          stroke: 'none',
+          strokeWidth: 1.05833
+        }} />
+      {getColoredTopping(value, color)}
+    </g>);
+  }
+
+  return (getBlackCard(value));
 }
 
 export function getCard1(x?: number, y?: number) {
