@@ -42,6 +42,44 @@ function getRandomNumber(min: number, max: number) {
   return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
 }
 
+enum COLOR_OFFSET {
+  YELLOW = 80,
+  BLUE = 60,
+  GREEN = 40,
+  RED = 20,
+  BLACK = 10,
+}
+
+enum COLOR_NUMBERS {
+  BLACK = 2,
+  RED = 15,
+  GREEN = 28,
+  BLUE = 41,
+  YELLOW = 54
+}
+
+const NUBMER_OF_CARDS = 54;
+
+let index = -1;
+
+function getRandomCardId() {
+  index++;
+  if (index < COLOR_NUMBERS.BLACK)
+    return index + COLOR_OFFSET.BLACK;
+  else if (index < COLOR_NUMBERS.RED)
+    return (index - COLOR_NUMBERS.BLACK) + COLOR_OFFSET.RED;
+  else if (index < COLOR_NUMBERS.GREEN)
+    return (index - COLOR_NUMBERS.RED) + COLOR_OFFSET.GREEN;
+  else if (index < COLOR_NUMBERS.BLUE)
+    return (index - COLOR_NUMBERS.GREEN) + COLOR_OFFSET.BLUE;
+  else if (index < COLOR_NUMBERS.YELLOW)
+    return (index - COLOR_NUMBERS.BLUE) + COLOR_OFFSET.YELLOW;
+  else {
+    index = index % NUBMER_OF_CARDS;
+    return getRandomCardId();
+  }
+}
+
 function onConnection(ws: WebSocket) {
   console.log('on connection');
 
@@ -70,13 +108,13 @@ function onConnection(ws: WebSocket) {
 
   setInterval(() => {
     let arrayToSend = new Uint8Array(10);
-    arrayToSend[0] = getRandomNumber(0, 100);
-    arrayToSend[1] = getRandomNumber(0, 100);
+    arrayToSend[0] = getRandomCardId();
+    arrayToSend[1] = getRandomCardId();
     if (ws.readyState === WebSocket.OPEN) {
       console.log(`we are sending `, arrayToSend);
       ws.send(arrayToSend, { binary: true });
     }
-  }, 10000);
+  }, 5000);
 }
 
 wss.on('connection', onConnection);
