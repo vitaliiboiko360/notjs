@@ -2,11 +2,9 @@ import React from 'react';
 
 export const USERPLACEHOLDER_DIMS = { width: 80, height: 80 };
 
-export default function SvgUserPlaceHolder(props) {
+import UserCards from './svg_usercards';
 
-  let ref = React.useRef(null);
-
-
+const UserAvatar = React.forwardRef((props, ref) => {
   return (<rect
     ref={ref}
     x={props.xPosition}
@@ -14,6 +12,16 @@ export default function SvgUserPlaceHolder(props) {
     width={USERPLACEHOLDER_DIMS.width}
     height={USERPLACEHOLDER_DIMS.height}
     rx="7" ry="7" fill="ghostwhite" stroke="lightgray" strokeWidth="2" />);
+});
+
+export default function SvgUserPlaceHolder(props) {
+
+  let ref = React.useRef(null);
+
+  return (<>
+    <UserAvatar ref={ref} />
+    <UserCards ref={ref} />
+  </>);
 }
 
 export const USER_POSITIONS = {
