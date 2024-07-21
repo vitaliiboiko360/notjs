@@ -15,32 +15,46 @@ const UserAvatar = React.forwardRef((props, ref) => {
 });
 
 export default function SvgUserPlaceHolder(props) {
-
   let ref = React.useRef(null);
-
   return (<>
-    <UserAvatar ref={ref} />
-    <UserCards ref={ref} />
+    <UserAvatar
+      xPosition={props.xPosition}
+      yPosition={props.yPosition}
+      ref={ref} />
+    <UserCards
+      position={props.position}
+      ref={ref} />
   </>);
 }
 
-export const USER_POSITIONS = {
-  "left_user": {
+export const enum USER_PLACE {
+  LEFT_USER = 0,
+  TOP_USER,
+  RIGHT_USER,
+  BOTTOM_USER
+}
+
+export const USER_POSITIONS = [
+  {
+    position: USER_PLACE.LEFT_USER,
     xPosition: 5,
     yPosition: 250
   },
-  "top_user": {
+  {
+    position: USER_PLACE.TOP_USER,
     xPosition: 400,
     yPosition: 55
   },
-  "right_user": {
+  {
+    position: USER_PLACE.RIGHT_USER,
     xPosition: 715,
     yPosition: 270
   },
-  "bottom_user": {
+  {
+    position: USER_PLACE.BOTTOM_USER,
     xPosition: 330,
     yPosition: 465
   }
-}
+];
 
 
