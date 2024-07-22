@@ -2,7 +2,7 @@ import React from 'react';
 
 export const USERPLACEHOLDER_DIMS = { width: 80, height: 80 };
 
-import UserCards from './svg_usercards';
+import UserCardsGroup from './svg_usercardsgroup.tsx';
 
 const UserAvatar = React.forwardRef((props, ref) => {
   return (<rect
@@ -21,9 +21,9 @@ export default function SvgUserPlaceHolder(props) {
       xPosition={props.xPosition}
       yPosition={props.yPosition}
       ref={ref} />
-    <UserCards
+    <UserCardsGroup
       position={props.position}
-      ref={ref} />
+      avatarBox={ref} />
   </>);
 }
 
