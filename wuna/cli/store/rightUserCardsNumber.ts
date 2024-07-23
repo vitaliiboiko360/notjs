@@ -27,6 +27,6 @@ export const rightUserCardsNumberSlice = createSlice({
 export const { updateRightUserCardsNumber } = rightUserCardsNumberSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectRightUserCardsNumber = (state: RootState) => state.rightUserCardsNumber
+export const selectRightUserCardsNumber = (state: RootState) => state.rightUserCardsNumber.rightUserCardsNumber
 
 export default rightUserCardsNumberSlice.reducer;

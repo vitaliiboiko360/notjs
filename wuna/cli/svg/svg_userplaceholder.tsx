@@ -5,13 +5,13 @@ export const USERPLACEHOLDER_DIMS = { width: 80, height: 80 };
 import UserCardsGroup from './svg_usercardsgroup.tsx';
 
 const UserAvatar = React.forwardRef((props, ref) => {
-  return (<rect
+  return (<><rect
     ref={ref}
     x={props.xPosition}
     y={props.yPosition}
     width={USERPLACEHOLDER_DIMS.width}
     height={USERPLACEHOLDER_DIMS.height}
-    rx="7" ry="7" fill="ghostwhite" stroke="lightgray" strokeWidth="2" />);
+    rx="7" ry="7" fill="ghostwhite" stroke="lightgray" strokeWidth="2" /></>);
 });
 
 export default function SvgUserPlaceHolder(props) {
@@ -23,7 +23,7 @@ export default function SvgUserPlaceHolder(props) {
       ref={ref} />
     <UserCardsGroup
       position={props.position}
-      avatarBox={ref} />
+      refAvatarBox={ref} />
   </>);
 }
 

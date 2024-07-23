@@ -27,6 +27,6 @@ export const topUserCardsNumberSlice = createSlice({
 export const { updateTopUserCardsNumber } = topUserCardsNumberSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectTopUserCardsNumber = (state: RootState) => state.topUserCardsNumber
+export const selectTopUserCardsNumber = (state: RootState) => state.topUserCardsNumber.topUserCardsNumber
 
 export default topUserCardsNumberSlice.reducer;

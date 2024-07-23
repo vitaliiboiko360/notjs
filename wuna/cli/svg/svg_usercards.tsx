@@ -24,25 +24,27 @@ const UserCards = forwardRef((props, refToGroup) => {
   if (props.position == USER_PLACE.RIGHT_USER) {
     userCardsNumber = useAppSelector(selectRightUserCardsNumber);
   }
-  console.log(userCardsNumber);
+  console.log(`props.postion=${props.position} userCardsNumber=`, userCardsNumber);
+
+  let elements = Array.apply(null, { lenght: userCardsNumber }).map((index) => {
+
+    let transfromString = '';
+    if (props.position == USER_PLACE.LEFT_USER
+      || props.position == USER_PLACE.RIGHT_USER
+    ) {
+      transfromString = `translate(0,${index * 10})`;
+    } else if (props.position == USER_PLACE.TOP_USER
+      || props.position == USER_PLACE.BOTTOM_USER
+    ) {
+      transfromString = `translate(${index * 10})`;
+    }
+
+    return (<g transfrom={transfromString}>
+      {getCard(blackBackCardId)}
+    </g>);
+  })
   return (<>
-    {Array.apply(null, { lenght: userCardsNumber }).map((index) => {
-
-      let transfromString = '';
-      if (props.position == USER_PLACE.LEFT_USER
-        || props.position == USER_PLACE.RIGHT_USER
-      ) {
-        transfromString = `translate(0,${index * 10})`;
-      } else if (props.position == USER_PLACE.TOP_USER
-        || props.position == USER_PLACE.BOTTOM_USER
-      ) {
-        transfromString = `translate(${index * 10})`;
-      }
-
-      return (<g transfrom={transfromString}>
-        {getCard(blackBackCardId)}
-      </g>);
-    })}
+    {elements}
   </>);
 });
 
