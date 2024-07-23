@@ -3,11 +3,11 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from './store';
 
-interface activeCardsStateStoreSlice {
+interface ActiveCardsInterface {
   activeCards: number[]
 }
 
-const initialState: activeCardsStateStoreSlice = {
+const initialState: ActiveCardsInterface = {
   activeCards: []
 };
 

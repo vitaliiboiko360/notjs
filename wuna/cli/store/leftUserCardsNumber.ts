@@ -3,11 +3,11 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from './store';
 
-interface LeftUserCardsNumber {
+interface LeftUserCardsNumberInterface {
   leftUserCardsNumber: number
 }
 
-const initialState: LeftUserCardsNumber = {
+const initialState: LeftUserCardsNumberInterface = {
   leftUserCardsNumber: 0
 };
 

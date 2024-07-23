@@ -3,11 +3,11 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from './store';
 
-interface TopUserCardsNumber {
+interface TopUserCardsNumberInterface {
   topUserCardsNumber: number
 }
 
-const initialState: TopUserCardsNumber = {
+const initialState: TopUserCardsNumberInterface = {
   topUserCardsNumber: 0
 };
 
