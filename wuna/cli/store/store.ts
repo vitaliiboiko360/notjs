@@ -3,13 +3,15 @@ import activeCardsReducer from './activeCards.ts'
 import leftUserCardsNumberReducer from './leftUserCardsNumber.ts';
 import topUserCardsNumberReducer from './topUserCardsNumber.ts';
 import rightUserCardsNumberReducer from './rightUserCardsNumber.ts';
+import bottomUserCardsNumberReducer from './bottomUserCardsNumber.ts';
 
 export const store = configureStore({
   reducer: {
     activeCards: activeCardsReducer,
     leftUserCardsNumber: leftUserCardsNumberReducer,
     topUserCardsNumber: topUserCardsNumberReducer,
-    rightUserCardsNumber: rightUserCardsNumberReducer
+    rightUserCardsNumber: rightUserCardsNumberReducer,
+    bottomUserCardsNumber: bottomUserCardsNumberReducer
   }
 });
 
