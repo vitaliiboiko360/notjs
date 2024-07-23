@@ -8,7 +8,7 @@ enum COLOR {
   YELLOW
 }
 
-enum COLOR_OFFSETS {
+export const enum COLOR_OFFSETS {
   YELLOW_OFFSET = 80,
   BLUE_OFFSET = 60,
   GREEN_OFFSET = 40,
@@ -69,7 +69,7 @@ function getColorHexString(color: number) {
   }
 }
 
-enum BLACK_VALUES {
+export const enum BLACK_VALUES {
   PLUS_FOUR = 0,
   UNIVERSAL,
   BACK_BLACK
