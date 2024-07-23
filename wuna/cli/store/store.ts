@@ -1,11 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
 import activeCardsReducer from './activeCards.ts'
-import leftUserCardsNumber from './leftUserCardsNumber.ts';
+import leftUserCardsNumberReducer from './leftUserCardsNumber.ts';
+import topUserCardsNumberReducer from './topUserCardsNumber.ts';
+import rightUserCardsNumberReducer from './rightUserCardsNumber.ts';
 
 export const store = configureStore({
   reducer: {
     activeCards: activeCardsReducer,
-    leftUserCardsNumber: leftUserCardsNumber
+    leftUserCardsNumber: leftUserCardsNumberReducer,
+    topUserCardsNumber: topUserCardsNumberReducer,
+    rightUserCardsNumber: rightUserCardsNumberReducer
   }
 });
 
