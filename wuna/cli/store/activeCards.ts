@@ -18,13 +18,16 @@ export const activeCardsSlice = createSlice({
     updateActiveCards: (state, action: PayloadAction<number>) => {
       state.activeCards.push(action.payload);
     },
+    updateActiveCardsByArray: (state, action: PayloadAction<number[]>) => {
+      state.activeCards.push.apply(state.activeCards, action.payload);
+    },
     default: (state) => {
       return state;
     }
   }
 });
 
-export const { updateActiveCards } = activeCardsSlice.actions
+export const { updateActiveCards, updateActiveCardsByArray } = activeCardsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectActiveCards = (state: RootState) => state.activeCards

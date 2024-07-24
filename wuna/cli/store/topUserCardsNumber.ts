@@ -18,13 +18,16 @@ export const topUserCardsNumberSlice = createSlice({
     updateTopUserCardsNumber: (state, action: PayloadAction<number>) => {
       state.topUserCardsNumber = action.payload;
     },
+    incrementTopUserCardsNumber: (state, action: PayloadAction<void>) => {
+      state.topUserCardsNumber++;
+    },
     default: (state) => {
       return state;
     }
   }
 });
 
-export const { updateTopUserCardsNumber } = topUserCardsNumberSlice.actions
+export const { updateTopUserCardsNumber, incrementTopUserCardsNumber } = topUserCardsNumberSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectTopUserCardsNumber = (state: RootState) => state.topUserCardsNumber.topUserCardsNumber

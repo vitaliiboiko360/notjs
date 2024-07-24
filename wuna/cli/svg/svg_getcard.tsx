@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 
-enum COLOR {
+export const enum COLOR {
   BLACK = 0,
   RED,
   GREEN,
@@ -31,7 +31,7 @@ function getColorOffset(color: number) {
 const NUMBER_OF_VALUES = 13;
 const BLACK_NUMBER_OF_VALUES = 3;
 
-function getColor(idOfCard: number) {
+export function getColor(idOfCard: number) {
   if (idOfCard >= COLOR_OFFSETS.YELLOW_OFFSET
     && idOfCard <= COLOR_OFFSETS.YELLOW_OFFSET + NUMBER_OF_VALUES) {
     return COLOR.YELLOW;
