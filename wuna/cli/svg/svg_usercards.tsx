@@ -26,23 +26,27 @@ const UserCards = forwardRef((props, refToGroup) => {
   }
   console.log(`props.postion=${props.position} userCardsNumber=`, userCardsNumber);
 
-  let elements = Array.apply(null, { lenght: userCardsNumber }).map((index) => {
+  let elements = Array.apply(null, { length: userCardsNumber })
+    .map(Number.call, Number)
+    .map((index) => {
+      if (isNaN(index))
+        return;
 
-    let transfromString = '';
-    if (props.position == USER_PLACE.LEFT_USER
-      || props.position == USER_PLACE.RIGHT_USER
-    ) {
-      transfromString = `translate(0,${index * 10})`;
-    } else if (props.position == USER_PLACE.TOP_USER
-      || props.position == USER_PLACE.BOTTOM_USER
-    ) {
-      transfromString = `translate(${index * 10})`;
-    }
+      let transfromString = '';
+      if (props.position == USER_PLACE.LEFT_USER
+        || props.position == USER_PLACE.RIGHT_USER
+      ) {
+        transfromString = `translate(0,${index * 10})`;
+      } else if (props.position == USER_PLACE.TOP_USER
+        || props.position == USER_PLACE.BOTTOM_USER
+      ) {
+        transfromString = `translate(${index * 10})`;
+      }
 
-    return (<g transfrom={transfromString}>
-      {getCard(blackBackCardId)}
-    </g>);
-  })
+      return (<g key={index + ((props.position >= 0 ? props.position + 1 : 1) * 25)} transform={transfromString}>
+        {getCard(blackBackCardId)}
+      </g>);
+    })
   return (<>
     {elements}
   </>);

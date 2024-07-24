@@ -25,7 +25,7 @@ function getTransformString(position: number, refAvatarBox) {
 }
 
 const UserCardsGroup = React.forwardRef((props, refAvatarBox) => {
-  const [transfrom, setTransfrom] = useState('');
+  const [transform, setTransform] = useState('');
 
   if (props.position == USER_PLACE.BOTTOM_USER) {
     return (<></>);
@@ -38,12 +38,12 @@ const UserCardsGroup = React.forwardRef((props, refAvatarBox) => {
     }
     console.log('useEffect cards group');
     const transformString = getTransformString(props.position, refAvatarBox);
-    setTransfrom(transformString);
+    setTransform(transformString);
   });
 
   let refToGroup = useRef(null);
 
-  return (<><g ref={refToGroup} transform={transfrom}>
+  return (<><g ref={refToGroup} transform={transform}>
     <UserCards refToGroup={refToGroup} position={props.position} />
   </g></>);
 });
