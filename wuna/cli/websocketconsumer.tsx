@@ -64,7 +64,7 @@ export default function WebSocketConsumer(props) {
 
         staticCounter++;
         if (staticCounter == 3) {
-          console.log('Dispatch active table top card =', number);
+          // console.log('Dispatch active table top card =', number);
           dispatch(updateActiveTableTopCard(number));
           staticCounter = 0;
         }

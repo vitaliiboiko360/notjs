@@ -28,6 +28,7 @@ const UserCards = forwardRef((props, refToGroup) => {
 
   let elements = Array.apply(null, { length: userCardsNumber })
     .map(Number.call, Number)
+    .slice(0, 10)
     .map((index) => {
       if (isNaN(index))
         return;

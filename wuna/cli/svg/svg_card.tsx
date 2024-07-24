@@ -17,10 +17,10 @@ const Card = forwardRef((props, refGroupCenterTable) => {
     return;
   }
   const transformString = props.transformString;
-  console.log('transformString=', transformString);
+  // console.log('transformString=', transformString);
   const [_0, _1, _2, _3, _4, xDelta, yDelta] = transformString.match(/matrix\(([0-9]+),([0-9]+),([0-9]+),([0-9]+),([0-9]+),([0-9]+)\)/);
-  console.log('xDelta=', xDelta);
-  console.log('yDelta=', yDelta);
+  // console.log('xDelta=', xDelta);
+  // console.log('yDelta=', yDelta);
   let x = Math.floor(Math.random() * CARD_HALF_WIDTH) + CARD_HALF_WIDTH;
   let y = Math.floor(Math.random() * CARD_HALF_HEIGHT) + CARD_HALF_HEIGHT;
   // console.log(JSON.stringify(transformString.match(/matrix\(([0-9]+),([0-9]+),([0-9]+),([0-9]+),([0-9]+),([0-9]+)\)/)));
