@@ -6,15 +6,16 @@ import UserCards from './svg_usercards.tsx';
 
 function getTransformString(position: number, refAvatarBox) {
   let retString = '';
-  let { x, y, width, height } = refAvatarBox.current.getBBox();
+  // let { x, y, width, height } = refAvatarBox.current.getBBox();
   if (position == USER_PLACE.LEFT_USER) {
-    retString = `matrix(${-1},0,0,${1},${x + width + 20},${y + (height / 2)})`;
+    // matrix(0,-1,1,0,100,370)
+    retString = `matrix(0,-1,1,0,65,370)`;
   }
   if (position == USER_PLACE.TOP_USER) {
-    retString = `matrix(${-1},0,0,${1},${x + (width / 2)},${y + width + 20})`;
+    retString = `matrix(1,0,0,1,360,90)`;
   }
   if (position == USER_PLACE.RIGHT_USER) {
-    retString = `matrix(${-1},0,0,${1},${x - 20},${y + (width / 2)})`;
+    retString = `matrix(0,1,-1,0,740,220)`;
   }
   if (position == USER_PLACE.BOTTOM_USER) {
     // for bottom user
@@ -43,7 +44,7 @@ const UserCardsGroup = React.forwardRef((props, refAvatarBox) => {
 
   let refToGroup = useRef(null);
 
-  return (<><g ref={refToGroup} transform={transform}>
+  return (<><g ref={refToGroup} transform={getTransformString(props.position, refAvatarBox)}>
     <UserCards refToGroup={refToGroup} position={props.position} />
   </g></>);
 });

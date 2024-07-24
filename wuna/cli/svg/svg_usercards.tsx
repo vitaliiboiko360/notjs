@@ -37,7 +37,7 @@ const UserCards = forwardRef((props, refToGroup) => {
       if (props.position == USER_PLACE.LEFT_USER
         || props.position == USER_PLACE.RIGHT_USER
       ) {
-        transformString = `translate(0,${index * 10})`;
+        transformString = `translate(${index * 10})`;
       } else if (props.position == USER_PLACE.TOP_USER
         || props.position == USER_PLACE.BOTTOM_USER
       ) {
