@@ -62,7 +62,7 @@ const NUBMER_OF_CARDS = 54;
 
 let index = -1;
 
-function getRandomCardId() {
+function getConsequtiveCardId() {
   index++;
   if (index < COLOR_NUMBERS.BLACK)
     return index + COLOR_OFFSET.BLACK;
@@ -76,9 +76,27 @@ function getRandomCardId() {
     return (index - COLOR_NUMBERS.BLUE) + COLOR_OFFSET.YELLOW;
   else {
     index = index % NUBMER_OF_CARDS;
+    return getConsequtiveCardId();
+  }
+}
+
+function getRandomCardId() {
+  let index = Math.floor(Math.random() * 54);
+  if (index < COLOR_NUMBERS.BLACK)
+    return index + COLOR_OFFSET.BLACK;
+  else if (index < COLOR_NUMBERS.RED)
+    return (index - COLOR_NUMBERS.BLACK) + COLOR_OFFSET.RED;
+  else if (index < COLOR_NUMBERS.GREEN)
+    return (index - COLOR_NUMBERS.RED) + COLOR_OFFSET.GREEN;
+  else if (index < COLOR_NUMBERS.BLUE)
+    return (index - COLOR_NUMBERS.GREEN) + COLOR_OFFSET.BLUE;
+  else if (index < COLOR_NUMBERS.YELLOW)
+    return (index - COLOR_NUMBERS.BLUE) + COLOR_OFFSET.YELLOW;
+  else {
     return getRandomCardId();
   }
 }
+
 
 function onConnection(ws: WebSocket) {
   console.log('on connection');
