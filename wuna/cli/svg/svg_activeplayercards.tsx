@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, Fragment } from 'react';
 
-import { getCard1, getCard2, getCard } from './svg_getcard';
+import { getCard } from './svg_getcard';
 
 export default function SvgActivePlayerCards(props) {
   if (props.cardArray.length == 0) {

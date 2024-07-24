@@ -36,7 +36,7 @@ const UserCardsGroup = React.forwardRef((props, refAvatarBox) => {
       console.log('useEffect no REF!!! props.position=', props.position);
       return;
     }
-    console.log('useEffect cards group');
+    console.log('!!!!!! useEffect cards group');
     const transformString = getTransformString(props.position, refAvatarBox);
     setTransform(transformString);
   });
