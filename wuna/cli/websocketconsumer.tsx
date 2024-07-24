@@ -6,6 +6,7 @@ import { updateActiveCards, updateActiveCardsByArray } from './store/activeCards
 import { incrementLeftUserCardsNumber } from './store/leftUserCardsNumber.ts';
 import { incrementTopUserCardsNumber } from './store/topUserCardsNumber.ts';
 import { incrementRightUserCardsNumber } from './store/rightUserCardsNumber.ts';
+import { updateActiveTableTopCard } from './store/activeTableTopCard.ts';
 
 import { COLOR_OFFSETS, COLOR, getColor } from './svg/svg_getcard.tsx';
 
@@ -36,6 +37,8 @@ function isValidCard(idOfCard: number) {
   return false;
 }
 
+let staticCounter = 0;
+
 export default function WebSocketConsumer(props) {
   const webSocket = useContext(WebSocketContext);
   const dispatch = useAppDispatch();
@@ -57,6 +60,13 @@ export default function WebSocketConsumer(props) {
 
         if (getColor(number) == COLOR.GREEN) {
           dispatch(incrementRightUserCardsNumber());
+        }
+
+        staticCounter++;
+        if (staticCounter == 3) {
+          console.log('Dispatch active table top card =', number);
+          dispatch(updateActiveTableTopCard(number));
+          staticCounter = 0;
         }
       }
     }

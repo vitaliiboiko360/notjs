@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, Fragment } from 'react';
+import React, { Fragment } from 'react';
 
 import { getCard } from './svg_getcard';
 
@@ -8,10 +8,10 @@ export default function SvgActivePlayerCards(props) {
     return (<></>);
   }
 
-  console.log(`props.cardsArray.length=${props.cardArray.length}`);
+  //console.log(`props.cardsArray.length=${props.cardArray.length}`);
 
   return (<>
-    {props.cardArray.map((card, index) => {
+    {props.cardArray.slice(0, 10).map((card, index) => {
       const transformString = `translate(${index * 20})`; // 20px -> step to the right on X axe
       return (<Fragment key={index}>
         <g transform={transformString} >

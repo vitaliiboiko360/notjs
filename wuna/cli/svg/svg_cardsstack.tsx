@@ -4,19 +4,17 @@ import { SVG_DIMENSIONS } from './svg_container';
 
 const xCenter = SVG_DIMENSIONS.width / 2;
 const yCenter = SVG_DIMENSIONS.height / 2;
+const transformString = `matrix(1,0,0,1,${xCenter},${yCenter})`;
 
-const xPos = SVG_DIMENSIONS.width / 4;
-const yPos = SVG_DIMENSIONS.height / 4;
-
-const SvgForCards = forwardRef((props, svgCardStack_ref) => {
-  return (<svg ref={svgCardStack_ref} x={xPos} y={yPos} width={xCenter} height={yCenter} >
-  </svg>);
+const SvgForCards = forwardRef((props, refGroupCenterTable) => {
+  return (<g ref={refGroupCenterTable} transfrom={transformString}  >
+  </g>);
 });
 
 export default function SvgCardStack(props) {
-  const svgCardStack_ref = useRef(null);
+  const refGroupCenterTable = useRef(null);
   return (<>
-    <SvgForCards ref={svgCardStack_ref} />
-    <Card ref={svgCardStack_ref} />
+    <SvgForCards ref={refGroupCenterTable} />
+    <Card transformString={transformString} ref={refGroupCenterTable} />
   </>);
 }

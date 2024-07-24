@@ -1,61 +1,33 @@
-import React, { useState, useContext, useEffect, useRef, forwardRef } from 'react';
-import { WebSocketContext } from '../websocketprovider';
-import { getCard1, getCard2, getCard_2 } from './svg_getcard';
+import React, { forwardRef } from 'react';
+import { getCard } from './svg_getcard';
+
+import { selectActiveTableTopCard } from '../store/activeTableTopCard.ts';
+import { useAppSelector } from '../store/hooks.ts';
 
 import { renderToString } from 'react-dom/server';
 
-const Card = forwardRef((props, svgCardStack_ref) => {
-  const [whichCard, setWhichCard] = useState(-1);
+const CARD_HALF_WIDTH = 32;
+const CARD_HALF_HEIGHT = 48;
 
-  const webSocket = useContext(WebSocketContext);
-  useEffect(() => {
-    const onMessage = (event) => {
-      let arBuf = new Uint8Array(event.data);
-      setWhichCard(arBuf[0]);
-    };
+const Card = forwardRef((props, refGroupCenterTable) => {
+  const topCardId = useAppSelector(selectActiveTableTopCard);
 
-    if (svgCardStack_ref.current == null) {
-      console.log(`svg element isn't ready yet`);
-      return;
-    }
-
-    webSocket.addEventListener("message", onMessage);
-
-    return () => webSocket.removeEventListener("message", onMessage);
-  });
-
-  if (whichCard == -1) {
-    console.log(`initial state`);
-    return (<></>);
+  if (!refGroupCenterTable.current) {
+    console.log('GroupCenter Card no REF !!!! topCardId=', topCardId);
+    return;
   }
-
-  let angle = Math.random() * 100 % 15;
-  // if (whichCard > 50) {
-  //   let element = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-  //   element.setAttribute("y", "125");
-  //   element.setAttribute("x", "175");
-  //   const rotateString = `rotate(${angle}, 45, 30)`;
-  //   element.innerHTML = renderToString(<g transform={rotateString} >{getCard1()}</g>);
-  //   svgCardStack_ref.current.appendChild(element);
-  // } else {
-  //   let element = document.createElementNS("http://www.w3.org/2000/svg", 'svg');
-  //   element.setAttribute("y", "125");
-  //   element.setAttribute("x", "175");
-  //   const rotateString = `rotate(${angle}, 45, 30)`;
-  //   element.innerHTML = renderToString(<g transform={rotateString} >{getCard2()}</g>);
-  //   svgCardStack_ref.current.appendChild(element);
-  // }
-  if (whichCard > 50) {
-    let element = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    element.setAttribute('transform', 'matrix(1.1, 0, 0, 1.1, 0, 0)'); // matrix(0, 0, 0, 0, 0, 0)
-    element.innerHTML = renderToString(getCard_2());
-    svgCardStack_ref.current.appendChild(element);
-  } else {
-    let element = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    element.setAttribute('transform', 'matrix(1.1, 0, 0, 1.1, 0, 0)');
-    element.innerHTML = renderToString(getCard_2());
-    svgCardStack_ref.current.appendChild(element);
-  }
+  const transformString = props.transformString;
+  console.log('transformString=', transformString);
+  const [_0, _1, _2, _3, _4, xDelta, yDelta] = transformString.match(/matrix\(([0-9]+),([0-9]+),([0-9]+),([0-9]+),([0-9]+),([0-9]+)\)/);
+  console.log('xDelta=', xDelta);
+  console.log('yDelta=', yDelta);
+  let x = Math.floor(Math.random() * CARD_HALF_WIDTH) + CARD_HALF_WIDTH;
+  let y = Math.floor(Math.random() * CARD_HALF_HEIGHT) + CARD_HALF_HEIGHT;
+  // console.log(JSON.stringify(transformString.match(/matrix\(([0-9]+),([0-9]+),([0-9]+),([0-9]+),([0-9]+),([0-9]+)\)/)));
+  let element = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  element.setAttribute('transform', `matrix(1,0,0,1,${xDelta - x},${yDelta - y})`);
+  element.innerHTML = renderToString(getCard(topCardId));
+  refGroupCenterTable.current.append(element);
 
   return (<></>);
 });
