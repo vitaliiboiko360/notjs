@@ -138,12 +138,12 @@ wss.on('connection', onConnection);
 
 let counter1 = 0;
 const intervalCheckingClients = setInterval(() => {
-  console.log('wss.clients=', wss.clients);
-  counter1++;
-  if (counter1 > 10) {
-    clearInterval(intervalCheckingClients);
-  }
-}, 5000);
+  console.log('wss.clients=', wss.clients.size);
+  // counter1++;
+  // if (counter1 > 10) {
+  //   clearInterval(intervalCheckingClients);
+  // }
+}, 10000);
 
 server.on('upgrade', (request, socket, head) => {
   console.log('on upgrade');
