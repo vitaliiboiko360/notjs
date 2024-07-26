@@ -61,7 +61,6 @@ enum COLOR_NUMBERS {
 const NUBMER_OF_CARDS = 54;
 
 let index = -1;
-
 function getConsequtiveCardId() {
   index++;
   if (index < COLOR_NUMBERS.BLACK)
@@ -136,6 +135,15 @@ function onConnection(ws: WebSocket) {
 }
 
 wss.on('connection', onConnection);
+
+let counter1 = 0;
+const intervalCheckingClients = setInterval(() => {
+  console.log('wss.clients=', wss.clients);
+  counter1++;
+  if (counter1 > 10) {
+    clearInterval(intervalCheckingClients);
+  }
+}, 5000);
 
 server.on('upgrade', (request, socket, head) => {
   console.log('on upgrade');
