@@ -1,6 +1,6 @@
 #!/usr/bin/bash
-#tsc
-for file in ./out/*.mjs; do
+tsc
+for file in ./out/*.js; do
     # 
     # example of expression
     # sed -i -E "s/(import.*PlayerWsConnection)/\1\.mjs/" WebSocketServer.mjs
@@ -14,4 +14,5 @@ for file in ./out/*.mjs; do
 
     mv "$file" "./out/$(basename "$file" .js).mjs"
 done
-# node ./out/WebSocketServer.mjs
+sed -i -E "s/(import.*PlayerWsConnection)[^\.]/\1\.mjs'/" ./out/WebSocketServer.mjs
+node ./out/WebSocketServer.mjs
