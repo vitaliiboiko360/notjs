@@ -69,19 +69,22 @@ declare interface AppWebSocketInterface extends WebSocket {
 
 let webSocket: AppWebSocketInterface | undefined = undefined;
 
+let wsArray: AppWebSocketInterface[] = [];
 
 function setupSendingLoop() {
   setInterval(() => {
-    if (typeof webSocket == 'undefined') {
-      console.log('websocket undefined');
+    if (wsArray.length == 0)
       return;
-    }
-    let arrayToSend = new Uint8Array(10);
-    arrayToSend[0] = getRandomCardId();
-    arrayToSend[1] = getRandomCardId();
-    if (webSocket.readyState === WebSocket.OPEN) {
-      console.log(`we are sending `, arrayToSend.join(' '), ' to clientId=', webSocket.id);
-      webSocket.send(arrayToSend, { binary: true });
+
+    for (let i = 0; i < wsArray.length; ++i) {
+      let webSocket = wsArray[i];
+      let arrayToSend = new Uint8Array(10);
+      arrayToSend[0] = getRandomCardId();
+      arrayToSend[1] = getRandomCardId();
+      if (webSocket.readyState === WebSocket.OPEN) {
+        console.log(`we are sending `, arrayToSend.join(' '), ' to clientId=', webSocket.id);
+        webSocket.send(arrayToSend, { binary: true });
+      }
     }
   }, 5000);
 }
@@ -115,7 +118,7 @@ export default function registerPlayerConnection(ws: WebSocket) {
   });
 
   webSocket.id = webSocketId++;
-
-  setupSendingLoop();
+  wsArray.push(webSocket);
 }
 
+setupSendingLoop();
