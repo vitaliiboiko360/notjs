@@ -64,41 +64,21 @@ export function getRandomCardId() {
 let webSocketId: number = 0;
 
 declare interface AppWebSocketInterface extends WebSocket {
-  id: number
+  id: number,
+  isInitialized: boolean
 }
 
 let webSocket: AppWebSocketInterface | undefined = undefined;
 
 let wsArray: AppWebSocketInterface[] = [];
 
-function setupSendingLoop() {
-  setInterval(() => {
-    if (wsArray.length == 0)
-      return;
-
-    for (let i = 0; i < wsArray.length; ++i) {
-      let webSocket = wsArray[i];
-      let arrayToSend = new Uint8Array(10);
-      arrayToSend[0] = getRandomCardId();
-      arrayToSend[1] = getRandomCardId();
-      if (webSocket.readyState === WebSocket.OPEN) {
-        console.log(`we are sending `, arrayToSend.join(' '), ' to clientId=', webSocket.id);
-        webSocket.send(arrayToSend, { binary: true });
-      }
-    }
-  }, 5000);
-}
-
-export default function registerPlayerConnection(ws: WebSocket) {
-  console.log('on connection');
-
-  webSocket = (ws) as AppWebSocketInterface;
-
-  ws.on('error', (error) => {
+function initializeWebSocket(webSocket: AppWebSocketInterface) {
+  webSocket.isInitialized = true;
+  webSocket.on('error', (error) => {
     console.log(`our error= ${error}`);
   });
 
-  ws.on('message', function message(data, isBinary) {
+  webSocket.on('message', function message(data, isBinary) {
     if (isBinary) {
       let array = new Uint8Array(data as Uint8Array);
       console.log(`we recive binary = `);
@@ -117,8 +97,41 @@ export default function registerPlayerConnection(ws: WebSocket) {
     //   });
   });
 
+  console.log('initalize socketId=', webSocket.id);
+}
+
+function setupSendingLoop() {
+  setInterval(() => {
+    if (wsArray.length == 0)
+      return;
+
+    let unInitializedWebSockets = wsArray.filter(webSocket => webSocket.isInitialized == false);
+    if (unInitializedWebSockets.length > 0) {
+      for (let i = 0; i < unInitializedWebSockets.length; ++i) {
+        initializeWebSocket(unInitializedWebSockets[i]);
+      }
+    }
+
+    for (let i = 0; i < wsArray.length; ++i) {
+      let webSocket = wsArray[i];
+      let arrayToSend = new Uint8Array(10);
+      arrayToSend[0] = getRandomCardId();
+      arrayToSend[1] = getRandomCardId();
+      if (webSocket.readyState === WebSocket.OPEN) {
+        console.log(`we are sending `, arrayToSend.join(' '), ' to clientId=', webSocket.id);
+        webSocket.send(arrayToSend, { binary: true });
+      }
+    }
+  }, 5000);
+}
+
+export default function registerPlayerConnection(ws: WebSocket) {
+
+
+  webSocket = (ws) as AppWebSocketInterface;
   webSocket.id = webSocketId++;
   wsArray.push(webSocket);
+  console.log('accepted on connection id=', webSocket.id);
 }
 
 setupSendingLoop();
