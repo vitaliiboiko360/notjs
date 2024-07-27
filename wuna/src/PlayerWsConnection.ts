@@ -61,8 +61,35 @@ export function getRandomCardId() {
   }
 }
 
+let webSocketId: number = 0;
+
+declare interface AppWebSocketInterface extends WebSocket {
+  id: number
+}
+
+let webSocket: AppWebSocketInterface | undefined = undefined;
+
+
+function setupSendingLoop() {
+  setInterval(() => {
+    if (typeof webSocket == 'undefined') {
+      console.log('websocket undefined');
+      return;
+    }
+    let arrayToSend = new Uint8Array(10);
+    arrayToSend[0] = getRandomCardId();
+    arrayToSend[1] = getRandomCardId();
+    if (webSocket.readyState === WebSocket.OPEN) {
+      console.log(`we are sending `, arrayToSend.join(' '), ' to clientId=', webSocket.id);
+      webSocket.send(arrayToSend, { binary: true });
+    }
+  }, 5000);
+}
+
 export default function registerPlayerConnection(ws: WebSocket) {
   console.log('on connection');
+
+  webSocket = (ws) as AppWebSocketInterface;
 
   ws.on('error', (error) => {
     console.log(`our error= ${error}`);
@@ -87,13 +114,8 @@ export default function registerPlayerConnection(ws: WebSocket) {
     //   });
   });
 
-  setInterval(() => {
-    let arrayToSend = new Uint8Array(10);
-    arrayToSend[0] = getRandomCardId();
-    arrayToSend[1] = getRandomCardId();
-    if (ws.readyState === WebSocket.OPEN) {
-      console.log(`we are sending `, arrayToSend);
-      ws.send(arrayToSend, { binary: true });
-    }
-  }, 5000);
+  webSocket.id = webSocketId++;
+
+  setupSendingLoop();
 }
+
