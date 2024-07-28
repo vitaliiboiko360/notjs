@@ -70,6 +70,8 @@ declare interface AppWebSocketInterface extends WebSocket {
 
 let wsArray: AppWebSocketInterface[] = [];
 
+let isAllInitialized = false;
+
 function initializeWebSocket(webSocket: AppWebSocketInterface) {
   webSocket.isInitialized = true;
   webSocket.on('error', (error) => {
@@ -100,7 +102,7 @@ function initializeWebSocket(webSocket: AppWebSocketInterface) {
 
 function setupSendingLoop() {
   setInterval(() => {
-    if (wsArray.length == 0)
+    if (isAllInitialized)
       return;
 
     let unInitializedWebSockets = wsArray
@@ -111,6 +113,7 @@ function setupSendingLoop() {
       for (let i = 0; i < unInitializedWebSockets.length; ++i) {
         initializeWebSocket(unInitializedWebSockets[i]);
       }
+      isAllInitialized = true;
     }
 
     for (let i = 0; i < wsArray.length; ++i) {
@@ -123,7 +126,8 @@ function setupSendingLoop() {
         webSocket.send(arrayToSend, { binary: true });
       }
     }
-  }, 5000);
+
+  }, 2000);
 }
 
 export default function registerPlayerConnection(ws: WebSocket) {
@@ -131,6 +135,7 @@ export default function registerPlayerConnection(ws: WebSocket) {
   webSocket.id = webSocketId++;
   wsArray.push(webSocket);
   console.log('accepted on connection id=', webSocket.id);
+  isAllInitialized = false;
 }
 
 setupSendingLoop();
