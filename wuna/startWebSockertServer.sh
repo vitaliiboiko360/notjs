@@ -9,7 +9,7 @@ for file in ./out/*.js; do
     #if [ "${fileName}" = "WebSocketServer" ]; then
       # echo "$file"
       # echo "echo s\/(import.*PlayerWsConnection)\/\1\.mjs\/" "$file"
-      echo ''
+      #echo ''
     #fi
 
     mv "$file" "./out/$(basename "$file" .js).mjs"
