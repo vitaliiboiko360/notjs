@@ -65,6 +65,9 @@ export function getRandomCardId() {
 
 import { wsArray } from './PlayerWsConnection';
 
+let guestConnections = [];
+let playerConnections = [];
+
 export function dispatchClientMessage(data: Uint8Array, id: number) {
   let array = data;
   console.log(`CLIENT = `, id, ' message: ', array.join(' '));
