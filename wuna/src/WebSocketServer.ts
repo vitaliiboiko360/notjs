@@ -46,7 +46,7 @@ wss.on('connection', onConnection);
 
 let counter1 = 0;
 const intervalCheckingClients = setInterval(() => {
-  console.log('wss.clients=', wss.clients.size);
+  console.log('size of wss.clients=', wss.clients.size);
   // counter1++;
   // if (counter1 > 10) {
   //   clearInterval(intervalCheckingClients);
@@ -54,7 +54,6 @@ const intervalCheckingClients = setInterval(() => {
 }, 10000);
 
 server.on('upgrade', (request, socket, head) => {
-  console.log('on upgrade');
 
   const afterDoneUpgrade = (ws: WebSocket) => {
     wss.emit('connection', ws, request);
