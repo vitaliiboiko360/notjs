@@ -69,10 +69,9 @@ let guestConnections = [];
 let playerConnections = [];
 
 export function dispatchClientMessage(data: Uint8Array, id: number) {
-  let array = data;
-  console.log(`CLIENT = `, id, ' message: ', array.join(' '));
-  for (let i = 0; i < array.length; i++) {
-    console.log(array[i]);
+  console.log(`CLIENT = `, id, ' message: ', data.join(' '));
+  for (let i = 0; i < data.length; i++) {
+    console.log(data[i]);
   }
 }
 
