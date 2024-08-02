@@ -37,10 +37,29 @@ function isValidCard(idOfCard: number) {
   return false;
 }
 
-function isValidUser()
+function isValidUserCommand(inputNumber: number) {
+  if (inputNumber >= 0 && inputNumber <= 8) {
+    return true;
+  }
+}
 
-function getCommand() {
+enum COMMAND {
+  ALLGAMESATE = 0,
+  BOTTOM_USER_MOVE = 1,
+  LEFT_USER_MOVE = 2,
+  TOP_USER_MOVE = 3,
+  RIGHT_USER_MOVE = 4,
+  BOTTOM_USER_CARD_COUNT = 5,
+  LEFT_USER_CARD_COUNT = 6,
+  TOP_USER_CARD_COUNT = 7,
+  RIGHT_USER_CARD_COUNT = 8,
+}
 
+function getCommand(inputNumber: number) {
+  if (inputNumber in COMMAND) {
+    return inputNumber;
+  }
+  return -1;
 }
 
 let staticCounter = 0;
