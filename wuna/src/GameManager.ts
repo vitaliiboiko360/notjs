@@ -1,3 +1,5 @@
+import WebSocket from 'ws';
+
 
 function getRandomNumber(min: number, max: number) {
   const minCeiled = Math.ceil(min);
@@ -63,13 +65,50 @@ export function getRandomCardId() {
   }
 }
 
-import { wsArray } from './PlayerWsConnection';
+import { AppWebSocketInterface, wsArray } from './PlayerWsConnection';
+import { connect } from 'react-redux';
 
-let guestConnections = [];
-let playerConnections = [];
+export declare interface ConnectionAndMeta extends AppWebSocketInterface {
+  seatNumber: number
+}
 
-export function dispatchClientMessage(data: Uint8Array, id: number) {
+let playerConnectionsIds = new Set<number>();
+let playerConnections = new Map<number, ConnectionAndMeta>();
+
+function processSeatRequest(data: Uint8Array, webSocket: AppWebSocketInterface) {
+  const id = webSocket.id;
+  if (id in playerConnectionsIds) {
+    console.log('the player with webSocket id=', id, ' trying to connect more than one time!');
+    return;
+  }
+
+  let player = webSocket as ConnectionAndMeta;
+  player.seatNumber = data[0];
+  playerConnections.set(id, player);
+  playerConnectionsIds.add(id);
+
+  player.send([data[0]], { binary: true });
+}
+
+function processPlayerInputConnection(data: Uint8Array, id: number) {
+  let firstByte = data[0];
+  let player = playerConnections.get(id);
+}
+
+export function dispatchClientMessage(data: Uint8Array, webSocket: AppWebSocketInterface) {
+  const id = webSocket.id;
   console.log(`CLIENT = `, id, ' message: ', data.join(' '));
+
+  let firstByte = data[0];
+  // check if firstByte == 1,2,3 or 4
+  if (firstByte >= 1 && firstByte <= 4) {
+    return processSeatRequest(data, webSocket);
+  }
+
+  if (id in playerConnectionsIds) {
+    return processPlayerInputConnection(data, id);
+  }
+
   for (let i = 0; i < data.length; i++) {
     console.log(data[i]);
   }

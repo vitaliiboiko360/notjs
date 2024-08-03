@@ -68,3 +68,23 @@ export enum YELLOW {
   YELLOW_SkipStep,
   YELLOW_PlusTwo
 }
+
+export function isValidCard(idOfCard: number) {
+  if (idOfCard == UNIVERSAL.UNIVERSAL_PlusFour
+    || idOfCard == UNIVERSAL.UNIVERSAL)
+    return true;
+  if (idOfCard >= RED.RED_0
+    && idOfCard <= RED.RED_PlusTwo)
+    return true;
+  if (idOfCard >= GREEN.GREEN_0
+    && idOfCard <= GREEN.GREEN_PlusTwo)
+    return true;
+  if (idOfCard >= BLUE.BLUE_0
+    && idOfCard <= BLUE.BLUE_PlusTwo)
+    return true;
+  if (idOfCard >= YELLOW.YELLOW_0
+    && idOfCard <= YELLOW.YELLOW_PlusTwo)
+    return true;
+
+  return false;
+}
