@@ -112,13 +112,17 @@ function processSeatRequest(data: Uint8Array, webSocket: AppWebSocketInterface) 
 }
 
 import { isValidCard } from './Cards';
+import { game } from './WebSocketServer';
 
 function processPlayerInputConnection(data: Uint8Array, id: number) {
   let firstByte = data[0];
+  let player = playerConnections.get(id);
+
   if (isValidCard(firstByte)) {
     // remove card from game state for this ID connection player
+    let seatNumber = player!.seatNumber;
+    game.removeCard(firstByte, seatNumber);
   }
-  let player = playerConnections.get(id);
 
   // player just moved a valid card
   // we need
@@ -130,7 +134,6 @@ function processPlayerInputConnection(data: Uint8Array, id: number) {
       playerConnection.send([player!.seatNumber + 1, idOfCard], { binary: true });
     }
   }
-
 }
 
 export function dispatchClientMessage(data: Uint8Array, webSocket: AppWebSocketInterface) {
@@ -146,8 +149,6 @@ export function dispatchClientMessage(data: Uint8Array, webSocket: AppWebSocketI
   if (id in playerConnectionsIds) {
     return processPlayerInputConnection(data, id);
   }
-
-
 }
 
 export function serveGame() {

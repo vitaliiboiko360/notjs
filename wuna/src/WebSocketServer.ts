@@ -61,3 +61,7 @@ server.on('upgrade', (request, socket, head) => {
 
   wss.handleUpgrade(request, socket, head, afterDoneUpgrade);
 });
+
+import { Game } from './Game';
+
+export var game = new Game();
