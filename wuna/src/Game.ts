@@ -81,6 +81,10 @@ export class Game {
     this.topCard = idOfCard;
   }
 
+  removeCardUserAndSetItTopCard(idOfCard: number, userSeat: number) {
+    return this.removeCard(idOfCard, userSeat);
+  }
+
   getNextCard() {
     return this.CardArray.pop();
   }

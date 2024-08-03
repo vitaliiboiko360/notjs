@@ -121,7 +121,7 @@ function processPlayerInputConnection(data: Uint8Array, id: number) {
   if (isValidCard(firstByte)) {
     // remove card from game state for this ID connection player
     let seatNumber = player!.seatNumber;
-    game.removeCard(firstByte, seatNumber);
+    game.removeCardUserAndSetItTopCard(firstByte, seatNumber);
   }
 
   // player just moved a valid card
