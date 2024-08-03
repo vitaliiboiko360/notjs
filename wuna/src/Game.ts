@@ -2,6 +2,17 @@
 
 import { NUMBER_OF_COLOR_CARDS, NUMBER_OF_BLACK_CARDS, NUBMER_OF_CARDS, NUBMER_OF_DECKS, RED, GREEN, BLUE, YELLOW, UNIVERSAL } from "./Cards";
 
+function shuffleArray(arrayToShuffle: number[]) {
+  for (let i = 0; i < arrayToShuffle.length; ++i) {
+    let index = (Math.random() * (arrayToShuffle.length - i)) + i;
+    if (index != i) {
+      let temp = arrayToShuffle[i];
+      arrayToShuffle[i] = arrayToShuffle[index];
+      arrayToShuffle[index] = temp;
+    }
+  }
+}
+
 function initCardArray() {
   let retArray = new Array(NUBMER_OF_CARDS * NUBMER_OF_DECKS);
   for (let i = 0; i < NUMBER_OF_COLOR_CARDS; ++i) {
@@ -37,7 +48,7 @@ function initCardArray() {
         = UNIVERSAL.UNIVERSAL + i;
     }
   }
-
+  shuffleArray(retArray);
   return retArray;
 }
 
