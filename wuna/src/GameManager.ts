@@ -84,7 +84,7 @@ function processSeatRequest(data: Uint8Array, webSocket: AppWebSocketInterface) 
     return;
   }
 
-  let seatNumberRequested = data[0];
+  let seatNumberRequested = data[0] - 1; // on client seats are numbered starting from 1 to 4
   let allotedSeatNumber = seatNumberRequested;
   let player = webSocket as ConnectionAndMeta;
   for (let [id, playerConnection] of playerConnections) {
@@ -108,7 +108,7 @@ function processSeatRequest(data: Uint8Array, webSocket: AppWebSocketInterface) 
   playerConnectionsIds.add(id);
   playerAllotedSeats.add(player.seatNumber);
 
-  player.send([seatNumberRequested], { binary: true });
+  player.send([data[0]], { binary: true });  // client get the same number as confirmation to seat request
 }
 
 import { isValidCard } from './Cards';
@@ -116,9 +116,17 @@ import { isValidCard } from './Cards';
 function processPlayerInputConnection(data: Uint8Array, id: number) {
   let firstByte = data[0];
   if (isValidCard(firstByte)) {
-
+    // remove card from game state for this ID connection player
   }
   let player = playerConnections.get(id);
+
+  // update top card by user's
+  const idOfCard = firstByte;
+  for (let [playerConnectionId, playerConnection] of playerConnections) {
+    if (playerConnectionId != id) {
+      playerConnection.send([player!.seatNumber + 1, idOfCard], { binary: true });
+    }
+  }
 }
 
 export function dispatchClientMessage(data: Uint8Array, webSocket: AppWebSocketInterface) {
