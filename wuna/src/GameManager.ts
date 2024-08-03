@@ -72,6 +72,8 @@ export declare interface ConnectionAndMeta extends AppWebSocketInterface {
   seatNumber: number
 }
 
+const playerAllotedSeatsNumber = 4;
+let playerAllotedSeats = new Set<number>();
 let playerConnectionsIds = new Set<number>();
 let playerConnections = new Map<number, ConnectionAndMeta>();
 
@@ -82,16 +84,40 @@ function processSeatRequest(data: Uint8Array, webSocket: AppWebSocketInterface) 
     return;
   }
 
+  let seatNumberRequested = data[0];
+  let allotedSeatNumber = seatNumberRequested;
   let player = webSocket as ConnectionAndMeta;
-  player.seatNumber = data[0];
+  for (let [id, playerConnection] of playerConnections) {
+    if (playerConnection.seatNumber == seatNumberRequested) {
+      let index = seatNumberRequested;
+      while (++index % playerAllotedSeatsNumber != seatNumberRequested) {
+        if (!playerAllotedSeats.has(index)) {
+          allotedSeatNumber = index;
+          break;
+        }
+      }
+      if (index == seatNumberRequested) {
+        console.log('someone requested seat that\'s already taken and there\'s no avaialable seats left');
+        return;
+      }
+      break;
+    }
+  }
+  player.seatNumber = allotedSeatNumber;
   playerConnections.set(id, player);
   playerConnectionsIds.add(id);
+  playerAllotedSeats.add(player.seatNumber);
 
-  player.send([data[0]], { binary: true });
+  player.send([seatNumberRequested], { binary: true });
 }
+
+import { isValidCard } from './Cards';
 
 function processPlayerInputConnection(data: Uint8Array, id: number) {
   let firstByte = data[0];
+  if (isValidCard(firstByte)) {
+
+  }
   let player = playerConnections.get(id);
 }
 
