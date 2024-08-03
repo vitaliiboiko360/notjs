@@ -1,3 +1,9 @@
+
+export const NUBMER_OF_CARDS = 54;
+export const NUBMER_OF_DECKS = 4;
+export const NUMBER_OF_COLOR_CARDS = 13;
+export const NUMBER_OF_BLACK_CARDS = 2;
+
 // universal
 export enum UNIVERSAL {
   UNIVERSAL_PlusFour = 10,
