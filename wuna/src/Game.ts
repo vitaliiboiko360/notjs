@@ -62,6 +62,7 @@ export class Game {
       const index = cardArray.indexOf(idOfCard);
       if (index == -1) {
         console.log('requested remove card=', idOfCard, ` from ${userTag} user!`);
+        return;
       }
       cardArray.splice(index, 1);
     };
@@ -77,6 +78,15 @@ export class Game {
     if (userSeat == 3) {
       removeFromCardArray(this.D_UserCards, idOfCard, 'D');
     }
+    this.topCard = idOfCard;
+  }
+
+  getNextCard() {
+    return this.CardArray.pop();
+  }
+
+  getRemaniedCardsCount() {
+    return this.CardArray.length;
   }
 
   topCard: number = -1;
@@ -86,7 +96,5 @@ export class Game {
   D_UserCards: number[] = [];
 
   CardArray: number[] = [];
-
-
 };
 
