@@ -57,6 +57,28 @@ export class Game {
     this.CardArray = initCardArray();
   }
 
+  removeCard(idOfCard: number, userSeat: number) {
+    const removeFromCardArray = (cardArray: number[], idOfCard: number, userTag: string) => {
+      const index = cardArray.indexOf(idOfCard);
+      if (index == -1) {
+        console.log('requested remove card=', idOfCard, ` from ${userTag} user!`);
+      }
+      cardArray.splice(index, 1);
+    };
+    if (userSeat == 0) {
+      removeFromCardArray(this.A_UserCards, idOfCard, 'A');
+    }
+    if (userSeat == 1) {
+      removeFromCardArray(this.B_UserCards, idOfCard, 'B');
+    }
+    if (userSeat == 2) {
+      removeFromCardArray(this.C_UserCards, idOfCard, 'C');
+    }
+    if (userSeat == 3) {
+      removeFromCardArray(this.D_UserCards, idOfCard, 'D');
+    }
+  }
+
   topCard: number = -1;
   A_UserCards: number[] = [];
   B_UserCards: number[] = [];
