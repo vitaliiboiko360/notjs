@@ -120,7 +120,10 @@ function processPlayerInputConnection(data: Uint8Array, id: number) {
   }
   let player = playerConnections.get(id);
 
-  // update top card by user's
+  // player just moved a valid card
+  // we need
+  // to update top card by user's
+  // in game's state
   const idOfCard = firstByte;
   for (let [playerConnectionId, playerConnection] of playerConnections) {
     if (playerConnectionId != id) {
