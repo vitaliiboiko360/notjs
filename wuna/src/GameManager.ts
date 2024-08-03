@@ -130,6 +130,7 @@ function processPlayerInputConnection(data: Uint8Array, id: number) {
       playerConnection.send([player!.seatNumber + 1, idOfCard], { binary: true });
     }
   }
+
 }
 
 export function dispatchClientMessage(data: Uint8Array, webSocket: AppWebSocketInterface) {
@@ -146,9 +147,7 @@ export function dispatchClientMessage(data: Uint8Array, webSocket: AppWebSocketI
     return processPlayerInputConnection(data, id);
   }
 
-  for (let i = 0; i < data.length; i++) {
-    console.log(data[i]);
-  }
+
 }
 
 export function serveGame() {

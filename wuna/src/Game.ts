@@ -89,6 +89,10 @@ export class Game {
     return this.CardArray.length;
   }
 
+  getAllPlayerStartingHands() {
+    //
+  }
+
   topCard: number = -1;
   A_UserCards: number[] = [];
   B_UserCards: number[] = [];
