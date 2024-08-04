@@ -1,11 +1,12 @@
 import React, { useContext, useCallback, useEffect } from 'react';
 
 import { WebSocketContext } from './websocketprovider.tsx';
-import { useAppDispatch } from './store/hooks.ts';
+import { useAppDispatch, AppDispatch } from './store/hooks.ts';
 import { updateActiveCards, updateActiveCardsByArray } from './store/activeCards.ts';
-import { incrementLeftUserCardsNumber } from './store/leftUserCardsNumber.ts';
-import { incrementTopUserCardsNumber } from './store/topUserCardsNumber.ts';
-import { incrementRightUserCardsNumber } from './store/rightUserCardsNumber.ts';
+import { updateBottomUserCardsNumber } from './store/bottomUserCardsNumber.ts';
+import { updateLeftUserCardsNumber } from './store/leftUserCardsNumber.ts';
+import { updateTopUserCardsNumber } from './store/topUserCardsNumber.ts';
+import { updateRightUserCardsNumber } from './store/rightUserCardsNumber.ts';
 import { updateActiveTableTopCard } from './store/activeTableTopCard.ts';
 
 import { COLOR_OFFSETS, COLOR, getColor } from './svg/svg_getcard.tsx';
@@ -64,31 +65,29 @@ function getCommand(inputNumber: number) {
 
 let staticCounter = 0;
 
-function readMessage(inputArray: Uint8Array, dispatch) {
-  for (let i = 0; i < inputArray.length; ++i) {
-    let number = inputArray[i];
-    if (i == 0 && isValidCard(number)) {
-      dispatch(updateActiveTableTopCard(number));
-    }
-    if (getColor(number) == COLOR.BLUE) {
-      dispatch(incrementLeftUserCardsNumber());
-    }
+function processPlayerMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
+  let userSeat = inputArray[0];
+  let idOfCard = inputArray[1];
+}
 
-    if (getColor(number) == COLOR.RED) {
-      dispatch(incrementTopUserCardsNumber());
-    }
-
-    if (getColor(number) == COLOR.GREEN) {
-      dispatch(incrementRightUserCardsNumber());
-    }
-
-    staticCounter++;
-    if (staticCounter == 3) {
-      // console.log('Dispatch active table top card =', number);
-      dispatch(updateActiveTableTopCard(number));
-      staticCounter = 0;
-    }
+function readMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
+  if (inputArray[0] != 0) {
+    return processPlayerMessage(inputArray, dispatch);
   }
+
+  if (inputArray.length < 6) {
+    console.log('inputArray length=', inputArray.length);
+    return;
+  }
+
+  let topCard = inputArray[1];
+  if (isValidCard(topCard)) {
+    dispatch(updateActiveTableTopCard(topCard));
+  }
+  dispatch(updateBottomUserCardsNumber(inputArray[2]));
+  dispatch(updateLeftUserCardsNumber(inputArray[3]));
+  dispatch(updateTopUserCardsNumber(inputArray[4]));
+  dispatch(updateRightUserCardsNumber(inputArray[5]));
 }
 
 export default function WebSocketConsumer(props) {
