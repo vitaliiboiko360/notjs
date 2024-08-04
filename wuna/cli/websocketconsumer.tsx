@@ -65,25 +65,11 @@ function getCommand(inputNumber: number) {
 
 let staticCounter = 0;
 
-function processPlayerMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
-  let userSeat = inputArray[0];
-  let idOfCard = inputArray[1];
-}
-
-function processSeatRequestMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
-
-}
-
-function readMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
-  if (inputArray[0] != 0) {
-    return processPlayerMessage(inputArray, dispatch);
-  }
-
+function processGuestMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
   if (inputArray.length < 6) {
     console.log('inputArray length=', inputArray.length);
     return;
   }
-
   let topCard = inputArray[1];
   if (isValidCard(topCard)) {
     dispatch(updateActiveTableTopCard(topCard));
@@ -92,6 +78,28 @@ function readMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
   dispatch(updateLeftUserCardsNumber(inputArray[3]));
   dispatch(updateTopUserCardsNumber(inputArray[4]));
   dispatch(updateRightUserCardsNumber(inputArray[5]));
+}
+
+function processPlayerMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
+  let userSeat = inputArray[0];
+  let idOfCard = inputArray[1];
+}
+
+function processSeatRequestMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
+}
+
+function readMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
+  if (inputArray[0] >= 1 && inputArray[0] <= 4) {
+    return processPlayerMessage(inputArray, dispatch);
+  }
+
+  if (inputArray[0] == 0) {
+    return processGuestMessage(inputArray, dispatch);
+  }
+
+  if (inputArray[0] >= 5 && inputArray[0] <= 8) {
+    return processSeatRequestMessage(inputArray, dispatch);
+  }
 }
 
 export default function WebSocketConsumer(props) {
