@@ -151,17 +151,37 @@ export function dispatchClientMessage(data: Uint8Array, webSocket: AppWebSocketI
   }
 }
 
-export function serveGame() {
-  while (true) {
+function isTwoArrayEqual(arrayOne: Uint8Array, arrayTwo: Uint8Array) {
+  for (let i = 0; i < arrayOne.length; ++i) {
+    if (arrayOne[i] !== arrayTwo[i])
+      return false;
+  }
+  return true;
+}
+
+export var previousArraySent: Uint8Array;
+
+export async function serveGame() {
+  setInterval(() => {
+
+    let arrayToSend = new Uint8Array(6);
+    arrayToSend[0] = 0;
+    arrayToSend[1] = game.topCard;
+    arrayToSend[2] = game.A_UserCards.length;
+    arrayToSend[3] = game.B_UserCards.length;
+    arrayToSend[4] = game.C_UserCards.length;
+    arrayToSend[5] = game.D_UserCards.length;
+
+    if (isTwoArrayEqual(arrayToSend, previousArraySent)) {
+      return; // have sent it already
+    }
+    previousArraySent = arrayToSend;
     for (let i = 0; i < wsArray.length; ++i) {
       let webSocket = wsArray[i];
-      let arrayToSend = new Uint8Array(10);
-      arrayToSend[0] = getRandomCardId();
-      arrayToSend[1] = getRandomCardId();
       if (webSocket.readyState === WebSocket.OPEN) {
-        console.log(`we are sending `, arrayToSend.join(' '), ' to clientId=', webSocket.id);
+        //console.log(`we are sending `, arrayToSend.join(' '), ' to clientId=', webSocket.id);
         webSocket.send(arrayToSend, { binary: true });
       }
     }
-  }
+  }, 1000);
 }
