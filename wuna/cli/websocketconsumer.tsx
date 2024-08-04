@@ -70,6 +70,10 @@ function processPlayerMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
   let idOfCard = inputArray[1];
 }
 
+function processSeatRequestMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
+
+}
+
 function readMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
   if (inputArray[0] != 0) {
     return processPlayerMessage(inputArray, dispatch);

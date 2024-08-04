@@ -1,23 +1,28 @@
-import React from 'react';
-
-export const USERPLACEHOLDER_DIMS = { width: 80, height: 80 };
+import React, { useEffect, useContext } from 'react';
 
 import UserCardsGroup from './svg_usercardsgroup.tsx';
+import UserAvatarHolder from './svg_userplaceavatarholder.tsx';
 
-const UserAvatar = React.forwardRef((props, ref) => {
-  return (<><rect
-    ref={ref}
-    x={props.xPosition}
-    y={props.yPosition}
-    width={USERPLACEHOLDER_DIMS.width}
-    height={USERPLACEHOLDER_DIMS.height}
-    rx="7" ry="7" fill="ghostwhite" stroke="lightgray" strokeWidth="2" /></>);
-});
+import { WebSocketContext } from '../websocketprovider.tsx';
 
 export default function SvgUserPlaceHolder(props) {
   let ref = React.useRef(null);
+  const webSocket = useContext(WebSocketContext);
+
+  useEffect(() => {
+    const onClick = (event) => {
+      let arrayToSend: Uint8Array = new Uint8Array(1);
+      arrayToSend[0] = props.position;
+      webSocket.send();
+    };
+
+    ref.addEventListener('click', onClick);
+
+    return () => ref.removeEvenetListener('click', onClick);
+  }, [webSocket]);
+
   return (<>
-    <UserAvatar
+    <UserAvatarHolder
       xPosition={props.xPosition}
       yPosition={props.yPosition}
       ref={ref} />
