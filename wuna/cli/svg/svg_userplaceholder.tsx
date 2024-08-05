@@ -1,30 +1,15 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 
 import UserCardsGroup from './svg_usercardsgroup.tsx';
 import UserAvatarHolder from './svg_userplaceavatarholder.tsx';
 
-import { WebSocketContext } from '../websocketprovider.tsx';
-
 export default function SvgUserPlaceHolder(props) {
   let ref = React.useRef(null);
-  const webSocket = useContext(WebSocketContext);
-
-  useEffect(() => {
-    const onClick = (event) => {
-      let arrayToSend: Uint8Array = new Uint8Array(1);
-      arrayToSend[0] = props.position;
-      webSocket.send();
-    };
-
-    ref.addEventListener('click', onClick);
-
-    return () => ref.removeEvenetListener('click', onClick);
-  }, [webSocket]);
-
   return (<>
     <UserAvatarHolder
       xPosition={props.xPosition}
       yPosition={props.yPosition}
+      position={props.position}
       ref={ref} />
     <UserCardsGroup
       position={props.position}
