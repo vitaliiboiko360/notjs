@@ -1,20 +1,21 @@
 import React, { useEffect } from 'react';
 
 import UserCardsGroup from './svg_usercardsgroup.tsx';
-import UserAvatarHolder from './svg_userplaceavatarholder.tsx';
-import UserNameHolder from './svg_userplacenameholder.tsx';
+import UserAvatar from './svg_userplaceavatar.tsx';
+import UserName from './svg_userplacename.tsx';
 
 export default function SvgUserPlaceHolder(props) {
   let ref = React.useRef(null);
+  console.log('user placeholder comp props.position=', props.position);
   return (<>
-    <UserAvatarHolder
+    <UserAvatar
       xPosition={props.xPosition}
       yPosition={props.yPosition}
       position={props.position}
       ref={ref} />
-    <UserNameHolder
+    <UserName
       refAvatarBox={ref}
-      position={props.position}
+      {...props}
     />
     <UserCardsGroup
       position={props.position}
@@ -23,10 +24,10 @@ export default function SvgUserPlaceHolder(props) {
 }
 
 export const enum USER_PLACE {
-  LEFT_USER = 0,
+  BOTTOM_USER = 0,
+  LEFT_USER,
   TOP_USER,
-  RIGHT_USER,
-  BOTTOM_USER
+  RIGHT_USER
 }
 
 export const USER_POSITIONS = [

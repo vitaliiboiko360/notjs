@@ -7,7 +7,7 @@ import { selectPlayerSeatRequested, updatePlayerSeatRequested } from '../store/p
 
 export const USERPLACEHOLDER_DIMS = { width: 80, height: 80 };
 
-const UserAvatarHolder = React.forwardRef((props, ref) => {
+const UserAvatar = React.forwardRef((props, ref) => {
   const webSocket = useContext(WebSocketContext);
   const playerSeatNumberRequested = useAppSelector(selectPlayerSeatRequested);
   const dispatch = useAppDispatch();
@@ -32,7 +32,7 @@ const UserAvatarHolder = React.forwardRef((props, ref) => {
       }
       dispatch(updatePlayerSeatRequested(props.position));
       let arrayToSend: Uint8Array = new Uint8Array(1);
-      arrayToSend[0] = props.position;
+      arrayToSend[0] = props.position + 1;
       webSocket.send(arrayToSend);
     };
 
@@ -50,4 +50,4 @@ const UserAvatarHolder = React.forwardRef((props, ref) => {
     rx="7" ry="7" fill="ghostwhite" stroke="lightgray" strokeWidth="2" /></>);
 });
 
-export default UserAvatarHolder;
+export default UserAvatar;
