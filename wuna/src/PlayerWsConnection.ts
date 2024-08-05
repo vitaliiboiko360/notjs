@@ -17,6 +17,10 @@ function initializeWebSocket(webSocket: AppWebSocketInterface) {
 
   webSocket.on('close', () => {
     console.log('we\'re closing... ID=', webSocket.id);
+    let index = wsArray.indexOf(webSocket);
+    if (index != -1) {
+      wsArray.splice(index, 1);
+    }
   });
 
   webSocket.on('message', function message(data, isBinary) {

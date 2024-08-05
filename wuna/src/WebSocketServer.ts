@@ -2,7 +2,7 @@ import https from 'node:https';
 import fs from 'node:fs';
 import WebSocket, { WebSocketServer } from 'ws';
 
-import registerPlayerConnection from './PlayerWsConnection';
+import registerPlayerConnection, { wsArray } from './PlayerWsConnection';
 
 const PORT = 8008;
 
@@ -44,9 +44,12 @@ function onConnection(ws: WebSocket) {
 
 wss.on('connection', onConnection);
 
-let counter1 = 0;
+let lastSize = 0;
 const intervalCheckingClients = setInterval(() => {
-  console.log('size of wss.clients=', wss.clients.size);
+  if (wsArray.length != lastSize) {
+    lastSize = wsArray.length;
+    console.log('wss.clients.size=', wss.clients.size, ' wsArray.length=', wsArray.length);
+  }
   // counter1++;
   // if (counter1 > 10) {
   //   clearInterval(intervalCheckingClients);
