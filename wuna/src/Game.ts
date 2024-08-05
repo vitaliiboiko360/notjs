@@ -3,8 +3,8 @@
 import { NUMBER_OF_COLOR_CARDS, NUMBER_OF_BLACK_CARDS, NUBMER_OF_CARDS, NUBMER_OF_DECKS, RED, GREEN, BLUE, YELLOW, UNIVERSAL } from './Cards';
 
 function shuffleArray(arrayToShuffle: number[]) {
-  for (let i = 0; i < arrayToShuffle.length; ++i) {
-    let index = (Math.random() * (arrayToShuffle.length - i)) + i;
+  for (let i = arrayToShuffle.length - 1; i > 0; --i) {
+    let index = Math.floor(Math.random() * i);
     if (index != i) {
       let temp = arrayToShuffle[i];
       arrayToShuffle[i] = arrayToShuffle[index];

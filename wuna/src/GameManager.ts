@@ -108,7 +108,7 @@ function processSeatRequest(data: Uint8Array, webSocket: AppWebSocketInterface) 
   playerAllotedSeats.add(player.seatNumber);
   let arrayToSend = new Uint8Array(1);
   arrayToSend[0] = player.seatNumber + 5;
-  player.send(arrayToSend, { binary: true });  // client get the same number + 5 as confirmation to seat request
+  player.send(arrayToSend, { binary: true });  // client get the seat number + 5 as confirmation to seat request
 }
 
 import { isValidCard } from './Cards';
@@ -119,7 +119,7 @@ function processPlayerInputConnection(data: Uint8Array, id: number) {
   let secondByte = data[1];
   let player = playerConnections.get(id);
 
-  if (firstByte != player!.seatNumber) {
+  if (firstByte != player!.seatNumber + 5) {
     console.log('client with seatNumber=', player!.seatNumber, ' recive msg with firstByte=', firstByte);
     return;
   }
@@ -134,10 +134,16 @@ function processPlayerInputConnection(data: Uint8Array, id: number) {
   // we need
   // to update top card by user's
   // in game's state
-  const idOfCard = firstByte;
+  const idOfCard = secondByte;
   for (let [playerConnectionId, playerConnection] of playerConnections) {
     if (playerConnectionId != id) {
-      playerConnection.send([player!.seatNumber + 5, idOfCard], { binary: true });
+      // !Important
+      // we send all other players notification about who has made a move
+      // we assume each player sit at their table at 1st seat
+      // need to calculate which opponent's seat number have just dropped a card on the table
+      let differenceInSeats = playerConnection.seatNumber - player!.seatNumber;
+      if (differenceInSeats < 0) differenceInSeats = 4 + differenceInSeats;
+      playerConnection.send([differenceInSeats + 1, idOfCard], { binary: true });
     }
   }
 }
