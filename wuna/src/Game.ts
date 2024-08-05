@@ -38,14 +38,14 @@ function initCardArray() {
       = retArray[l + (NUBMER_OF_CARDS)]
       = retArray[l + (NUBMER_OF_CARDS * 2)]
       = retArray[l + (NUBMER_OF_CARDS * 3)]
-      = BLUE.BLUE_0 + i;
+      = YELLOW.YELLOW_0 + i;
     if (i < 2) {
       let m = l + NUMBER_OF_COLOR_CARDS;
       retArray[m]
         = retArray[m + (NUBMER_OF_CARDS)]
         = retArray[m + (NUBMER_OF_CARDS * 2)]
         = retArray[m + (NUBMER_OF_CARDS * 3)]
-        = UNIVERSAL.UNIVERSAL + i;
+        = UNIVERSAL.UNIVERSAL_PlusFour + i;
     }
   }
   shuffleArray(retArray);
@@ -57,7 +57,7 @@ export class Game {
     this.CardArray = initCardArray();
   }
 
-  removeCard(idOfCard: number, userSeat: number) {
+  private removeCard(idOfCard: number, userSeat: number) {
     const removeFromCardArray = (cardArray: number[], idOfCard: number, userTag: string) => {
       const index = cardArray.indexOf(idOfCard);
       if (index == -1) {
@@ -78,11 +78,11 @@ export class Game {
     if (userSeat == 3) {
       removeFromCardArray(this.D_UserCards, idOfCard, 'D');
     }
-    this.topCard = idOfCard;
   }
 
   removeCardUserAndSetItTopCard(idOfCard: number, userSeat: number) {
-    return this.removeCard(idOfCard, userSeat);
+    this.removeCard(idOfCard, userSeat);
+    this.topCard = idOfCard;
   }
 
   getNextCard() {
