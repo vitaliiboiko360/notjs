@@ -66,7 +66,6 @@ export function getRandomCardId() {
 }
 
 import { AppWebSocketInterface, wsArray } from './PlayerWsConnection';
-import { connect } from 'react-redux';
 
 export declare interface ConnectionAndMeta extends AppWebSocketInterface {
   seatNumber: number

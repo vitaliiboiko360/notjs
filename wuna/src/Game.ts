@@ -1,6 +1,6 @@
 
 
-import { NUMBER_OF_COLOR_CARDS, NUMBER_OF_BLACK_CARDS, NUBMER_OF_CARDS, NUBMER_OF_DECKS, RED, GREEN, BLUE, YELLOW, UNIVERSAL } from "./Cards";
+import { NUMBER_OF_COLOR_CARDS, NUMBER_OF_BLACK_CARDS, NUBMER_OF_CARDS, NUBMER_OF_DECKS, RED, GREEN, BLUE, YELLOW, UNIVERSAL } from './Cards';
 
 function shuffleArray(arrayToShuffle: number[]) {
   for (let i = 0; i < arrayToShuffle.length; ++i) {

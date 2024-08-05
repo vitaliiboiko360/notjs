@@ -13,6 +13,10 @@ for file in ./out/*.js; do
     #fi
 
     mv "$file" "./out/$(basename "$file" .js).mjs"
+    sed -i -E "s/(import.*\/PlayerWsConnection)'/\1\.mjs'/" "./out/$(basename "$file" .js).mjs"
+    sed -i -E "s/(import.*\/Game)'/\1\.mjs'/" "./out/$(basename "$file" .js).mjs"
+    sed -i -E "s/(import.*\/WebSocketServer)'/\1\.mjs'/" "./out/$(basename "$file" .js).mjs"
+    sed -i -E "s/(import.*\/Cards)'/\1\.mjs'/" "./out/$(basename "$file" .js).mjs"
+    sed -i -E "s/(import.*\/GameManager)'/\1\.mjs'/" "./out/$(basename "$file" .js).mjs"
 done
-sed -i -E "s/(import.*PlayerWsConnection)[^\.]/\1\.mjs'/" ./out/WebSocketServer.mjs
 node ./out/WebSocketServer.mjs
