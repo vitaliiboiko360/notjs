@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 import UserCardsGroup from './svg_usercardsgroup.tsx';
 import UserAvatarHolder from './svg_userplaceavatarholder.tsx';
+import UserNameHolder from './svg_userplacenameholder.tsx';
 
 export default function SvgUserPlaceHolder(props) {
   let ref = React.useRef(null);
@@ -11,6 +12,10 @@ export default function SvgUserPlaceHolder(props) {
       yPosition={props.yPosition}
       position={props.position}
       ref={ref} />
+    <UserNameHolder
+      refAvatarBox={ref}
+      position={props.position}
+    />
     <UserCardsGroup
       position={props.position}
       refAvatarBox={ref} />
