@@ -8,6 +8,7 @@ import { updateLeftUserCardsNumber } from './store/leftUserCardsNumber.ts';
 import { updateTopUserCardsNumber } from './store/topUserCardsNumber.ts';
 import { updateRightUserCardsNumber } from './store/rightUserCardsNumber.ts';
 import { updateActiveTableTopCard } from './store/activeTableTopCard.ts';
+import { updateActivePlayerSeatNumber } from './store/activePlayerSeatNumber.ts';
 
 import { COLOR_OFFSETS, COLOR, getColor } from './svg/svg_getcard.tsx';
 
@@ -86,6 +87,8 @@ function processPlayerMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
 }
 
 function processSeatRequestMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
+  console.log('SEAT REQ srv responded with=', inputArray[0]);
+  dispatch(updateActivePlayerSeatNumber(inputArray[0]));
 }
 
 function readMessage(inputArray: Uint8Array, dispatch: AppDispatch) {

@@ -6,6 +6,7 @@ import rightUserCardsNumberReducer from './rightUserCardsNumber.ts';
 import bottomUserCardsNumberReducer from './bottomUserCardsNumber.ts';
 import activeTableTopCardReducer from './activeTableTopCard.ts';
 import playerSeatRequestedReducer from './playerSeatRequested.ts';
+import activePlayerSeatNumberReducer from './activePlayerSeatNumber.ts';
 
 export const store = configureStore({
   reducer: {
@@ -15,7 +16,8 @@ export const store = configureStore({
     rightUserCardsNumber: rightUserCardsNumberReducer,
     bottomUserCardsNumber: bottomUserCardsNumberReducer,
     activeTableTopCard: activeTableTopCardReducer,
-    playerSeatRequested: playerSeatRequestedReducer
+    playerSeatRequested: playerSeatRequestedReducer,
+    activePlayerSeatNumber: activePlayerSeatNumberReducer
   }
 });
 

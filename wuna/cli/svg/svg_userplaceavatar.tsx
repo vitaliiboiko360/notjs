@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useRef, useContext, useEffect, useCallback, useImperativeHandle } from 'react';
 
 import { WebSocketContext } from '../websocketprovider.tsx';
 
@@ -8,41 +8,67 @@ import { selectPlayerSeatRequested, updatePlayerSeatRequested } from '../store/p
 export const USERPLACEHOLDER_DIMS = { width: 80, height: 80 };
 
 const UserAvatar = React.forwardRef((props, ref) => {
+  const refRect = useRef(null);
+
   const webSocket = useContext(WebSocketContext);
   const playerSeatNumberRequested = useAppSelector(selectPlayerSeatRequested);
   const dispatch = useAppDispatch();
 
+  const seatNumber = props.position + 1;
+
+  let onClick;
+  onClick = useCallback((event) => {
+    if (playerSeatNumberRequested != 0) {
+      //console.log('ONCLICK: clicked on seat=', seatNumber);
+      return;
+    }
+    dispatch(updatePlayerSeatRequested(seatNumber));
+    let arrayToSend: Uint8Array = new Uint8Array(1);
+    arrayToSend[0] = seatNumber;
+    webSocket.send(arrayToSend);
+  }, [playerSeatNumberRequested]);
+
+  // useImperativeHandle(ref, () => {
+  //   return {
+  //     click() {
+  //       refRect.current.click();
+  //     }
+  //   }
+  // }, [onClick]);
+
   useEffect(() => {
 
-    if (playerSeatNumberRequested != props.position &&
+    const nodeForRef = refRect.current;
+
+    if (!nodeForRef)
+      return;
+
+    if (playerSeatNumberRequested != seatNumber &&
       playerSeatNumberRequested != 0
     ) {
+      //console.log('removing click on seat position=', props.position + 1);
+      nodeForRef.removeEventListener('click', onClick);
       return;
     }
 
-    if (playerSeatNumberRequested != 0) {
-      console.log('someone clicked on seat=', props.position);
-      return;
-    }
+    // if (playerSeatNumberRequested != 0) {
+    //   console.log('someone clicked on seat=', seatNumber);
+    // }
 
-    const onClick = (event) => {
-      if (playerSeatNumberRequested != 0) {
-        console.log('ONCLICK: someone clicked on seat=', props.position);
-        return;
-      }
-      dispatch(updatePlayerSeatRequested(props.position));
-      let arrayToSend: Uint8Array = new Uint8Array(1);
-      arrayToSend[0] = props.position + 1;
-      webSocket.send(arrayToSend);
-    };
+    nodeForRef.addEventListener('click', onClick);
 
-    ref.current.addEventListener('click', onClick);
-
-    return () => ref.current.removeEvenetListener('click', onClick);
-  }, [webSocket]);
+    return () => nodeForRef.removeEventListener('click', onClick);
+  }, [onClick]);
 
   return (<><rect
-    ref={ref}
+    ref={(node) => {
+      refRect.current = node;
+      if (typeof ref === 'function') {
+        ref(node);
+      } else if (ref) {
+        ref.current = node;
+      }
+    }}
     x={props.xPosition}
     y={props.yPosition}
     width={USERPLACEHOLDER_DIMS.width}
