@@ -69,7 +69,7 @@ function getColorHexString(color: number) {
   }
 }
 
-import { GREEN, RED, BLUE, YELLOW } from '../../src/Cards.ts';
+import { GREEN, RED, BLUE, YELLOW, UNIVERSAL } from '../../src/Cards.ts';
 
 export function isReverseCard(idOfCard: number) {
   if (idOfCard == RED.RED_Reverse) {
@@ -82,6 +82,22 @@ export function isReverseCard(idOfCard: number) {
     return true;
   }
   if (idOfCard == YELLOW.YELLOW_Reverse) {
+    return true;
+  }
+  return false;
+}
+
+export function isSkipCard(idOfCard: number) {
+  if (idOfCard == RED.RED_PlusTwo ||
+    idOfCard == RED.RED_SkipStep ||
+    idOfCard == GREEN.GREEN_PlusTwo ||
+    idOfCard == GREEN.GREEN_SkipStep ||
+    idOfCard == BLUE.BLUE_PlusTwo ||
+    idOfCard == BLUE.BLUE_SkipStep ||
+    idOfCard == YELLOW.YELLOW_PlusTwo ||
+    idOfCard == YELLOW.YELLOW_SkipStep ||
+    idOfCard == UNIVERSAL.UNIVERSAL_PlusFour
+  ) {
     return true;
   }
   return false;
