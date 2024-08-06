@@ -2,15 +2,18 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from './store';
+import { isReverseCard } from '../svg/svg_getcard.tsx';
 
 interface ActiveMoveInterface {
   card: number,
-  lastPlayer: number
+  lastPlayer: number,
+  directionClockwize: boolean,
 }
 
 const initialState: ActiveMoveInterface = {
   card: 0,
-  lastPlayer: 0
+  lastPlayer: 0,
+  directionClockwize: true
 };
 
 export const activeMoveSlice = createSlice({
@@ -19,6 +22,9 @@ export const activeMoveSlice = createSlice({
   reducers: {
     updateActiveMove: {
       reducer: (state, action: { payload: { card: number, lastPlayer: number } }) => {
+        if (isReverseCard(action.payload.card)) {
+          state.directionClockwize = !state.directionClockwize;
+        }
         state.card = action.payload.card;
         state.lastPlayer = action.payload.lastPlayer;
       },
@@ -48,5 +54,6 @@ export const { updateActiveMove, updateActiveMoveCard, updateActiveMoveLastPlaye
 // Other code such as selectors can use the imported `RootState` type
 export const selectActiveMoveCard = (state: RootState) => state.activeMove.card;
 export const selectActiveMoveLastPlayer = (state: RootState) => state.activeMove.lastPlayer;
+export const selectActiveMoveDirection = (state: RootState) => state.activeMove.directionClockwize;
 
 export default activeMoveSlice.reducer;
