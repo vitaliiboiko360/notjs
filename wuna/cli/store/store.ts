@@ -4,7 +4,7 @@ import leftUserReducer from './leftUser.ts';
 import topUserReducer from './topUser.ts';
 import rightUserReducer from './rightUser.ts';
 import bottomUserReducer from './bottomUser.ts';
-import activeTableTopCardReducer from './activeTableTopCard.ts';
+import activeMoveReducer from './activeMove.ts';
 import playerSeatRequestedReducer from './playerSeatRequested.ts';
 import activePlayerSeatNumberReducer from './activePlayerSeatNumber.ts';
 
@@ -15,7 +15,7 @@ export const store = configureStore({
     topUser: topUserReducer,
     rightUser: rightUserReducer,
     bottomUser: bottomUserReducer,
-    activeTableTopCard: activeTableTopCardReducer,
+    activeMove: activeMoveReducer,
     playerSeatRequested: playerSeatRequestedReducer,
     activePlayerSeatNumber: activePlayerSeatNumberReducer
   }

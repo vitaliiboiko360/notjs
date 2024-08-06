@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { getCard } from './svg_getcard';
 
-import { selectActiveTableTopCard } from '../store/activeTableTopCard.ts';
+import { selectActiveMoveCard } from '../store/activeMove.ts';
 import { useAppSelector } from '../store/hooks.ts';
 
 import { renderToString } from 'react-dom/server';
@@ -10,7 +10,7 @@ const CARD_HALF_WIDTH = 32;
 const CARD_HALF_HEIGHT = 48;
 
 const Card = forwardRef((props, refGroupCenterTable) => {
-  const topCardId = useAppSelector(selectActiveTableTopCard);
+  const topCardId = useAppSelector(selectActiveMoveCard);
 
   if (!refGroupCenterTable.current) {
     console.log('GroupCenter Card no REF !!!! topCardId=', topCardId);

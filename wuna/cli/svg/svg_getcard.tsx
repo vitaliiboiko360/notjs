@@ -69,6 +69,24 @@ function getColorHexString(color: number) {
   }
 }
 
+import { GREEN, RED, BLUE, YELLOW } from '../../src/Cards.ts';
+
+export function isReverseCard(idOfCard: number) {
+  if (idOfCard == RED.RED_Reverse) {
+    return true;
+  }
+  if (idOfCard == GREEN.GREEN_Reverse) {
+    return true;
+  }
+  if (idOfCard == BLUE.BLUE_Reverse) {
+    return true;
+  }
+  if (idOfCard == YELLOW.YELLOW_Reverse) {
+    return true;
+  }
+  return false;
+}
+
 export const enum BLACK_VALUES {
   PLUS_FOUR = 0,
   UNIVERSAL,

@@ -7,10 +7,10 @@ import { updateBottomUserCardsNumber } from './store/bottomUser.ts';
 import { updateLeftUserCardsNumber } from './store/leftUser.ts';
 import { updateTopUserCardsNumber } from './store/topUser.ts';
 import { updateRightUserCardsNumber } from './store/rightUser.ts';
-import { updateActiveTableTopCard } from './store/activeTableTopCard.ts';
+import { updateActiveMove, updateActiveMoveCard, updateActiveMoveLastPlayer } from './store/activeMove.ts';
 import { updateActivePlayerSeatNumber } from './store/activePlayerSeatNumber.ts';
 
-import { COLOR_OFFSETS, COLOR, getColor } from './svg/svg_getcard.tsx';
+import { COLOR_OFFSETS, COLOR, isReverseCard } from './svg/svg_getcard.tsx';
 
 function isValidCard(idOfCard: number) {
   const NUMBER_OF_VALUES = 13;
@@ -80,7 +80,7 @@ function processGuestMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
   }
   let topCard = inputArray[1];
   if (isValidCard(topCard)) {
-    dispatch(updateActiveTableTopCard(topCard));
+    dispatch(updateActiveMoveCard(topCard));
   }
   dispatch(updateBottomUserCardsNumber(inputArray[2]));
   dispatch(updateLeftUserCardsNumber(inputArray[3]));
@@ -91,9 +91,7 @@ function processGuestMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
 function processPlayerMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
   let userSeat = inputArray[0];
   let move = inputArray[1];
-  if (userSeat == USER.LEFT) {
-
-  }
+  updateActiveMove(move, userSeat);
 }
 
 function processSeatRequestMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
