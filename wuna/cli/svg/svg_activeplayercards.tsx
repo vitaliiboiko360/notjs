@@ -1,9 +1,12 @@
 import React, { Fragment } from 'react';
 
-import { getCard } from './svg_getcard';
+import { getCard, isCardPlayable } from './svg_getcard';
 
 export default function SvgActivePlayerCards(props) {
-  if (props.cardArray.length == 0) {
+
+  const [activeCard, isOurTurn, cardArray] = props;
+
+  if (cardArray.length == 0) {
     console.log(`init cards state in props`);
     return (<></>);
   }
@@ -11,13 +14,21 @@ export default function SvgActivePlayerCards(props) {
   //console.log(`props.cardsArray.length=${props.cardArray.length}`);
 
   return (<>
-    {props.cardArray.map((card, index) => {
-      const transformString = `translate(${index * 15})`; // 20px -> step to the right on X axe
-      return (<Fragment key={index}>
-        <g transform={transformString} >
-          {getCard(card)}
-        </g>
-      </Fragment>);
-    })}
+    {cardArray
+      .map((card, index) => {
+        let transformString = '';
+        const isPlayable = isOurTurn && isCardPlayable(card, activeCard);
+        if (isPlayable)
+          transformString = `translate(${(index * 15) - 10},${-40})`;
+        else
+          transformString = `translate(${index * 15})`; // 20px -> step to the right on X axe
+        return (
+          <Fragment key={index}>
+            <g transform={transformString} >
+              {getCard(card)}
+            </g>
+          </Fragment>
+        );
+      })}
   </>);
 }
