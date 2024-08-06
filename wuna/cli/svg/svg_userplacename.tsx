@@ -2,9 +2,15 @@ import React, { forwardRef, useEffect, useRef } from 'react';
 
 //import { useAppSelector } from '../store/hooks.ts';
 
-import { USERPLACEHOLDER_DIMS } from './svg_userplaceavatar.tsx';
+import { USERPLACEHOLDER_DIMS } from './svg_userclickavatar.tsx';
+
+import { useAppSelector } from '../store/hooks.ts';
+import { selectActivePlayerSeatNumber } from '../store/activePlayerSeatNumber.ts';
 
 const UserNameHolder = forwardRef((props, refAvatarBox) => {
+
+  const activePlayerSeatNumber = useAppSelector(selectActivePlayerSeatNumber);
+
   const ref = useRef(null);
   useEffect(() => {
     // if (!refAvatarBox.current) {
@@ -16,7 +22,10 @@ const UserNameHolder = forwardRef((props, refAvatarBox) => {
     const tranfromString = `translate(${props.xPosition + (USERPLACEHOLDER_DIMS.width / 2)},${props.yPosition + USERPLACEHOLDER_DIMS.height + 13})`;
     ref.current.setAttribute('transform', tranfromString);
   });
-  const textString = `player #${props.position + 1}`;
+  const textString =
+    (activePlayerSeatNumber >= 5 && activePlayerSeatNumber <= 8 && props.position == 0)
+      ? `player #${props.position + 1}`
+      : '';
   return (<>
     <g ref={ref}>
       <text textAnchor="middle">{textString}</text>

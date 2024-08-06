@@ -5,9 +5,11 @@ import { WebSocketContext } from '../websocketprovider.tsx';
 import { useAppDispatch, useAppSelector } from '../store/hooks.ts';
 import { selectPlayerSeatRequested, updatePlayerSeatRequested } from '../store/playerSeatRequested.ts';
 
+import UserPlayerAvatar from './svg_userplayeravatar.tsx';
+
 export const USERPLACEHOLDER_DIMS = { width: 80, height: 80 };
 
-const UserAvatar = React.forwardRef((props, ref) => {
+const UserClickAvatar = React.forwardRef((props, ref) => {
   const refRect = useRef(null);
 
   const webSocket = useContext(WebSocketContext);
@@ -60,7 +62,8 @@ const UserAvatar = React.forwardRef((props, ref) => {
     return () => nodeForRef.removeEventListener('click', onClick);
   }, [onClick]);
 
-  return (<><rect
+  return (<>
+    {/* <rect
     ref={(node) => {
       refRect.current = node;
       if (typeof ref === 'function') {
@@ -73,7 +76,18 @@ const UserAvatar = React.forwardRef((props, ref) => {
     y={props.yPosition}
     width={USERPLACEHOLDER_DIMS.width}
     height={USERPLACEHOLDER_DIMS.height}
-    rx="7" ry="7" fill="ghostwhite" stroke="lightgray" strokeWidth="2" /></>);
+    rx="7" ry="7" fill="ghostwhite" stroke="lightgray" strokeWidth="2" /> */}
+    <UserPlayerAvatar
+      ref={(node) => {
+        refRect.current = node;
+        if (typeof ref === 'function') {
+          ref(node);
+        } else if (ref) {
+          ref.current = node;
+        }
+      }}
+      {...props}
+    /></>);
 });
 
-export default UserAvatar;
+export default UserClickAvatar;

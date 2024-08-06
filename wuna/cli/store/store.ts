@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
 import activeCardsReducer from './activeCards.ts'
-import leftUserCardsNumberReducer from './leftUserCardsNumber.ts';
-import topUserCardsNumberReducer from './topUserCardsNumber.ts';
-import rightUserCardsNumberReducer from './rightUserCardsNumber.ts';
-import bottomUserCardsNumberReducer from './bottomUserCardsNumber.ts';
+import leftUserReducer from './leftUser.ts';
+import topUserReducer from './topUser.ts';
+import rightUserReducer from './rightUser.ts';
+import bottomUserReducer from './bottomUser.ts';
 import activeTableTopCardReducer from './activeTableTopCard.ts';
 import playerSeatRequestedReducer from './playerSeatRequested.ts';
 import activePlayerSeatNumberReducer from './activePlayerSeatNumber.ts';
@@ -11,10 +11,10 @@ import activePlayerSeatNumberReducer from './activePlayerSeatNumber.ts';
 export const store = configureStore({
   reducer: {
     activeCards: activeCardsReducer,
-    leftUserCardsNumber: leftUserCardsNumberReducer,
-    topUserCardsNumber: topUserCardsNumberReducer,
-    rightUserCardsNumber: rightUserCardsNumberReducer,
-    bottomUserCardsNumber: bottomUserCardsNumberReducer,
+    leftUser: leftUserReducer,
+    topUser: topUserReducer,
+    rightUser: rightUserReducer,
+    bottomUser: bottomUserReducer,
     activeTableTopCard: activeTableTopCardReducer,
     playerSeatRequested: playerSeatRequestedReducer,
     activePlayerSeatNumber: activePlayerSeatNumberReducer

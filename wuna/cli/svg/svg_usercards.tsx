@@ -4,9 +4,9 @@ import React, { forwardRef } from 'react';
 import { USER_PLACE } from './svg_userplaceholder.tsx';
 
 import { useAppSelector } from '../store/hooks.ts';
-import { selectLeftUserCardsNumber } from '../store/leftUserCardsNumber.ts';
-import { selectTopUserCardsNumber } from '../store/topUserCardsNumber.ts';
-import { selectRightUserCardsNumber } from '../store/rightUserCardsNumber.ts';
+import { selectLeftUserCardsNumber } from '../store/leftUser.ts';
+import { selectTopUserCardsNumber } from '../store/topUser.ts';
+import { selectRightUserCardsNumber } from '../store/rightUser.ts';
 
 import { getCard, COLOR_OFFSETS, BLACK_VALUES } from './svg_getcard.tsx';
 

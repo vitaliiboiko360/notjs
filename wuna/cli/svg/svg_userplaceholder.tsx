@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 
 import UserCardsGroup from './svg_usercardsgroup.tsx';
-import UserAvatar from './svg_userplaceavatar.tsx';
+import UserClickAvatar from './svg_userclickavatar.tsx';
 import UserName from './svg_userplacename.tsx';
 
 export default function SvgUserPlaceHolder(props) {
   let ref = React.useRef(null);
   console.log('user placeholder comp props.position=', props.position);
   return (<>
-    <UserAvatar
+    <UserClickAvatar
       xPosition={props.xPosition}
       yPosition={props.yPosition}
       position={props.position}

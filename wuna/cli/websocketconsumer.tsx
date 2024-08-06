@@ -3,10 +3,10 @@ import React, { useContext, useCallback, useEffect } from 'react';
 import { WebSocketContext } from './websocketprovider.tsx';
 import { useAppDispatch, AppDispatch } from './store/hooks.ts';
 import { updateActiveCards, updateActiveCardsByArray } from './store/activeCards.ts';
-import { updateBottomUserCardsNumber } from './store/bottomUserCardsNumber.ts';
-import { updateLeftUserCardsNumber } from './store/leftUserCardsNumber.ts';
-import { updateTopUserCardsNumber } from './store/topUserCardsNumber.ts';
-import { updateRightUserCardsNumber } from './store/rightUserCardsNumber.ts';
+import { updateBottomUserCardsNumber } from './store/bottomUser.ts';
+import { updateLeftUserCardsNumber } from './store/leftUser.ts';
+import { updateTopUserCardsNumber } from './store/topUser.ts';
+import { updateRightUserCardsNumber } from './store/rightUser.ts';
 import { updateActiveTableTopCard } from './store/activeTableTopCard.ts';
 import { updateActivePlayerSeatNumber } from './store/activePlayerSeatNumber.ts';
 
@@ -57,6 +57,13 @@ enum COMMAND {
   RIGHT_USER_CARD_COUNT = 8,
 }
 
+enum USER {
+  BOTTOM = 1,
+  LEFT,
+  TOP,
+  RIGHT
+}
+
 function getCommand(inputNumber: number) {
   if (inputNumber in COMMAND) {
     return inputNumber;
@@ -83,7 +90,10 @@ function processGuestMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
 
 function processPlayerMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
   let userSeat = inputArray[0];
-  let idOfCard = inputArray[1];
+  let move = inputArray[1];
+  if (userSeat == USER.LEFT) {
+
+  }
 }
 
 function processSeatRequestMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
