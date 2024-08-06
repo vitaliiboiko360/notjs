@@ -34,7 +34,7 @@ const UserCardsGroup = React.forwardRef((props, refAvatarBox) => {
 
   useEffect(() => {
     if (!refAvatarBox || !refAvatarBox.current) {
-      console.log('useEffect no REF!!! props.position=', props.position);
+      console.log('useEffect no REF!!! refAvatarBox=null props.position=', props.position);
       return;
     }
     console.log('!!!!!! useEffect cards group');
