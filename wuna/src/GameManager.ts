@@ -114,6 +114,7 @@ function processSeatRequest(data: Uint8Array, webSocket: AppWebSocketInterface) 
 
 import { isValidCard } from './Cards';
 import { game } from './WebSocketServer';
+import { processMove } from './ProcessMove';
 
 function processPlayerInputConnection(data: Uint8Array, id: number) {
   let firstByte = data[0];
@@ -127,9 +128,13 @@ function processPlayerInputConnection(data: Uint8Array, id: number) {
 
   if (isValidCard(secondByte)) {
     // remove card from game state for this ID connection player
-    let seatNumber = player!.seatNumber;
+    let seatNumber = player!.seatNumber - 5;
     game.removeCardUserAndSetItTopCard(firstByte, seatNumber);
   }
+
+  processMove(player, game, data);
+  return;
+  // disable multiplayer below
 
   // player just moved a valid card
   // we need

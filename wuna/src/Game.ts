@@ -20,25 +20,25 @@ function initCardArray() {
       = retArray[i + (NUBMER_OF_CARDS)]
       = retArray[i + (NUBMER_OF_CARDS * 2)]
       = retArray[i + (NUBMER_OF_CARDS * 3)]
-      = RED.RED_0 + i;
+      = RED._0 + i;
     let j = i + NUMBER_OF_COLOR_CARDS;
     retArray[j]
       = retArray[j + (NUBMER_OF_CARDS)]
       = retArray[j + (NUBMER_OF_CARDS * 2)]
       = retArray[j + (NUBMER_OF_CARDS * 3)]
-      = GREEN.GREEN_0 + i;
+      = GREEN._0 + i;
     let k = j + NUMBER_OF_COLOR_CARDS;
     retArray[k]
       = retArray[k + (NUBMER_OF_CARDS)]
       = retArray[k + (NUBMER_OF_CARDS * 2)]
       = retArray[k + (NUBMER_OF_CARDS * 3)]
-      = BLUE.BLUE_0 + i;
+      = BLUE._0 + i;
     let l = k + NUMBER_OF_COLOR_CARDS;
     retArray[l]
       = retArray[l + (NUBMER_OF_CARDS)]
       = retArray[l + (NUBMER_OF_CARDS * 2)]
       = retArray[l + (NUBMER_OF_CARDS * 3)]
-      = YELLOW.YELLOW_0 + i;
+      = YELLOW._0 + i;
     if (i < 2) {
       let m = l + NUMBER_OF_COLOR_CARDS;
       retArray[m]
@@ -51,6 +51,10 @@ function initCardArray() {
   shuffleArray(retArray);
   return retArray;
 }
+
+import { isReverseCard } from '../cli/svg/svg_getcard.tsx';
+
+
 
 export class Game {
   constructor() {
@@ -83,6 +87,9 @@ export class Game {
   removeCardUserAndSetItTopCard(idOfCard: number, userSeat: number) {
     this.removeCard(idOfCard, userSeat);
     this.topCard = idOfCard;
+    if (isReverseCard(idOfCard)) {
+      this.leftDirection = !this.leftDirection;
+    }
   }
 
   getNextCard() {
@@ -93,11 +100,27 @@ export class Game {
     return this.CardArray.length;
   }
 
+  getPlayerHand(userSeat: number) {
+    if (userSeat == 0) {
+      return this.A_UserCards;
+    }
+    if (userSeat == 1) {
+      return this.B_UserCards;
+    }
+    if (userSeat == 2) {
+      return this.C_UserCards;
+    }
+    if (userSeat == 3) {
+      return this.D_UserCards;
+    }
+  }
+
   getAllPlayerStartingHands() {
     //
   }
 
   topCard: number = -1;
+  leftDirection: boolean = true;
   A_UserCards: number[] = [];
   B_UserCards: number[] = [];
   C_UserCards: number[] = [];
