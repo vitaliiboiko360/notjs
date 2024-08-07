@@ -32,12 +32,9 @@ export default function SvgActivePlayerCardHolder(props) {
   const activeDirection = useAppSelector(selectActiveMoveDirection);
   const activeLastPlayer = useAppSelector(selectActiveMoveLastPlayer);
 
-  const [ourTurn, setOurTurn] = useState(false);
-  setOurTurn(isOurTurn(activeCard, activeDirection, activeLastPlayer));
-
   return (<>
     <g transform="translate(270,400)">
-      <SvgActivePlayerCards isOurTurn={ourTurn} activeCard={activeCard} cardArray={cardArray} />
+      <SvgActivePlayerCards isOurTurn={isOurTurn(activeCard, activeDirection, activeLastPlayer)} activeCard={activeCard} cardArray={cardArray} />
     </g>
   </>);
 }

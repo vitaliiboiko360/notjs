@@ -4,25 +4,24 @@ import { getCard, isCardPlayable } from './svg_getcard';
 
 export default function SvgActivePlayerCards(props) {
 
-  const [activeCard, isOurTurn, cardArray] = props;
-
-  if (cardArray.length == 0) {
+  if (props.cardArray.length == 0) {
     console.log(`init cards state in props`);
     return (<></>);
   }
 
   //console.log(`props.cardsArray.length=${props.cardArray.length}`);
-  let counterPlayableCards = 0;
+  let playableCardCounter = 0;
   return (<>
-    {cardArray
+    {props
+      .cardArray
       .map((card, index) => {
         let transformString = '';
-        const isPlayable = isOurTurn && isCardPlayable(card, activeCard);
+        const isPlayable = props.isOurTurn && isCardPlayable(card, props.activeCard);
         if (isPlayable) {
+          playableCardCounter++;
           transformString = `translate(${(index * 15) - 10},${-40})`;
-          counterPlayableCards++;
         } else
-          transformString = `translate(${(index * 15) - (10 * counterPlayableCards)})`; // 20px -> step to the right on X axe
+          transformString = `translate(${(index * 15) - (10 * playableCardCounter)})`; // 20px -> step to the right on X axe
         return (
           <Fragment key={index}>
             <g transform={transformString} >
