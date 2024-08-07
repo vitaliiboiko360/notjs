@@ -12,16 +12,17 @@ export default function SvgActivePlayerCards(props) {
   }
 
   //console.log(`props.cardsArray.length=${props.cardArray.length}`);
-
+  let counterPlayableCards = 0;
   return (<>
     {cardArray
       .map((card, index) => {
         let transformString = '';
         const isPlayable = isOurTurn && isCardPlayable(card, activeCard);
-        if (isPlayable)
+        if (isPlayable) {
           transformString = `translate(${(index * 15) - 10},${-40})`;
-        else
-          transformString = `translate(${index * 15})`; // 20px -> step to the right on X axe
+          counterPlayableCards++;
+        } else
+          transformString = `translate(${(index * 15) - (10 * counterPlayableCards)})`; // 20px -> step to the right on X axe
         return (
           <Fragment key={index}>
             <g transform={transformString} >
