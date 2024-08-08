@@ -9,11 +9,11 @@ export const enum COLOR {
 }
 
 export const enum COLOR_OFFSETS {
-  YELLOW_OFFSET = 80,
-  BLUE_OFFSET = 60,
-  GREEN_OFFSET = 40,
-  RED_OFFSET = 20,
-  BLACK_OFFSET = 10,
+  YELLOW_OFFSET = 64,
+  BLUE_OFFSET = 48,
+  GREEN_OFFSET = 32,
+  RED_OFFSET = 16,
+  BLACK_OFFSET = 14,
 }
 
 function getColorOffset(color: number) {
@@ -69,7 +69,7 @@ function getColorHexString(color: number) {
   }
 }
 
-import { GREEN, RED, BLUE, YELLOW, UNIVERSAL } from '../../src/Cards.ts';
+import { GREEN, RED, BLUE, YELLOW, WILD } from '../../src/Cards.ts';
 
 export function isReverseCard(idOfCard: number) {
   if (idOfCard == RED._Reverse) {
@@ -88,15 +88,15 @@ export function isReverseCard(idOfCard: number) {
 }
 
 export function isSkipCard(idOfCard: number) {
-  if (idOfCard == RED._PlusTwo ||
-    idOfCard == RED._SkipStep ||
-    idOfCard == GREEN._PlusTwo ||
-    idOfCard == GREEN._SkipStep ||
-    idOfCard == BLUE._PlusTwo ||
-    idOfCard == BLUE._SkipStep ||
-    idOfCard == YELLOW._PlusTwo ||
-    idOfCard == YELLOW._SkipStep ||
-    idOfCard == UNIVERSAL.UNIVERSAL_PlusFour
+  if (idOfCard == RED._Draw2 ||
+    idOfCard == RED._Skip ||
+    idOfCard == GREEN._Draw2 ||
+    idOfCard == GREEN._Skip ||
+    idOfCard == BLUE._Draw2 ||
+    idOfCard == BLUE._Skip ||
+    idOfCard == YELLOW._Draw2 ||
+    idOfCard == YELLOW._Skip ||
+    idOfCard == WILD.Draw4
   ) {
     return true;
   }
@@ -104,19 +104,19 @@ export function isSkipCard(idOfCard: number) {
 }
 
 export function isCardPlayable(idOfCard: number, topCard: number) {
-  if (idOfCard == UNIVERSAL.UNIVERSAL ||
-    idOfCard == UNIVERSAL.UNIVERSAL_PlusFour
+  if (idOfCard == WILD.Wild ||
+    idOfCard == WILD.Wild
   ) {
     return true;
   }
-  if ((idOfCard == RED._PlusTwo ||
-    idOfCard == GREEN._PlusTwo ||
-    idOfCard == BLUE._PlusTwo ||
-    idOfCard == YELLOW._PlusTwo
-  ) && (topCard == RED._PlusTwo ||
-    topCard == GREEN._PlusTwo ||
-    topCard == BLUE._PlusTwo ||
-    topCard == YELLOW._PlusTwo)) {
+  if ((idOfCard == RED._Draw2 ||
+    idOfCard == GREEN._Draw2 ||
+    idOfCard == BLUE._Draw2 ||
+    idOfCard == YELLOW._Draw2
+  ) && (topCard == RED._Draw2 ||
+    topCard == GREEN._Draw2 ||
+    topCard == BLUE._Draw2 ||
+    topCard == YELLOW._Draw2)) {
     return true;
   }
   if ((idOfCard == RED._Reverse ||
@@ -129,14 +129,14 @@ export function isCardPlayable(idOfCard: number, topCard: number) {
     topCard == YELLOW._Reverse)) {
     return true;
   }
-  if ((idOfCard == RED._SkipStep ||
-    idOfCard == GREEN._SkipStep ||
-    idOfCard == BLUE._SkipStep ||
-    idOfCard == YELLOW._SkipStep
-  ) && (topCard == RED._SkipStep ||
-    topCard == GREEN._SkipStep ||
-    topCard == BLUE._SkipStep ||
-    topCard == YELLOW._SkipStep)) {
+  if ((idOfCard == RED._Skip ||
+    idOfCard == GREEN._Skip ||
+    idOfCard == BLUE._Skip ||
+    idOfCard == YELLOW._Skip
+  ) && (topCard == RED._Skip ||
+    topCard == GREEN._Skip ||
+    topCard == BLUE._Skip ||
+    topCard == YELLOW._Skip)) {
     return true;
   }
   if ((idOfCard == RED._0 ||
@@ -248,8 +248,8 @@ export function isCardPlayable(idOfCard: number, topCard: number) {
 }
 
 export const enum BLACK_VALUES {
-  PLUS_FOUR = 0,
-  UNIVERSAL,
+  Draw4 = 0,
+  Wild,
   BACK_BLACK
 }
 
@@ -513,7 +513,7 @@ function getColoredTopping(value: number, color: number) {
 
 function getBlackCard(value: number) {
   let topping;
-  if (value == BLACK_VALUES.PLUS_FOUR) {
+  if (value == WILD.Draw4) {
     topping = <><path
       d="m 47.889581,21.431248 c -23.380053,0 -42.3333313,18.953283 -42.3333313,42.333333 0,5.84501 4.7383163,10.58333 10.5833323,10.58333 23.380054,0 42.333332,-18.95328 42.333332,-42.33333 0,-5.845016 -4.738316,-10.583333 -10.583333,-10.583333 z"
       style={{
@@ -693,7 +693,7 @@ function getBlackCard(value: number) {
             stroke: 'none'
           }} />
       </g></>;
-  } else if (value == BLACK_VALUES.UNIVERSAL) {
+  } else if (value == WILD.Wild) {
     topping = <><path
       d="m 47.889582,21.431233 c -23.380065,0 -42.3333329,18.953279 -42.3333329,42.333338 0,5.84501 4.7383169,10.58333 10.5833339,10.58333 23.380064,0 42.333336,-18.95328 42.333336,-42.333334 0,-5.845017 -4.738321,-10.583334 -10.583337,-10.583334 z"
       style={{
