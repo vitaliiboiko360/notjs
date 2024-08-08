@@ -110,6 +110,11 @@ function processSeatRequest(data: Uint8Array, webSocket: AppWebSocketInterface) 
   arrayToSend[0] = player.seatNumber + 5;
   player.send(arrayToSend, { binary: true });  // client get the seat number + 5 as confirmation to seat request
   console.log('SEND SEAT REQ [', arrayToSend[0], '] to client ID=', player.id);
+
+
+  setTimeout(() => {
+
+  }, 5000);
 }
 
 import { isValidCard } from './Cards';

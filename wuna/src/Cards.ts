@@ -104,6 +104,6 @@ export function getColor(idOfCard: number) {
     return 2;
   if (idOfCard & 0b00010000)
     return 1;
-  if (idOfCard & 0b00001110)
-    return 0;
+
+  return 0;
 }

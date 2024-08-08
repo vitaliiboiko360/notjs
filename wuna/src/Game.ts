@@ -54,21 +54,36 @@ function initCardArray() {
 
 import { isReverseCard } from '../cli/svg/svg_getcard.tsx';
 
-
+import { getColor } from './Cards';
 
 const compare = (A_card: number, B_card: number) => {
-  if (A_card == B_card)
-    return 0;
-  if (A_card == WILD.Wild)
+  const A_color: number = getColor(A_card);
+  const B_color: number = getColor(B_card);
+  if (A_color > B_color)
     return 1;
-  else if (B_card == WILD.Wild)
+  if (A_color < B_color)
     return -1;
-  if (A_card == WILD.Draw4 && B_card != WILD.Wild)
-    return 1;
-  if (A_card != WILD.Draw4 && B_card == WILD.Wild)
-    return -1;
-
+  if (A_color == B_color) {
+    if (A_color != COL.BLACK) {
+      if (A_card > B_card)
+        return -1;
+      if (A_card < B_card)
+        return 1;
+      if (A_card == B_card)
+        return 0;
+    } else {
+      if (A_card > B_card)
+        return 1;
+      if (A_card < B_card)
+        return -1;
+      if (A_card == B_card)
+        return 0;
+    }
+  }
 };
+
+const numberStartHandCards = 7;
+const numberTotalPlayers = 4;
 
 export class Game {
   constructor() {
@@ -103,6 +118,7 @@ export class Game {
     this.topCard = idOfCard;
     if (isReverseCard(idOfCard)) {
       this.leftDirection = !this.leftDirection;
+
     }
   }
 
@@ -130,7 +146,7 @@ export class Game {
   }
 
   getAllPlayerStartingHands() {
-    //
+
   }
 
   topCard: number = -1;
@@ -151,7 +167,8 @@ enum USER {
 };
 
 enum COL {
-  RED = 0,
+  BLACK = 0,
+  RED,
   GREEN,
   BLUE,
   YELLOW
@@ -159,7 +176,7 @@ enum COL {
 
 class ColorBucketTotalValues {
 
-  private toSeatNumber(userSeat: number, callback: (inputArray: number[]) => {}) {
+  private toSeatNumber(userSeat: number, callback: (inputArray: number[]) => void) {
     if (userSeat == USER._1) {
       callback(this.A_colorBucks);
     }
@@ -176,7 +193,9 @@ class ColorBucketTotalValues {
 
   addCard(userSeat: number, cards: number[]) {
     const addCard = (arrayToChange: number[]) => {
+      for (let i = 0; i < cards.length; ++i) {
 
+      }
     };
     this.toSeatNumber(userSeat, addCard);
   }
