@@ -96,14 +96,14 @@ export function isValidCard(idOfCard: number) {
 }
 
 export function getColor(idOfCard: number) {
-  if (idOfCard & 0x01000000)
+  if (idOfCard & 0b01000000)
     return 4;
-  if (idOfCard & 0x00110000)
+  if (idOfCard & 0b00110000)
     return 3;
-  if (idOfCard & 0x00100000)
+  if (idOfCard & 0b00100000)
     return 2;
-  if (idOfCard & 0x00010000)
+  if (idOfCard & 0b00010000)
     return 1;
-  if (idOfCard & 0x00001110)
+  if (idOfCard & 0b00001110)
     return 0;
 }
