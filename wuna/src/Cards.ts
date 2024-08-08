@@ -4,15 +4,15 @@ export const NUBMER_OF_DECKS = 4;
 export const NUMBER_OF_COLOR_CARDS = 13;
 export const NUMBER_OF_BLACK_CARDS = 2;
 
-// universal
-export enum UNIVERSAL {
-  UNIVERSAL_PlusFour = 10,
-  UNIVERSAL
+// wild cards
+export enum WILD {
+  Wild = 14,
+  Draw4
 }
 
 // red, green, blue, yelow
 export enum RED {
-  _0 = 20,
+  _0 = 16,
   _1,
   _2,
   _3,
@@ -23,12 +23,12 @@ export enum RED {
   _8,
   _9,
   _Reverse,
-  _SkipStep,
-  _PlusTwo
+  _Skip,
+  _Draw2
 }
 
 export enum GREEN {
-  _0 = 40,
+  _0 = 32,
   _1,
   _2,
   _3,
@@ -39,12 +39,12 @@ export enum GREEN {
   _8,
   _9,
   _Reverse,
-  _SkipStep,
-  _PlusTwo
+  _Skip,
+  _Draw2
 }
 
 export enum BLUE {
-  _0 = 60,
+  _0 = 48,
   _1,
   _2,
   _3,
@@ -55,12 +55,12 @@ export enum BLUE {
   _8,
   _9,
   _Reverse,
-  _SkipStep,
-  _PlusTwo
+  _Skip,
+  _Draw2
 }
 
 export enum YELLOW {
-  _0 = 80,
+  _0 = 64,
   _1,
   _2,
   _3,
@@ -71,26 +71,39 @@ export enum YELLOW {
   _8,
   _9,
   _Reverse,
-  _SkipStep,
-  _PlusTwo
+  _Skip,
+  _Draw2
 }
 
 export function isValidCard(idOfCard: number) {
-  if (idOfCard == UNIVERSAL.UNIVERSAL_PlusFour
-    || idOfCard == UNIVERSAL.UNIVERSAL)
+  if (idOfCard == WILD.Draw4
+    || idOfCard == WILD.Wild)
     return true;
   if (idOfCard >= RED._0
-    && idOfCard <= RED._PlusTwo)
+    && idOfCard <= RED._Draw2)
     return true;
   if (idOfCard >= GREEN._0
-    && idOfCard <= GREEN._PlusTwo)
+    && idOfCard <= GREEN._Draw2)
     return true;
   if (idOfCard >= BLUE._0
-    && idOfCard <= BLUE._PlusTwo)
+    && idOfCard <= BLUE._Draw2)
     return true;
   if (idOfCard >= YELLOW._0
-    && idOfCard <= YELLOW._PlusTwo)
+    && idOfCard <= YELLOW._Draw2)
     return true;
 
   return false;
+}
+
+export function getColor(idOfCard: number) {
+  if (idOfCard & 0x01000000)
+    return 4;
+  if (idOfCard & 0x00110000)
+    return 3;
+  if (idOfCard & 0x00100000)
+    return 2;
+  if (idOfCard & 0x00010000)
+    return 1;
+  if (idOfCard & 0x00001110)
+    return 0;
 }

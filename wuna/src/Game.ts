@@ -1,6 +1,6 @@
 
 
-import { NUMBER_OF_COLOR_CARDS, NUMBER_OF_BLACK_CARDS, NUBMER_OF_CARDS, NUBMER_OF_DECKS, RED, GREEN, BLUE, YELLOW, UNIVERSAL } from './Cards';
+import { NUMBER_OF_COLOR_CARDS, NUMBER_OF_BLACK_CARDS, NUBMER_OF_CARDS, NUBMER_OF_DECKS, RED, GREEN, BLUE, YELLOW, UNIVERSAL, WILD } from './Cards';
 
 function shuffleArray(arrayToShuffle: number[]) {
   for (let i = arrayToShuffle.length - 1; i > 0; --i) {
@@ -45,7 +45,7 @@ function initCardArray() {
         = retArray[m + (NUBMER_OF_CARDS)]
         = retArray[m + (NUBMER_OF_CARDS * 2)]
         = retArray[m + (NUBMER_OF_CARDS * 3)]
-        = UNIVERSAL.UNIVERSAL_PlusFour + i;
+        = UNIVERSAL.Draw4 + i;
     }
   }
   shuffleArray(retArray);
@@ -55,6 +55,20 @@ function initCardArray() {
 import { isReverseCard } from '../cli/svg/svg_getcard.tsx';
 
 
+
+const compare = (A_card: number, B_card: number) => {
+  if (A_card == B_card)
+    return 0;
+  if (A_card == WILD.Wild)
+    return 1;
+  else if (B_card == WILD.Wild)
+    return -1;
+  if (A_card == WILD.Draw4 && B_card != WILD.Wild)
+    return 1;
+  if (A_card != WILD.Draw4 && B_card == WILD.Wild)
+    return -1;
+
+};
 
 export class Game {
   constructor() {
@@ -127,5 +141,53 @@ export class Game {
   D_UserCards: number[] = [];
 
   CardArray: number[] = [];
+}
+
+enum USER {
+  _1 = 0,
+  _2,
+  _3,
+  _4
 };
 
+enum COL {
+  RED = 0,
+  GREEN,
+  BLUE,
+  YELLOW
+}
+
+class ColorBucketTotalValues {
+
+  private toSeatNumber(userSeat: number, callback: (inputArray: number[]) => {}) {
+    if (userSeat == USER._1) {
+      callback(this.A_colorBucks);
+    }
+    if (userSeat == USER._2) {
+      callback(this.B_colorBucks);
+    }
+    if (userSeat == USER._3) {
+      callback(this.C_colorBucks);
+    }
+    if (userSeat == USER._4) {
+      callback(this.D_colorBucks);
+    }
+  }
+
+  addCard(userSeat: number, cards: number[]) {
+    const addCard = (arrayToChange: number[]) => {
+
+    };
+    this.toSeatNumber(userSeat, addCard);
+  }
+  removeCard(userSeat: number, idOfCard: number) {
+
+  }
+
+
+
+  A_colorBucks: number[] = [0, 0, 0, 0];
+  B_colorBucks: number[] = [0, 0, 0, 0];
+  C_colorBucks: number[] = [0, 0, 0, 0];
+  D_colorBucks: number[] = [0, 0, 0, 0];
+}
