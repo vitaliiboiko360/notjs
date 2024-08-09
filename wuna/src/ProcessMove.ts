@@ -19,7 +19,6 @@ function getPlayableCard(cardHand: number[] | undefined, topCard: number) {
   let playableCards = [];
 
   for (let i = 0; i < cardHand.length; i++) {
-    if ()
   }
 
   return 0;

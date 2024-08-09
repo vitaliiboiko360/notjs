@@ -80,6 +80,7 @@ const compare = (A_card: number, B_card: number) => {
         return 0;
     }
   }
+  return 0;
 };
 
 const numberStartHandCards = 7;
@@ -145,8 +146,22 @@ export class Game {
     }
   }
 
-  getAllPlayerStartingHands() {
 
+  // call it only at the beginning of the game, when CardArray is full
+  getAllPlayerStartingHands() {
+    const firstHandsCards = numberTotalPlayers * numberStartHandCards;
+    const l = this.CardArray.length - firstHandsCards;
+    const cardArray = this.CardArray.splice(l);
+    for (let i = 0; i < numberStartHandCards; i += 4) {
+      this.A_UserCards.push(cardArray[i]);
+      this.B_UserCards.push(cardArray[i + 1]);
+      this.C_UserCards.push(cardArray[i + 2]);
+      this.D_UserCards.push(cardArray[i + 3]);
+    }
+    this.A_UserCards.sort(compare);
+    this.B_UserCards.sort(compare);
+    this.C_UserCards.sort(compare);
+    this.D_UserCards.sort(compare);
   }
 
   topCard: number = -1;
