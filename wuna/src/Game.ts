@@ -127,7 +127,7 @@ export class Game {
     return this.CardArray.pop();
   }
 
-  getRemaniedCardsCount() {
+  getRemainedCardsCount() {
     return this.CardArray.length;
   }
 
@@ -162,6 +162,9 @@ export class Game {
     this.B_UserCards.sort(compare);
     this.C_UserCards.sort(compare);
     this.D_UserCards.sort(compare);
+
+    // might be in an another method
+    this.topCard = this.CardArray.pop() || 0;
   }
 
   topCard: number = -1;

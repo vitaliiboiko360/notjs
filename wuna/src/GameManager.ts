@@ -108,13 +108,28 @@ function processSeatRequest(data: Uint8Array, webSocket: AppWebSocketInterface) 
   playerAllotedSeats.add(player.seatNumber);
   let arrayToSend = new Uint8Array(1);
   arrayToSend[0] = player.seatNumber + 5;
-  player.send(arrayToSend, { binary: true });  // client get the seat number + 5 as confirmation to seat request
+  player.send(arrayToSend);  // client get the seat number + 5 as confirmation to seat request
   console.log('SEND SEAT REQ [', arrayToSend[0], '] to client ID=', player.id);
 
 
   setTimeout(() => {
+    game.getAllPlayerStartingHands();
+    let arrayToSend = new Uint8Array(6);
+    arrayToSend[0] = 0;
+    arrayToSend[1] = game.topCard;
+    arrayToSend[2] = game.A_UserCards.length;
+    arrayToSend[3] = game.B_UserCards.length;
+    arrayToSend[4] = game.C_UserCards.length;
+    arrayToSend[5] = game.D_UserCards.length;
 
-  }, 5000);
+    webSocket.send(arrayToSend);
+    setTimeout(() => {
+      let arrayToSend = new Uint8Array(6);
+      arrayToSend[0] = 4;
+      arrayToSend[1] = game.topCard;
+      webSocket.send(arrayToSend);
+    }, 500);
+  }, 3000);
 }
 
 import { isValidCard } from './Cards';
