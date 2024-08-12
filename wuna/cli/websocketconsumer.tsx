@@ -11,7 +11,6 @@ import { updateActiveMove, updateActiveMoveCard, updateActiveMoveLastPlayer } fr
 import { updateActivePlayerSeatNumber } from './store/activePlayerSeatNumber.ts';
 
 import { COLOR_OFFSETS, COLOR, isReverseCard } from './svg/svg_getcard.tsx';
-import { useSelector } from 'react-redux';
 
 function isValidCard(idOfCard: number) {
   const NUMBER_OF_VALUES = 13;

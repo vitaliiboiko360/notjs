@@ -38,6 +38,9 @@ export const activeCardsSlice = createSlice({
       state.activeCards.push.apply(state.activeCards, action.payload);
     },
     insertActiveCardsByArray: (state, action: PayloadAction<Uint8Array>) => {
+      if (state.activeCards.length == 0) {
+        return state.activeCards.push.apply(state.activeCards, action.payload);
+      }
       // we expect both arrays to be sorted otherwize it won't work
       mergeTwoArrays(state.activeCards, action.payload);
     },
