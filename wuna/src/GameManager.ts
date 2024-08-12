@@ -113,7 +113,8 @@ function processSeatRequest(data: Uint8Array, webSocket: AppWebSocketInterface) 
 
 
   setTimeout(() => {
-    game.getAllPlayerStartingHands();
+    game.initAllPlayerStartingHands();
+    game.initRandomProperStartTopCard();
     let arrayToSend = new Uint8Array(6);
     arrayToSend[0] = 0;
     arrayToSend[1] = game.topCard;

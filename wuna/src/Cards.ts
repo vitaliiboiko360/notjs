@@ -107,3 +107,26 @@ export function getColor(idOfCard: number) {
 
   return 0;
 }
+
+export function isValidStartCard(idOfCard: number) {
+  return ((idOfCard >= RED._0 && idOfCard <= RED._9) ||
+    (idOfCard >= GREEN._0 && idOfCard <= GREEN._9) ||
+    (idOfCard >= BLUE._0 && idOfCard <= BLUE._9) ||
+    (idOfCard >= YELLOW._0 && idOfCard <= YELLOW._9));
+}
+
+export function isReverseCard(idOfCard: number) {
+  if (idOfCard == RED._Reverse) {
+    return true;
+  }
+  if (idOfCard == GREEN._Reverse) {
+    return true;
+  }
+  if (idOfCard == BLUE._Reverse) {
+    return true;
+  }
+  if (idOfCard == YELLOW._Reverse) {
+    return true;
+  }
+  return false;
+}

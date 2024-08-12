@@ -1,6 +1,6 @@
-import { ConnectionAndMeta } from './GameManager.ts';
+import { ConnectionAndMeta } from './GameManager';
 import { Game } from './Game';
-import { WILD, RED, GREEN, BLUE, YELLOW } from './Cards.ts';
+import { WILD, RED, GREEN, BLUE, YELLOW } from './Cards';
 
 const valueSorted = [WILD.Wild, WILD.Draw4, RED._Draw2, RED._Skip, RED._Reverse, RED._9, RED._8, RED._7, RED._6, RED._5, RED._4, RED._3, RED._2, RED._1, RED._0];
 

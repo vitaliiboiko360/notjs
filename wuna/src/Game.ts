@@ -1,6 +1,6 @@
 
 
-import { NUMBER_OF_COLOR_CARDS, NUMBER_OF_BLACK_CARDS, NUBMER_OF_CARDS, NUBMER_OF_DECKS, RED, GREEN, BLUE, YELLOW, UNIVERSAL, WILD } from './Cards';
+import { NUMBER_OF_COLOR_CARDS, NUMBER_OF_BLACK_CARDS, NUBMER_OF_CARDS, NUBMER_OF_DECKS, RED, GREEN, BLUE, YELLOW, WILD, isValidStartCard } from './Cards';
 
 function shuffleArray(arrayToShuffle: number[]) {
   for (let i = arrayToShuffle.length - 1; i > 0; --i) {
@@ -45,16 +45,14 @@ function initCardArray() {
         = retArray[m + (NUBMER_OF_CARDS)]
         = retArray[m + (NUBMER_OF_CARDS * 2)]
         = retArray[m + (NUBMER_OF_CARDS * 3)]
-        = UNIVERSAL.Draw4 + i;
+        = WILD.Draw4 + i;
     }
   }
   shuffleArray(retArray);
   return retArray;
 }
 
-import { isReverseCard } from '../cli/svg/svg_getcard.tsx';
-
-import { getColor } from './Cards';
+import { getColor, isReverseCard } from './Cards';
 
 const compare = (A_card: number, B_card: number) => {
   const A_color: number = getColor(A_card);
@@ -148,7 +146,7 @@ export class Game {
 
 
   // call it only at the beginning of the game, when CardArray is full
-  getAllPlayerStartingHands() {
+  initAllPlayerStartingHands() {
     const firstHandsCards = numberTotalPlayers * numberStartHandCards;
     const l = this.CardArray.length - firstHandsCards;
     const cardArray = this.CardArray.splice(l);
@@ -162,9 +160,20 @@ export class Game {
     this.B_UserCards.sort(compare);
     this.C_UserCards.sort(compare);
     this.D_UserCards.sort(compare);
+  }
 
-    // might be in an another method
-    this.topCard = this.CardArray.pop() || 0;
+  initRandomProperStartTopCard() {
+    let counter = 0;
+    do {
+      let index = Math.floor(Math.random() * (this.CardArray.length - 1));
+      if (isValidStartCard(this.CardArray[index])) {
+        this.topCard = this.CardArray.splice(index, 1)[0];
+        break;
+      }
+      if (++counter > 100)
+        break;
+    }
+    while (true);
   }
 
   topCard: number = -1;
