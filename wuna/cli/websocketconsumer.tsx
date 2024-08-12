@@ -2,7 +2,7 @@ import React, { useContext, useCallback, useEffect } from 'react';
 
 import { WebSocketContext } from './websocketprovider.tsx';
 import { useAppDispatch, AppDispatch } from './store/hooks.ts';
-import { updateActiveCards, updateActiveCardsByArray } from './store/activeCards.ts';
+import { insertActiveCardsByArray, updateActiveCardsByArray } from './store/activeCards.ts';
 import { updateBottomUserCardsNumber } from './store/bottomUser.ts';
 import { updateLeftUserCardsNumber } from './store/leftUser.ts';
 import { updateTopUserCardsNumber } from './store/topUser.ts';
@@ -108,6 +108,7 @@ function processGuestMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
 
 function insertToActiveCards(inputArray: Uint8Array, dispatch: AppDispatch) {
   let cardArray = inputArray.slice(1);
+  dispatch(insertActiveCardsByArray(cardArray));
 }
 
 function processPlayerMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
