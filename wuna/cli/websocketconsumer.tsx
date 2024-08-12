@@ -11,6 +11,7 @@ import { updateActiveMove, updateActiveMoveCard, updateActiveMoveLastPlayer } fr
 import { updateActivePlayerSeatNumber } from './store/activePlayerSeatNumber.ts';
 
 import { COLOR_OFFSETS, COLOR, isReverseCard } from './svg/svg_getcard.tsx';
+import { useSelector } from 'react-redux';
 
 function isValidCard(idOfCard: number) {
   const NUMBER_OF_VALUES = 13;
@@ -57,6 +58,23 @@ enum COMMAND {
   RIGHT_USER_CARD_COUNT = 8,
 }
 
+const enum commands {
+  GUEST = 0,
+  USER_1,
+  USER_2,
+  USER_3,
+  USER_4,
+  SEAT_1,
+  SEAT_2,
+  SEAT_3,
+  SEAT_4,
+};
+
+const USER_1 = 1;
+const USER_2 = 2;
+const USER_3 = 3;
+const USER_4 = 5;
+
 enum USER {
   BOTTOM = 1,
   LEFT,
@@ -88,28 +106,23 @@ function processGuestMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
   dispatch(updateRightUserCardsNumber(inputArray[5]));
 }
 
+function insertToActiveCards(inputArray: Uint8Array, dispatch: AppDispatch) {
+  let cardArray = inputArray.slice(1);
+}
+
 function processPlayerMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
   let userSeat = inputArray[0];
   let move = inputArray[1];
-  updateActiveMove(move, userSeat);
+  if (userSeat != USER_1)
+    return dispatch(updateActiveMove(move, userSeat));
+
+  return insertToActiveCards(inputArray, dispatch);
 }
 
 function processSeatRequestMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
   console.log('SEAT REQ srv responded with=', inputArray[0]);
   dispatch(updateActivePlayerSeatNumber(inputArray[0]));
 }
-
-const enum commands {
-  GUEST = 0,
-  USER_1,
-  USER_2,
-  USER_3,
-  USER_4,
-  SEAT_1,
-  SEAT_2,
-  SEAT_3,
-  SEAT_4,
-};
 
 function readMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
   if (inputArray[0] >= 1 && inputArray[0] <= 4) {
