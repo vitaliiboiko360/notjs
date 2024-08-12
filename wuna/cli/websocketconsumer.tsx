@@ -99,6 +99,18 @@ function processSeatRequestMessage(inputArray: Uint8Array, dispatch: AppDispatch
   dispatch(updateActivePlayerSeatNumber(inputArray[0]));
 }
 
+const enum commands {
+  GUEST = 0,
+  USER_1,
+  USER_2,
+  USER_3,
+  USER_4,
+  SEAT_1,
+  SEAT_2,
+  SEAT_3,
+  SEAT_4,
+};
+
 function readMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
   if (inputArray[0] >= 1 && inputArray[0] <= 4) {
     return processPlayerMessage(inputArray, dispatch);

@@ -16,10 +16,13 @@ export const activeCardsSlice = createSlice({
   initialState,
   reducers: {
     updateActiveCards: (state, action: PayloadAction<number>) => {
-      state.activeCards.unshift(action.payload);
+      state.activeCards.push(action.payload);
     },
     updateActiveCardsByArray: (state, action: PayloadAction<number[]>) => {
-      state.activeCards.push.apply(action.payload, state.activeCards);
+      state.activeCards.push.apply(state.activeCards, action.payload);
+    },
+    insertCard: (state, action: { payload: { card: number, index: number } }) => {
+      state.activeCards.splice(action.payload.index, 0, action.payload.card);
     },
     default: (state) => {
       return state;
