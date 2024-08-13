@@ -18,5 +18,6 @@ for file in ./out/*.js; do
     sed -i -E "s/(import.*\/WebSocketServer)'/\1\.mjs'/" "./out/$(basename "$file" .js).mjs"
     sed -i -E "s/(import.*\/Cards)'/\1\.mjs'/" "./out/$(basename "$file" .js).mjs"
     sed -i -E "s/(import.*\/GameManager)'/\1\.mjs'/" "./out/$(basename "$file" .js).mjs"
+    sed -i -E "s/(import.*\/ProcessMove)'/\1\.mjs'/" "./out/$(basename "$file" .js).mjs"
 done
 node ./out/WebSocketServer.mjs
