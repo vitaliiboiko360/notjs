@@ -15,6 +15,9 @@ export const rightUserSlice = createSlice({
     incrementRightUserCardsNumber: (state, action: PayloadAction<void>) => {
       state.cardsNumber++;
     },
+    decrementRightUserCardsNumber: (state, action: PayloadAction<void>) => {
+      state.cardsNumber--;
+    },
     updateRightUserAvatarId: (state, action: PayloadAction<number>) => {
       state.avatarId = action.payload;
     },
@@ -27,7 +30,7 @@ export const rightUserSlice = createSlice({
   }
 });
 
-export const { updateRightUserCardsNumber, incrementRightUserCardsNumber, updateRightUserAvatarId, updateRightUserSeatNumber } = rightUserSlice.actions
+export const { updateRightUserCardsNumber, incrementRightUserCardsNumber, decrementRightUserCardsNumber, updateRightUserAvatarId, updateRightUserSeatNumber } = rightUserSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectRightUserCardsNumber = (state: RootState) => state.rightUser.cardsNumber;

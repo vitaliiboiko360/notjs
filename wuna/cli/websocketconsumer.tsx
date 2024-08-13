@@ -4,9 +4,9 @@ import { WebSocketContext } from './websocketprovider.tsx';
 import { useAppDispatch, AppDispatch } from './store/hooks.ts';
 import { insertActiveCardsByArray, updateActiveCardsByArray } from './store/activeCards.ts';
 import { updateBottomUserCardsNumber } from './store/bottomUser.ts';
-import { updateLeftUserCardsNumber } from './store/leftUser.ts';
-import { updateTopUserCardsNumber } from './store/topUser.ts';
-import { updateRightUserCardsNumber } from './store/rightUser.ts';
+import { updateLeftUserCardsNumber, decrementLeftUserCardsNumber } from './store/leftUser.ts';
+import { updateTopUserCardsNumber, decrementTopUserCardsNumber } from './store/topUser.ts';
+import { updateRightUserCardsNumber, decrementRightUserCardsNumber } from './store/rightUser.ts';
 import { updateActiveMove, updateActiveMoveCard, updateActiveMoveLastPlayer } from './store/activeMove.ts';
 import { updateActivePlayerSeatNumber } from './store/activePlayerSeatNumber.ts';
 
@@ -70,9 +70,9 @@ const enum commands {
 };
 
 export const USER_1 = 1;
-const USER_2 = 2;
-const USER_3 = 3;
-const USER_4 = 5;
+export const USER_2 = 2;
+export const USER_3 = 3;
+export const USER_4 = 5;
 
 enum USER {
   BOTTOM = 1,
@@ -113,8 +113,22 @@ function insertToActiveCards(inputArray: Uint8Array, dispatch: AppDispatch) {
 function processPlayerMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
   let userSeat = inputArray[0];
   let move = inputArray[1];
-  if (userSeat != USER_1)
-    return dispatch(updateActiveMove(move, userSeat));
+  if (userSeat != USER_1) {
+    dispatch(updateActiveMove(move, userSeat));
+    switch (userSeat) {
+      case USER_2:
+        dispatch(decrementLeftUserCardsNumber());
+        break;
+      case USER_3:
+        dispatch(decrementTopUserCardsNumber());
+        break;
+      case USER_4:
+        dispatch(decrementRightUserCardsNumber());
+        break;
+      default:
+    }
+    return;
+  }
 
   return insertToActiveCards(inputArray, dispatch);
 }
