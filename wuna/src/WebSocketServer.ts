@@ -68,3 +68,6 @@ server.on('upgrade', (request, socket, head) => {
 import { Game } from './Game';
 
 export var game = new Game();
+
+// import { serveGame } from './GameManager'
+// serveGame();

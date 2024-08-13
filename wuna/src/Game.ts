@@ -112,6 +112,16 @@ export class Game {
     }
   }
 
+  startNewGame() {
+    this.CardArray = initCardArray();
+    this.topCard = -1;
+    this.leftDirection = true;
+    this.A_UserCards = [];
+    this.B_UserCards = [];
+    this.C_UserCards = [];
+    this.D_UserCards = [];
+  }
+
   removeCardUserAndSetItTopCard(idOfCard: number, userSeat: number) {
     this.removeCard(idOfCard, userSeat);
     this.topCard = idOfCard;
@@ -150,7 +160,7 @@ export class Game {
     const firstHandsCards = numberTotalPlayers * numberStartHandCards;
     const l = this.CardArray.length - firstHandsCards;
     const cardArray = this.CardArray.splice(l);
-    for (let i = 0; i < numberStartHandCards; i += 4) {
+    for (let i = 0; i < firstHandsCards; i += 4) {
       this.A_UserCards.push(cardArray[i]);
       this.B_UserCards.push(cardArray[i + 1]);
       this.C_UserCards.push(cardArray[i + 2]);

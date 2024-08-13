@@ -113,9 +113,18 @@ function processSeatRequest(data: Uint8Array, webSocket: AppWebSocketInterface) 
 
 
   setTimeout(() => {
+    game.startNewGame();
     game.initAllPlayerStartingHands();
     game.initRandomProperStartTopCard();
-    let arrayToSend = new Uint8Array(6);
+
+    let arrayToSend = new Uint8Array(8);
+    arrayToSend[0] = 1;
+    for (let i = 0; i < game.A_UserCards.length; ++i) {
+      arrayToSend[i + 1] = game.A_UserCards[i];
+    }
+    webSocket.send(arrayToSend);
+
+    arrayToSend = new Uint8Array(6);
     arrayToSend[0] = 0;
     arrayToSend[1] = game.topCard;
     arrayToSend[2] = game.A_UserCards.length;
@@ -204,7 +213,7 @@ export async function serveGame() {
 
     let arrayToSend = new Uint8Array(6);
     arrayToSend[0] = 0;
-    arrayToSend[1] = game.topCard;
+    arrayToSend[1] = 0;
     arrayToSend[2] = game.A_UserCards.length;
     arrayToSend[3] = game.B_UserCards.length;
     arrayToSend[4] = game.C_UserCards.length;
