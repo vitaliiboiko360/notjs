@@ -10,7 +10,7 @@ import { selectRightUserCardsNumber } from '../store/rightUser.ts';
 
 import { getCard, COLOR_OFFSETS, BLACK_VALUES } from './svg_getcard.tsx';
 
-const blackBackCardId = COLOR_OFFSETS.BLACK_OFFSET + BLACK_VALUES.BACK_BLACK;
+const blackBackCardId = 0;
 
 const UserCards = forwardRef((props, refToGroup) => {
 

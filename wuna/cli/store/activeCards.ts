@@ -11,7 +11,7 @@ const initialState: ActiveCardsInterface = {
   activeCards: []
 };
 
-function mergeTwoArrays(arrayOne: number[], arrayTwo: Uint8Array) {
+function mergeTwoArrays(arrayOne: number[], arrayTwo: number[]) {
   let first, second = 0;
 
   while (first < arrayOne.length && second < arrayTwo.length) {
@@ -37,9 +37,15 @@ export const activeCardsSlice = createSlice({
     updateActiveCardsByArray: (state, action: PayloadAction<number[]>) => {
       state.activeCards.push.apply(state.activeCards, action.payload);
     },
-    insertActiveCardsByArray: (state, action: PayloadAction<Uint8Array>) => {
+    removeActiveCard: (state, action: PayloadAction<number>) => {
+      const foundIndex = state.activeCards.findIndex(value => value == action.payload);
+      if (foundIndex != -1) {
+        state.activeCards.splice(foundIndex, 1);
+      }
+    },
+    insertActiveCardsByArray: (state, action: PayloadAction<number[]>) => {
       if (state.activeCards.length == 0) {
-        return state.activeCards.push.apply(state.activeCards, action.payload);
+        state.activeCards.push.apply(action.payload);
       }
       // we expect both arrays to be sorted otherwize it won't work
       mergeTwoArrays(state.activeCards, action.payload);
@@ -50,7 +56,7 @@ export const activeCardsSlice = createSlice({
   }
 });
 
-export const { updateActiveCards, updateActiveCardsByArray, insertActiveCardsByArray } = activeCardsSlice.actions
+export const { updateActiveCards, updateActiveCardsByArray, insertActiveCardsByArray, removeActiveCard } = activeCardsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectActiveCards = (state: RootState) => state.activeCards.activeCards

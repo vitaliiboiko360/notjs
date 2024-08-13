@@ -1098,7 +1098,7 @@ export function getCard(idOfCard: number) {
     </g>);
   }
 
-  return (getBlackCard(value));
+  return (getBlackCard(idOfCard));
 }
 
 export function getCard1(x?: number, y?: number) {

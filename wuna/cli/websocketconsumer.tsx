@@ -69,7 +69,7 @@ const enum commands {
   SEAT_4,
 };
 
-const USER_1 = 1;
+export const USER_1 = 1;
 const USER_2 = 2;
 const USER_3 = 3;
 const USER_4 = 5;
@@ -107,7 +107,7 @@ function processGuestMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
 
 function insertToActiveCards(inputArray: Uint8Array, dispatch: AppDispatch) {
   let cardArray = inputArray.slice(1);
-  dispatch(insertActiveCardsByArray(cardArray));
+  dispatch(insertActiveCardsByArray(Array.from(cardArray)));
 }
 
 function processPlayerMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
@@ -144,6 +144,7 @@ export default function WebSocketConsumer(props) {
 
   const onMessage = useCallback((event) => {
     let arBuf = new Uint8Array(event.data);
+    console.log('RECV: buf= ', arBuf.join(' '));
     readMessage(arBuf, dispatch);
   }, [dispatch]);
 
