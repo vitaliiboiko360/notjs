@@ -194,6 +194,8 @@ export class Game {
   D_UserCards: number[] = [];
 
   CardArray: number[] = [];
+
+  public UserColorBuckets: ColorBucketTotalValues = new ColorBucketTotalValues();
 }
 
 enum USER {
@@ -203,13 +205,16 @@ enum USER {
   _4
 };
 
-enum COL {
-  BLACK = 0,
-  RED,
-  GREEN,
-  BLUE,
-  YELLOW
-}
+export const COLOR_BLACK = 0;
+export const COLOR_RED = 1;
+export const COLOR_GREEN = 2;
+export const COLOR_BLUE = 3;
+export const COLOR_YELLOW = 4;
+
+
+// array corresponds to face value number cards and three special ones
+// [0 .. 9, Reverse, Skip, Draw2]
+export const CARD_VALUES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 20, 20, 20];
 
 class ColorBucketTotalValues {
 
@@ -228,22 +233,52 @@ class ColorBucketTotalValues {
     }
   }
 
-  addCard(userSeat: number, cards: number[]) {
+  addCard(userSeat: number, idOfCard: number) {
     const addCard = (arrayToChange: number[]) => {
-      for (let i = 0; i < cards.length; ++i) {
-
+      const color = getColor(idOfCard);
+      switch (color) {
+        case COLOR_RED:
+          arrayToChange[0] += CARD_VALUES[idOfCard - RED._0];
+          break;
+        case COLOR_GREEN:
+          arrayToChange[1] += CARD_VALUES[idOfCard - GREEN._0];
+          break;
+        case COLOR_BLUE:
+          arrayToChange[2] += CARD_VALUES[idOfCard - BLUE._0];
+          break;
+        case COLOR_YELLOW:
+          arrayToChange[3] += CARD_VALUES[idOfCard - YELLOW._0];
+          break;
+        default:
       }
+
     };
     this.toSeatNumber(userSeat, addCard);
   }
   removeCard(userSeat: number, idOfCard: number) {
-
+    const removeCard = (arrayToChange: number[]) => {
+      const color = getColor(idOfCard);
+      switch (color) {
+        case COLOR_RED:
+          arrayToChange[0] -= CARD_VALUES[idOfCard - RED._0];
+          break;
+        case COLOR_GREEN:
+          arrayToChange[1] -= CARD_VALUES[idOfCard - GREEN._0];
+          break;
+        case COLOR_BLUE:
+          arrayToChange[2] -= CARD_VALUES[idOfCard - BLUE._0];
+          break;
+        case COLOR_YELLOW:
+          arrayToChange[3] -= CARD_VALUES[idOfCard - YELLOW._0];
+          break;
+        default:
+      }
+    };
+    this.toSeatNumber(userSeat, removeCard);
   }
 
-
-
-  A_colorBucks: number[] = [0, 0, 0, 0];
-  B_colorBucks: number[] = [0, 0, 0, 0];
-  C_colorBucks: number[] = [0, 0, 0, 0];
-  D_colorBucks: number[] = [0, 0, 0, 0];
+  public A_colorBucks: number[] = [0, 0, 0, 0];
+  public B_colorBucks: number[] = [0, 0, 0, 0];
+  public C_colorBucks: number[] = [0, 0, 0, 0];
+  public D_colorBucks: number[] = [0, 0, 0, 0];
 }
