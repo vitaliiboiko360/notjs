@@ -25,12 +25,19 @@ function getPlayableCard(cardHand: number[] | undefined, topCard: number) {
 }
 
 export default function processMove(player: ConnectionAndMeta, game: Game, data: Uint8Array) {
-  const getUserMoveAndSendIt = (userSeat: number) => {
+  let getUserMoveAndSendIt: (userSeat: number) => void;
+  getUserMoveAndSendIt = (userSeat: number) => {
     let move = getPlayableCard(game.getPlayerHand(userSeat), game.topCard);
     let arrayToSend: Uint8Array = new Uint8Array(2);
     arrayToSend[0] = userSeat;
     arrayToSend[1] = move;
     player.send(arrayToSend);
+
+    if (game.leftDirection) {
+      getUserMoveAndSendIt(USER._4);
+    } else {
+      getUserMoveAndSendIt(USER._3);
+    }
   }
 
   if (game.leftDirection) {

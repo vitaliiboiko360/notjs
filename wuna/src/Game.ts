@@ -100,15 +100,19 @@ export class Game {
     };
     if (userSeat == 0) {
       removeFromCardArray(this.A_UserCards, idOfCard, 'A');
+      this.UserColorBuckets.removeCard(USER._1, idOfCard);
     }
     if (userSeat == 1) {
       removeFromCardArray(this.B_UserCards, idOfCard, 'B');
+      this.UserColorBuckets.removeCard(USER._2, idOfCard);
     }
     if (userSeat == 2) {
       removeFromCardArray(this.C_UserCards, idOfCard, 'C');
+      this.UserColorBuckets.removeCard(USER._3, idOfCard);
     }
     if (userSeat == 3) {
       removeFromCardArray(this.D_UserCards, idOfCard, 'D');
+      this.UserColorBuckets.removeCard(USER._4, idOfCard);
     }
   }
 
@@ -165,6 +169,10 @@ export class Game {
       this.B_UserCards.push(cardArray[i + 1]);
       this.C_UserCards.push(cardArray[i + 2]);
       this.D_UserCards.push(cardArray[i + 3]);
+      this.UserColorBuckets.addCard(USER._1, cardArray[i]);
+      this.UserColorBuckets.addCard(USER._2, cardArray[i + 1]);
+      this.UserColorBuckets.addCard(USER._3, cardArray[i + 2]);
+      this.UserColorBuckets.addCard(USER._4, cardArray[i + 3]);
     }
     this.A_UserCards.sort(compare);
     this.B_UserCards.sort(compare);
@@ -218,7 +226,7 @@ export const CARD_VALUES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 20, 20, 20];
 
 class ColorBucketTotalValues {
 
-  private toSeatNumber(userSeat: number, callback: (inputArray: number[]) => void) {
+  private runFunctionOnUserArray(userSeat: number, callback: (inputArray: number[]) => void) {
     if (userSeat == USER._1) {
       callback(this.A_colorBucks);
     }
@@ -253,7 +261,7 @@ class ColorBucketTotalValues {
       }
 
     };
-    this.toSeatNumber(userSeat, addCard);
+    this.runFunctionOnUserArray(userSeat, addCard);
   }
   removeCard(userSeat: number, idOfCard: number) {
     const removeCard = (arrayToChange: number[]) => {
@@ -274,7 +282,7 @@ class ColorBucketTotalValues {
         default:
       }
     };
-    this.toSeatNumber(userSeat, removeCard);
+    this.runFunctionOnUserArray(userSeat, removeCard);
   }
 
   public A_colorBucks: number[] = [0, 0, 0, 0];
