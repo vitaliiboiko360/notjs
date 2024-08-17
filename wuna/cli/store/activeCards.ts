@@ -11,7 +11,7 @@ const initialState: ActiveCardsInterface = {
   activeCards: []
 };
 
-function mergeTwoArrays(arrayOne: number[], arrayTwo: number[]) {
+export function mergeTwoArrays(arrayOne: number[], arrayTwo: number[]) {
   let first, second = 0;
 
   while (first < arrayOne.length && second < arrayTwo.length) {
