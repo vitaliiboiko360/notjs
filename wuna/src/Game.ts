@@ -145,9 +145,13 @@ export class Game {
       this.CardArray = this.CardArray.concat(remainedCards);
     }
 
+    let lastDrawedCard: number = 0;
+
     const drawCards = (cardHand: number[]) => {
       for (let i = 0; i < howMuchToDraw; ++i) {
-        cardHand.push(this.CardArray.pop()!);
+        let drawCard = this.CardArray.pop()!
+        cardHand.push(drawCard);
+        lastDrawedCard = drawCard;
       }
     }
 
@@ -166,6 +170,8 @@ export class Game {
         break;
       default:
     }
+
+    return lastDrawedCard;
   }
 
   getNextCard() {

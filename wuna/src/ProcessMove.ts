@@ -52,9 +52,11 @@ enum USER {
   _4
 }
 
+const USERS = 4;
+
 import { isCardPlayable } from '../cli/svg/svg_getcard';
 
-function getPlayableCard(cardHand: number[] | undefined, topCard: number, game: Game) {
+function getPlayableCard(cardHand: number[] | undefined, topCard: number) {
   if (typeof cardHand === 'undefined') {
     return 0;
   }
@@ -63,7 +65,6 @@ function getPlayableCard(cardHand: number[] | undefined, topCard: number, game: 
 
   for (let i = 0; i < cardHand.length; i++) {
     const handCard = cardHand[i];
-    const topCard = game.topCard;
     if (isCardPlayable(handCard, topCard))
       playableCards.push(handCard);
   }
@@ -75,48 +76,56 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
 
 
   let getUserMoveAndSendIt: (userSeat: number) => void;
+
   getUserMoveAndSendIt =
     (userSeat: number) => {
 
       let howMuchToDraw: typeof DRAW2 | typeof DRAW4 | typeof DRAW1 = DRAW1;
       if (DRAW1 != (howMuchToDraw = getDrawCardNumber(game.topCard))) {
         game.drawUserCard(userSeat, howMuchToDraw);
+
+        let nextPlayer: number;
+        if (game.leftDirection) {
+          nextPlayer = userSeat + 1 % USERS;
+        } else {
+          nextPlayer = Math.abs(userSeat - 1);
+        }
+        let arrayToSend: Uint8Array = new Uint8Array(2);
+        arrayToSend[0] = userSeat;
+        arrayToSend[1] = 0;
+        player.send(arrayToSend);
+        if (nextPlayer == 0)
+          return;
+        return getUserMoveAndSendIt(nextPlayer);
       }
       // normal flow
       //
-      let move = getPlayableCard(game.getPlayerHand(userSeat), game.topCard, game);
+      let move = getPlayableCard(game.getPlayerHand(userSeat), game.topCard);
       if (move == 0) {
-        game.drawUserCard(userSeat, DRAW1);
-        move = getPlayableCard(game.getPlayerHand(userSeat), game.topCard, game);
+        let lastDrawedCard = game.drawUserCard(userSeat, DRAW1);
+        move = getPlayableCard([lastDrawedCard], game.topCard);
       }
       let arrayToSend: Uint8Array = new Uint8Array(2);
       arrayToSend[0] = userSeat;
       arrayToSend[1] = move;
       player.send(arrayToSend);
-
-      game.removeCardUserAndSetItTopCard(move, userSeat);
-      if (isReverseCard(move)) {
-        game.leftDirection = !game.leftDirection;
-      }
-
-      if (userSeat == USER._2) {
-        if (game.leftDirection) {
-          getUserMoveAndSendIt(USER._3);
-        } else if (!isSkipOrDrawCard) {
-          return;
+      if (move != 0) {
+        game.removeCardUserAndSetItTopCard(move, userSeat);
+        if (isReverseCard(move)) {
+          game.leftDirection = !game.leftDirection;
         }
       }
-      if (userSeat == USER._3) {
+
+      {
+        let nextPlayer: number;
         if (game.leftDirection) {
-          getUserMoveAndSendIt(USER._4)
-        }
-      }
-      if (userSeat == USER._4) {
-        if (game.leftDirection) {
-          return;
+          nextPlayer = userSeat + 1 % USERS;
         } else {
-          getUserMoveAndSendIt(USER._3);
+          nextPlayer = Math.abs(userSeat - 1);
         }
+        if (nextPlayer == 0)
+          return;
+        return getUserMoveAndSendIt(nextPlayer);
       }
     }
 
