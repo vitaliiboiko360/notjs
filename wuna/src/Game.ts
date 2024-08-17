@@ -13,7 +13,7 @@ function shuffleArray(arrayToShuffle: number[]) {
   }
 }
 
-function initCardArray() {
+function initCardArray(): number[] {
   let retArray = new Array(NUBMER_OF_CARDS * NUBMER_OF_DECKS);
   for (let i = 0; i < NUMBER_OF_COLOR_CARDS; ++i) {
     retArray[i]
@@ -84,6 +84,9 @@ const compare = (A_card: number, B_card: number) => {
 const numberStartHandCards = 7;
 const numberTotalPlayers = 4;
 
+export const DRAW2 = 2;
+export const DRAW4 = 4;
+
 export class Game {
   constructor() {
     this.CardArray = initCardArray();
@@ -131,7 +134,27 @@ export class Game {
     this.topCard = idOfCard;
     if (isReverseCard(idOfCard)) {
       this.leftDirection = !this.leftDirection;
+    }
+  }
 
+  drawUserCard(userSeat: number, howMuchToDraw: typeof DRAW2 | typeof DRAW4) {
+    if (this.CardArray.length < 4) {
+      let remainedCards = this.CardArray;
+      this.CardArray = initCardArray();
+      this.CardArray = this.CardArray.concat(remainedCards);
+    }
+
+    const drawCards = (cardHand: number[], howMuchToDraw: typeof DRAW2 | typeof DRAW4) => {
+      for (let i = 0; i < howMuchToDraw; ++i) {
+
+      }
+    }
+
+    switch (userSeat) {
+      case USER._1:
+        drawCards(this.A_UserCards, howMuchToDraw);
+        break;
+      default:
     }
   }
 
