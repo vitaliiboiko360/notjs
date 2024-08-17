@@ -84,6 +84,7 @@ const compare = (A_card: number, B_card: number) => {
 const numberStartHandCards = 7;
 const numberTotalPlayers = 4;
 
+export const DRAW1 = 1;
 export const DRAW2 = 2;
 export const DRAW4 = 4;
 
@@ -137,22 +138,31 @@ export class Game {
     }
   }
 
-  drawUserCard(userSeat: number, howMuchToDraw: typeof DRAW2 | typeof DRAW4) {
-    if (this.CardArray.length < 4) {
-      let remainedCards = this.CardArray;
+  drawUserCard(userSeat: number, howMuchToDraw: typeof DRAW2 | typeof DRAW4 | typeof DRAW1) {
+    if (this.CardArray.length < howMuchToDraw) {
+      const remainedCards = this.CardArray;
       this.CardArray = initCardArray();
       this.CardArray = this.CardArray.concat(remainedCards);
     }
 
-    const drawCards = (cardHand: number[], howMuchToDraw: typeof DRAW2 | typeof DRAW4) => {
+    const drawCards = (cardHand: number[]) => {
       for (let i = 0; i < howMuchToDraw; ++i) {
-
+        cardHand.push(this.CardArray.pop()!);
       }
     }
 
     switch (userSeat) {
       case USER._1:
-        drawCards(this.A_UserCards, howMuchToDraw);
+        drawCards(this.A_UserCards);
+        break;
+      case USER._2:
+        drawCards(this.B_UserCards);
+        break;
+      case USER._3:
+        drawCards(this.C_UserCards);
+        break;
+      case USER._4:
+        drawCards(this.D_UserCards);
         break;
       default:
     }

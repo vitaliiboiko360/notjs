@@ -1,6 +1,6 @@
 import { ConnectionAndMeta } from './GameManager';
 import { WILD, RED, GREEN, BLUE, YELLOW, isReverseCard } from './Cards';
-import { Game, DRAW2, DRAW4 } from './Game';
+import { Game, DRAW1, DRAW2, DRAW4 } from './Game';
 
 const valueSorted = [WILD.Wild, WILD.Draw4, RED._Draw2, RED._Skip, RED._Reverse, RED._9, RED._8, RED._7, RED._6, RED._5, RED._4, RED._3, RED._2, RED._1, RED._0];
 
@@ -42,7 +42,7 @@ export function getDrawCardNumber(idOfCard: number) {
   if (idOfCard == WILD.Draw4) {
     return DRAW4;
   }
-  return 0;
+  return DRAW1;
 }
 
 enum USER {
@@ -52,7 +52,9 @@ enum USER {
   _4
 }
 
-function getPlayableCard(cardHand: number[] | undefined, topCard: number) {
+import { isCardPlayable } from '../cli/svg/svg_getcard';
+
+function getPlayableCard(cardHand: number[] | undefined, topCard: number, game: Game) {
   if (typeof cardHand === 'undefined') {
     return 0;
   }
@@ -60,6 +62,10 @@ function getPlayableCard(cardHand: number[] | undefined, topCard: number) {
   let playableCards = [];
 
   for (let i = 0; i < cardHand.length; i++) {
+    const handCard = cardHand[i];
+    const topCard = game.topCard;
+    if (isCardPlayable(handCard, topCard))
+      playableCards.push(handCard);
   }
 
   return 0;
@@ -71,16 +77,18 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
   let getUserMoveAndSendIt: (userSeat: number) => void;
   getUserMoveAndSendIt =
     (userSeat: number) => {
-      let howMuchToDraw = 0;
-      if (isSkipOrDrawCard(game.topCard)) {
-        howMuchToDraw = getDrawCardNumber(game.topCard);
 
+      let howMuchToDraw: typeof DRAW2 | typeof DRAW4 | typeof DRAW1 = DRAW1;
+      if (DRAW1 != (howMuchToDraw = getDrawCardNumber(game.topCard))) {
+        game.drawUserCard(userSeat, howMuchToDraw);
       }
-
-
       // normal flow
       //
-      let move = getPlayableCard(game.getPlayerHand(userSeat), game.topCard);
+      let move = getPlayableCard(game.getPlayerHand(userSeat), game.topCard, game);
+      if (move == 0) {
+        game.drawUserCard(userSeat, DRAW1);
+        move = getPlayableCard(game.getPlayerHand(userSeat), game.topCard, game);
+      }
       let arrayToSend: Uint8Array = new Uint8Array(2);
       arrayToSend[0] = userSeat;
       arrayToSend[1] = move;
