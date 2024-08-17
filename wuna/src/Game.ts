@@ -53,6 +53,7 @@ function initCardArray(): number[] {
 }
 
 import { getColor, isReverseCard } from './Cards';
+import { COLOR } from '../cli/svg/svg_getcard';
 
 const compare = (A_card: number, B_card: number) => {
   const A_color: number = getColor(A_card);
@@ -62,7 +63,7 @@ const compare = (A_card: number, B_card: number) => {
   if (A_color < B_color)
     return -1;
   if (A_color == B_color) {
-    if (A_color != COL.BLACK) {
+    if (A_color != COLOR.BLACK) {
       if (A_card > B_card)
         return -1;
       if (A_card < B_card)
@@ -148,6 +149,7 @@ export class Game {
     let lastDrawedCard: number = 0;
 
     const drawCards = (cardHand: number[]) => {
+      this.CardArray.splice(-howMuchToDraw);
       for (let i = 0; i < howMuchToDraw; ++i) {
         let drawCard = this.CardArray.pop()!
         cardHand.push(drawCard);

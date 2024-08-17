@@ -69,6 +69,9 @@ function getPlayableCard(cardHand: number[] | undefined, topCard: number) {
       playableCards.push(handCard);
   }
 
+  if (playableCards.length == 0)
+    return 0;
+
   return 0;
 }
 
@@ -88,7 +91,7 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
         if (game.leftDirection) {
           nextPlayer = userSeat + 1 % USERS;
         } else {
-          nextPlayer = Math.abs(userSeat - 1);
+          nextPlayer = (userSeat - 1) == 0 ? USERS - 1 : (userSeat - 1);
         }
         let arrayToSend: Uint8Array = new Uint8Array(2);
         arrayToSend[0] = userSeat;
@@ -121,7 +124,7 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
         if (game.leftDirection) {
           nextPlayer = userSeat + 1 % USERS;
         } else {
-          nextPlayer = Math.abs(userSeat - 1);
+          nextPlayer = (userSeat - 1) == 0 ? USERS - 1 : (userSeat - 1);
         }
         if (nextPlayer == 0)
           return;
@@ -129,7 +132,7 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
       }
     }
 
-  // etnty point recursion 
+  // entry point recursion
   //
   if (game.leftDirection) {
     getUserMoveAndSendIt(USER._2);
