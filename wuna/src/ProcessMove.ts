@@ -1,35 +1,8 @@
 import { ConnectionAndMeta } from './GameManager';
-import { WILD, RED, GREEN, BLUE, YELLOW, isReverseCard } from './Cards';
-import { Game, DRAW1, DRAW2, DRAW4 } from './Game';
+import { isWildCard, isReverseCard, isSkipOrDrawCard, isSkipCard, WILD, RED, GREEN, BLUE, YELLOW } from './Cards';
+import { compare, Game, DRAW1, DRAW2, DRAW4 } from './Game';
 
 const valueSorted = [WILD.Wild, WILD.Draw4, RED._Draw2, RED._Skip, RED._Reverse, RED._9, RED._8, RED._7, RED._6, RED._5, RED._4, RED._3, RED._2, RED._1, RED._0];
-
-export function isSkipOrDrawCard(idOfCard: number) {
-  if (idOfCard == RED._Draw2 ||
-    idOfCard == RED._Skip ||
-    idOfCard == GREEN._Draw2 ||
-    idOfCard == GREEN._Skip ||
-    idOfCard == BLUE._Draw2 ||
-    idOfCard == BLUE._Skip ||
-    idOfCard == YELLOW._Draw2 ||
-    idOfCard == YELLOW._Skip ||
-    idOfCard == WILD.Draw4
-  ) {
-    return true;
-  }
-  return false;
-}
-
-export function isSkipCard(idOfCard: number) {
-  if (idOfCard == RED._Skip ||
-    idOfCard == GREEN._Skip ||
-    idOfCard == BLUE._Skip ||
-    idOfCard == YELLOW._Skip
-  ) {
-    return true;
-  }
-  return false;
-}
 
 export function getDrawCardNumber(idOfCard: number) {
   if (idOfCard == RED._Draw2 ||
@@ -52,7 +25,15 @@ enum USER {
   _4
 }
 
+enum COLOR_BUCKET_INDEX {
+  RED = 0,
+  GREEN,
+  BLUE,
+  YELLOW
+}
+
 const USERS = 4;
+const COLORS = 4;
 
 import { isCardPlayable } from '../cli/svg/svg_getcard';
 
@@ -61,22 +42,30 @@ function getPlayableCard(cardHand: number[] | undefined, topCard: number) {
     return 0;
   }
 
-  let playableCards = [];
+  let playableCards: number[] = [];
+  let wildCards: number[] = [];
 
   for (let i = 0; i < cardHand.length; i++) {
     const handCard = cardHand[i];
-    if (isCardPlayable(handCard, topCard))
+    if (isWildCard(handCard)) {
+      wildCards.push(handCard);
+    } else if (isCardPlayable(handCard, topCard))
       playableCards.push(handCard);
   }
 
-  if (playableCards.length == 0)
-    return 0;
+  if (playableCards.length != 0) {
+    playableCards.sort(compare);
+    return playableCards[0];
+  }
+  if (playableCards.length == 0 && wildCards.length > 0) {
+    // we need to set color which is favoriable for us or random
+    return wildCards.find(el => el == WILD.Draw4) || wildCards.find(el => el == WILD.Wild);
+  }
 
   return 0;
 }
 
 export default function processMove(player: ConnectionAndMeta, game: Game, data: Uint8Array) {
-
 
   let getUserMoveAndSendIt: (userSeat: number) => void;
 
@@ -108,14 +97,18 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
         let lastDrawedCard = game.drawUserCard(userSeat, DRAW1);
         move = getPlayableCard([lastDrawedCard], game.topCard);
       }
-      let arrayToSend: Uint8Array = new Uint8Array(2);
+      let arrayToSend: Uint8Array = new Uint8Array(3);
       arrayToSend[0] = userSeat;
-      arrayToSend[1] = move;
+      arrayToSend[1] = move!;
       player.send(arrayToSend);
       if (move != 0) {
-        game.removeCardUserAndSetItTopCard(move, userSeat);
-        if (isReverseCard(move)) {
+        game.removeCardUserAndSetItTopCard(move!, userSeat);
+        if (isReverseCard(move!)) {
           game.leftDirection = !game.leftDirection;
+        }
+        if (isWildCard(move!)) {
+          let colorToPlay = game.UserColorBuckets.getChooseColorToPlayForUser(userSeat);
+          arrayToSend[2] = colorToPlay;
         }
       }
 

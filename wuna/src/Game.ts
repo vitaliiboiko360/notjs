@@ -54,8 +54,9 @@ function initCardArray(): number[] {
 
 import { getColor, isReverseCard } from './Cards';
 import { COLOR } from '../cli/svg/svg_getcard';
+import { isPlainObject } from '@reduxjs/toolkit';
 
-const compare = (A_card: number, B_card: number) => {
+export const compare = (A_card: number, B_card: number) => {
   const A_color: number = getColor(A_card);
   const B_color: number = getColor(B_card);
   if (A_color > B_color)
@@ -133,6 +134,7 @@ export class Game {
 
   removeCardUserAndSetItTopCard(idOfCard: number, userSeat: number) {
     this.removeCard(idOfCard, userSeat);
+    this.UserColorBuckets.removeCard(userSeat, idOfCard);
     this.topCard = idOfCard;
     if (isReverseCard(idOfCard)) {
       this.leftDirection = !this.leftDirection;
@@ -236,6 +238,7 @@ export class Game {
   }
 
   topCard: number = -1;
+  topColor: number = -1;
   leftDirection: boolean = true;
   A_UserCards: number[] = [];
   B_UserCards: number[] = [];
@@ -263,7 +266,7 @@ export const COLOR_YELLOW = 4;
 
 // array corresponds to face value number cards and three special ones
 // [0 .. 9, Reverse, Skip, Draw2]
-export const CARD_VALUES = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 20, 20, 20];
+export const CARD_VALUES = [1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 20, 20, 20];
 
 class ColorBucketTotalValues {
 
@@ -324,6 +327,34 @@ class ColorBucketTotalValues {
       }
     };
     this.runFunctionOnUserArray(userSeat, removeCard);
+  }
+
+  getChooseColorToPlayForUser(userSeat: number) {
+    const getColor = (inputArray: number[]) => {
+      let [value, color] = inputArray
+        .map((indexColor, value) => { return [value, indexColor] })
+        .sort((a: number[], b: number[]) => {
+          if (a[0] > b[0]) return -1;
+          if (a[0] < b[0]) return 1;
+          return 0;
+        })[0];
+
+      if (value == 0)
+        return Math.floor(Math.random() * 3); // 0,1,2,3 colors
+      return color;
+    };
+    switch (userSeat) {
+      case USER._1:
+        return getColor(this.A_colorBucks);
+      case USER._2:
+        return getColor(this.B_colorBucks);
+      case USER._3:
+        return getColor(this.C_colorBucks);
+      case USER._2:
+        return getColor(this.D_colorBucks);
+      default:
+        return Math.floor(Math.random() * 3);
+    }
   }
 
   public A_colorBucks: number[] = [0, 0, 0, 0];

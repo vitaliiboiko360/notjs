@@ -95,6 +95,10 @@ export function isValidCard(idOfCard: number) {
   return false;
 }
 
+export function isWildCard(idOfCard: number) {
+  return (idOfCard == WILD.Draw4 || idOfCard == WILD.Wild);
+}
+
 export function getColor(idOfCard: number) {
   if (idOfCard & 0b01000000)
     return 4;
@@ -126,6 +130,33 @@ export function isReverseCard(idOfCard: number) {
     return true;
   }
   if (idOfCard == YELLOW._Reverse) {
+    return true;
+  }
+  return false;
+}
+
+export function isSkipOrDrawCard(idOfCard: number) {
+  if (idOfCard == RED._Draw2 ||
+    idOfCard == RED._Skip ||
+    idOfCard == GREEN._Draw2 ||
+    idOfCard == GREEN._Skip ||
+    idOfCard == BLUE._Draw2 ||
+    idOfCard == BLUE._Skip ||
+    idOfCard == YELLOW._Draw2 ||
+    idOfCard == YELLOW._Skip ||
+    idOfCard == WILD.Draw4
+  ) {
+    return true;
+  }
+  return false;
+}
+
+export function isSkipCard(idOfCard: number) {
+  if (idOfCard == RED._Skip ||
+    idOfCard == GREEN._Skip ||
+    idOfCard == BLUE._Skip ||
+    idOfCard == YELLOW._Skip
+  ) {
     return true;
   }
   return false;
