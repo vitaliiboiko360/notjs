@@ -4,13 +4,15 @@ import { WebSocketContext } from './websocketprovider.tsx';
 import { useAppDispatch, AppDispatch } from './store/hooks.ts';
 import { insertActiveCardsByArray, updateActiveCardsByArray } from './store/activeCards.ts';
 import { updateBottomUserCardsNumber } from './store/bottomUser.ts';
-import { updateLeftUserCardsNumber, decrementLeftUserCardsNumber } from './store/leftUser.ts';
-import { updateTopUserCardsNumber, decrementTopUserCardsNumber } from './store/topUser.ts';
-import { updateRightUserCardsNumber, decrementRightUserCardsNumber } from './store/rightUser.ts';
-import { updateActiveMove, updateActiveMoveCard, updateActiveMoveLastPlayer } from './store/activeMove.ts';
+import { updateLeftUserCardsNumber, decrementLeftUserCardsNumber, incrementLeftUserCardsByNumber } from './store/leftUser.ts';
+import { updateTopUserCardsNumber, decrementTopUserCardsNumber, incrementTopUserCardsByNumber } from './store/topUser.ts';
+import { updateRightUserCardsNumber, decrementRightUserCardsNumber, incrementRightUserCardsByNumber } from './store/rightUser.ts';
+import { updateActiveMove, updateActiveMoveCard, updateActiveMoveLastPlayer, updateActiveMoveWildCardColor } from './store/activeMove.ts';
 import { updateActivePlayerSeatNumber } from './store/activePlayerSeatNumber.ts';
 
 import { COLOR_OFFSETS, COLOR, isReverseCard } from './svg/svg_getcard.tsx';
+
+import { isWildCard } from '../src/Cards.ts';
 
 function isValidCard(idOfCard: number) {
   const NUMBER_OF_VALUES = 13;
@@ -113,7 +115,31 @@ function insertToActiveCards(inputArray: Uint8Array, dispatch: AppDispatch) {
 function processPlayerMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
   let userSeat = inputArray[0];
   let move = inputArray[1];
+
+
   if (userSeat != USER_1) {
+    if (move == 0) {
+      let numberOfDrawedCards = inputArray[2];
+      dispatch(updateActiveMoveLastPlayer(userSeat));
+      switch (userSeat) {
+        case USER_2:
+          dispatch(incrementLeftUserCardsByNumber(numberOfDrawedCards));
+          break;
+        case USER_3:
+          dispatch(incrementTopUserCardsByNumber(numberOfDrawedCards));
+          break;
+        case USER_4:
+          dispatch(incrementRightUserCardsByNumber(numberOfDrawedCards));
+          break;
+        default:
+      }
+      return;
+    }
+    if (isWildCard(move)) {
+      let colorToPlay = inputArray[2];
+      dispatch(updateActiveMoveWildCardColor(colorToPlay));
+    }
+
     dispatch(updateActiveMove(move, userSeat));
     switch (userSeat) {
       case USER_2:

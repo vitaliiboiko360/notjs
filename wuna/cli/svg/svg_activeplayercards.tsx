@@ -17,7 +17,7 @@ export default function SvgActivePlayerCards(props) {
     return (<></>);
   }
 
-  console.log(`props.cardsArray.length=${props.cardArray.length}`);
+  //console.log(`props.cardsArray.length=${props.cardArray.length}`);
   let playableCardCounter = 0;
   return (<>
     {props

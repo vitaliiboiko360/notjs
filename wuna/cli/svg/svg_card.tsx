@@ -11,6 +11,11 @@ const CARD_HALF_HEIGHT = 48;
 
 const Card = forwardRef((props, refGroupCenterTable) => {
   const topCardId = useAppSelector(selectActiveMoveCard);
+  console.log('topCardId= ', topCardId);
+  if (topCardId == 0) {
+
+    return;
+  }
 
   if (!refGroupCenterTable.current) {
     console.log('GroupCenter Card no REF !!!! topCardId=', topCardId);

@@ -7,7 +7,7 @@ export default function getOnClickForCard(idOfCard: number, webSocket: WebSocket
     if (webSocket.readyState == WebSocket.OPEN) {
       let arrayToSend: Uint8Array = new Uint8Array(2);
       arrayToSend[0] = userId;
-      arrayToSend[0] = idOfCard;
+      arrayToSend[1] = idOfCard;
       webSocket.send(arrayToSend);
     }
     dispatch(removeActiveCard(idOfCard));

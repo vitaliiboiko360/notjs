@@ -105,7 +105,7 @@ export function isSkipCard(idOfCard: number) {
 
 export function isCardPlayable(idOfCard: number, topCard: number) {
   if (idOfCard == WILD.Wild ||
-    idOfCard == WILD.Wild
+    idOfCard == WILD.Draw4
   ) {
     return true;
   }

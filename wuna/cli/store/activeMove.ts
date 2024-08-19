@@ -8,12 +8,14 @@ interface ActiveMoveInterface {
   card: number,
   lastPlayer: number,
   directionClockwize: boolean,
+  wildCardColor: number
 }
 
 const initialState: ActiveMoveInterface = {
   card: 0,
   lastPlayer: 0,
-  directionClockwize: true
+  directionClockwize: true,
+  wildCardColor: 0
 };
 
 export const activeMoveSlice = createSlice({
@@ -43,17 +45,21 @@ export const activeMoveSlice = createSlice({
     updateActiveMoveLastPlayer: (state, action: PayloadAction<number>) => {
       state.card = action.payload;
     },
+    updateActiveMoveWildCardColor: (state, action: PayloadAction<number>) => {
+      state.wildCardColor = action.payload;
+    },
     default: (state) => {
       return state;
     }
   }
 });
 
-export const { updateActiveMove, updateActiveMoveCard, updateActiveMoveLastPlayer } = activeMoveSlice.actions;
+export const { updateActiveMove, updateActiveMoveCard, updateActiveMoveLastPlayer, updateActiveMoveWildCardColor } = activeMoveSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectActiveMoveCard = (state: RootState) => state.activeMove.card;
 export const selectActiveMoveLastPlayer = (state: RootState) => state.activeMove.lastPlayer;
 export const selectActiveMoveDirection = (state: RootState) => state.activeMove.directionClockwize;
+export const selectActiveMoveWildCardColor = (state: RootState) => state.activeMove.wildCardColor;
 
 export default activeMoveSlice.reducer;
