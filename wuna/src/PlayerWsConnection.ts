@@ -8,7 +8,7 @@ export declare interface AppWebSocketInterface extends WebSocket {
 
 export let wsArray: AppWebSocketInterface[] = [];
 
-import { dispatchClientMessage } from './GameManager';
+import { cleanupPlayerId, dispatchClientMessage } from './GameManager';
 
 function initializeWebSocket(webSocket: AppWebSocketInterface) {
   webSocket.on('error', (error) => {
@@ -21,6 +21,7 @@ function initializeWebSocket(webSocket: AppWebSocketInterface) {
     if (index != -1) {
       wsArray.splice(index, 1);
     }
+    cleanupPlayerId(webSocket.id);
   });
 
   webSocket.on('message', function message(data, isBinary) {

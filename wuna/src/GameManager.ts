@@ -72,9 +72,19 @@ export declare interface ConnectionAndMeta extends AppWebSocketInterface {
 }
 
 const playerAllotedSeatsNumber = 4;
-let playerAllotedSeats = new Set<number>();
-let playerConnectionsIds = new Set<number>();
-let playerConnections = new Map<number, ConnectionAndMeta>();
+export let playerAllotedSeats = new Set<number>();
+export let playerConnectionsIds = new Set<number>();
+export let playerConnections = new Map<number, ConnectionAndMeta>();
+
+export function cleanupPlayerId(websocketId: number) {
+  let foundSeatNumber;
+  if (undefined != (foundSeatNumber = playerConnections.get(websocketId)?.seatNumber)) {
+    playerAllotedSeats.delete(foundSeatNumber);
+  }
+
+  playerConnections.delete(websocketId);
+  playerConnectionsIds.delete(websocketId);
+}
 
 function processSeatRequest(data: Uint8Array, webSocket: AppWebSocketInterface) {
   const id = webSocket.id;
