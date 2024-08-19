@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React from 'react';
 
 export const enum COLOR {
   BLACK = 0,
@@ -69,7 +69,7 @@ function getColorHexString(color: number) {
   }
 }
 
-import { GREEN, RED, BLUE, YELLOW, WILD } from '../../src/Cards.ts';
+import { GREEN, RED, BLUE, YELLOW, WILD, getCardColor } from '../../src/Cards.ts';
 
 export function isReverseCard(idOfCard: number) {
   if (idOfCard == RED._Reverse) {
@@ -245,6 +245,10 @@ export function isCardPlayable(idOfCard: number, topCard: number) {
   if ((idOfCard >= YELLOW._0 && idOfCard <= YELLOW._9) && (topCard >= YELLOW._0 && topCard <= YELLOW._9)) return true;
 
   return false;
+}
+
+export function isCardSameColor(idOfCard: number, colorToPlay: number) {
+  return getCardColor(idOfCard) == colorToPlay;
 }
 
 export const enum BLACK_VALUES {
