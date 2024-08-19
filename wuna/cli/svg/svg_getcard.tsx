@@ -239,10 +239,10 @@ export function isCardPlayable(idOfCard: number, topCard: number) {
     topCard == YELLOW._9)) {
     return true;
   }
-  if ((idOfCard >= RED._0 && idOfCard <= RED._9) && (topCard >= RED._0 && topCard <= RED._9)) return true;
-  if ((idOfCard >= GREEN._0 && idOfCard <= GREEN._9) && (topCard >= GREEN._0 && topCard <= GREEN._9)) return true;
-  if ((idOfCard >= BLUE._0 && idOfCard <= BLUE._9) && (topCard >= BLUE._0 && topCard <= BLUE._9)) return true;
-  if ((idOfCard >= YELLOW._0 && idOfCard <= YELLOW._9) && (topCard >= YELLOW._0 && topCard <= YELLOW._9)) return true;
+  if ((idOfCard >= RED._0 && idOfCard <= RED._Draw2) && (topCard >= RED._0 && topCard <= RED._Draw2)) return true;
+  if ((idOfCard >= GREEN._0 && idOfCard <= GREEN._Draw2) && (topCard >= GREEN._0 && topCard <= GREEN._Draw2)) return true;
+  if ((idOfCard >= BLUE._0 && idOfCard <= BLUE._Draw2) && (topCard >= BLUE._0 && topCard <= BLUE._Draw2)) return true;
+  if ((idOfCard >= YELLOW._0 && idOfCard <= YELLOW._Draw2) && (topCard >= YELLOW._0 && topCard <= YELLOW._Draw2)) return true;
 
   return false;
 }
