@@ -335,6 +335,7 @@ class ColorBucketTotalValues {
           return 0;
         })[0];
 
+      console.log('COLOR BUCKETS userSeat=', userSeat, ' = ', inputArray.join(' '));
       if (value == 0)
         return Math.floor(Math.random() * 3); // 0,1,2,3 colors
       return color;

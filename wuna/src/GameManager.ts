@@ -158,7 +158,7 @@ import processMove from './ProcessMove';
 
 function processPlayerInputConnection(data: Uint8Array, id: number) {
   let firstByte = data[0];
-  let secondByte = data[1];
+  const idOfCard = data[1];
   let player = playerConnections.get(id);
 
   if (firstByte != player!.seatNumber + 5) {
@@ -166,12 +166,12 @@ function processPlayerInputConnection(data: Uint8Array, id: number) {
     return;
   }
 
-  if (isValidCard(secondByte)) {
+  if (isValidCard(idOfCard)) {
     // remove card from game state for this ID connection player
     let seatNumber = player!.seatNumber - 5;
-    game.removeCardUserAndSetItTopCard(firstByte, seatNumber);
+    game.removeCardUserAndSetItTopCard(idOfCard, seatNumber);
   }
-
+  console.log('PROCESS_MOVE: call');
   processMove(player!, game, data);
   return; // disable multiplayer below
 
@@ -179,7 +179,6 @@ function processPlayerInputConnection(data: Uint8Array, id: number) {
   // we need
   // to update top card by user's
   // in game's state
-  const idOfCard = secondByte;
   for (let [playerConnectionId, playerConnection] of playerConnections) {
     if (playerConnectionId != id) {
       // !Important
@@ -200,12 +199,16 @@ export function dispatchClientMessage(data: Uint8Array, webSocket: AppWebSocketI
   let firstByte = data[0];
   // check if firstByte == 1,2,3 or 4
   if (firstByte >= 1 && firstByte <= 4) {
+    console.log('firstByte=', firstByte);
     return processSeatRequest(data, webSocket);
   }
 
-  if (id in playerConnectionsIds) {
+  console.log('looking for id=', id, 'in playerConnectionsIds');
+  console.log(playerConnectionsIds.keys());
+  if (playerConnectionsIds.has(id)) {
     return processPlayerInputConnection(data, id);
   }
+  console.log('id=', id, ' not found');
 }
 
 function isTwoArrayEqual(arrayOne: Uint8Array, arrayTwo: Uint8Array) {

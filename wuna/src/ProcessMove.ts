@@ -43,6 +43,8 @@ function getPlayableCard(cardHand: number[] | undefined, topCard: number, colorT
   let playableCards: number[] = [];
   let wildCards: number[] = [];
 
+  console.log('cardHands cards= ', cardHand);
+
   for (let i = 0; i < cardHand.length; i++) {
     const handCard = cardHand[i];
     if (isWildCard(handCard)) {
@@ -87,17 +89,20 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
 
           let nextPlayer: number;
           if (game.leftDirection) {
-            nextPlayer = userSeat + 1 % USERS;
+            nextPlayer = (userSeat + 1) % USERS;
           } else {
             nextPlayer = (userSeat - 1) == 0 ? USERS - 1 : (userSeat - 1);
           }
-          let arrayToSend: Uint8Array = new Uint8Array(2);
-          arrayToSend[0] = userSeat;
+          let arrayToSend: Uint8Array = new Uint8Array(3);
+          arrayToSend[0] = userSeat + 1;
           arrayToSend[1] = 0;
+          arrayToSend[2] = howMuchToDraw;
           player.send(arrayToSend);
           isNextSkip = false;
-          if (nextPlayer == 0)
+          console.log('PROCESS_MOVE: ', userSeat, '# player had draw or skip card\n so next player is ', nextPlayer);
+          if (nextPlayer == 0) {
             return;
+          }
           return getUserMoveAndSendIt(nextPlayer);
         }
         // normal flow
@@ -110,8 +115,13 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
         // we consumed colorToPlay global we need to reset it back to -1
         colorToPlay = -1;
         let arrayToSend: Uint8Array = new Uint8Array(3);
-        arrayToSend[0] = userSeat;
+        arrayToSend[0] = userSeat + 1;
         arrayToSend[1] = move!;
+
+        if (move == 0) {
+          arrayToSend[2] = 1;
+        }
+
         player.send(arrayToSend);
         if (move != 0) {
           game.removeCardUserAndSetItTopCard(move!, userSeat);
@@ -126,15 +136,30 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
           if (isSkipCard(move!)) {
             isNextSkip = true;
           }
+          let nextPlayer: number;
+          if (game.leftDirection) {
+            nextPlayer = (userSeat + 1) % USERS;
+          } else {
+            nextPlayer = (userSeat - 1) == 0 ? USERS - 1 : (userSeat - 1);
+          }
+          console.log('PROCESS_MOVE: ', userSeat, '# player moved\n',
+            'move= ', move, '\n',
+            'next player is ', nextPlayer);
+          if (nextPlayer == 0)
+            return;
+          return getUserMoveAndSendIt(nextPlayer);
         }
 
         {
           let nextPlayer: number;
           if (game.leftDirection) {
-            nextPlayer = userSeat + 1 % USERS;
+            nextPlayer = (userSeat + 1) % USERS;
           } else {
             nextPlayer = (userSeat - 1) == 0 ? USERS - 1 : (userSeat - 1);
           }
+          console.log('PROCESS_MOVE: ', userSeat, '# player moved\n',
+            'move= ', move, '\n',
+            'next player is ', nextPlayer);
           if (nextPlayer == 0)
             return;
           return getUserMoveAndSendIt(nextPlayer);
