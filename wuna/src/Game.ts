@@ -1,6 +1,6 @@
 
 
-import { NUMBER_OF_COLOR_CARDS, NUMBER_OF_BLACK_CARDS, NUBMER_OF_CARDS, NUBMER_OF_DECKS, RED, GREEN, BLUE, YELLOW, WILD, isValidStartCard } from './Cards';
+import { getCardColor, isReverseCard, COLOR, NUMBER_OF_COLOR_CARDS, NUMBER_OF_BLACK_CARDS, NUBMER_OF_CARDS, NUBMER_OF_DECKS, RED, GREEN, BLUE, YELLOW, WILD, isValidStartCard } from './Cards';
 
 function shuffleArray(arrayToShuffle: number[]) {
   for (let i = arrayToShuffle.length - 1; i > 0; --i) {
@@ -52,13 +52,9 @@ function initCardArray(): number[] {
   return retArray;
 }
 
-import { getColor, isReverseCard } from './Cards';
-import { COLOR } from '../cli/svg/svg_getcard';
-import { isPlainObject } from '@reduxjs/toolkit';
-
 export const compare = (A_card: number, B_card: number) => {
-  const A_color: number = getColor(A_card);
-  const B_color: number = getColor(B_card);
+  const A_color: number = getCardColor(A_card);
+  const B_color: number = getCardColor(B_card);
   if (A_color > B_color)
     return 1;
   if (A_color < B_color)
@@ -287,7 +283,7 @@ class ColorBucketTotalValues {
 
   addCard(userSeat: number, idOfCard: number) {
     const addCard = (arrayToChange: number[]) => {
-      const color = getColor(idOfCard);
+      const color = getCardColor(idOfCard);
       switch (color) {
         case COLOR_RED:
           arrayToChange[0] += CARD_VALUES[idOfCard - RED._0];
@@ -309,7 +305,7 @@ class ColorBucketTotalValues {
   }
   removeCard(userSeat: number, idOfCard: number) {
     const removeCard = (arrayToChange: number[]) => {
-      const color = getColor(idOfCard);
+      const color = getCardColor(idOfCard);
       switch (color) {
         case COLOR_RED:
           arrayToChange[0] -= CARD_VALUES[idOfCard - RED._0];
@@ -330,7 +326,7 @@ class ColorBucketTotalValues {
   }
 
   getChooseColorToPlayForUser(userSeat: number) {
-    const getColor = (inputArray: number[]) => {
+    const getChooseColor = (inputArray: number[]) => {
       let [value, color] = inputArray
         .map((indexColor, value) => { return [value, indexColor] })
         .sort((a: number[], b: number[]) => {
@@ -345,13 +341,13 @@ class ColorBucketTotalValues {
     };
     switch (userSeat) {
       case USER._1:
-        return getColor(this.A_colorBucks);
+        return getChooseColor(this.A_colorBucks);
       case USER._2:
-        return getColor(this.B_colorBucks);
+        return getChooseColor(this.B_colorBucks);
       case USER._3:
-        return getColor(this.C_colorBucks);
+        return getChooseColor(this.C_colorBucks);
       case USER._2:
-        return getColor(this.D_colorBucks);
+        return getChooseColor(this.D_colorBucks);
       default:
         return Math.floor(Math.random() * 3);
     }
