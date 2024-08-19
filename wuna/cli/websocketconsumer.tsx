@@ -139,7 +139,6 @@ function processPlayerMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
       let colorToPlay = inputArray[2];
       dispatch(updateActiveMoveWildCardColor(colorToPlay));
     }
-
     dispatch(updateActiveMove(move, userSeat));
     switch (userSeat) {
       case USER_2:

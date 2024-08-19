@@ -41,9 +41,12 @@ export const activeMoveSlice = createSlice({
     },
     updateActiveMoveCard: (state, action: PayloadAction<number>) => {
       state.card = action.payload;
+      if (isReverseCard(action.payload)) {
+        state.directionClockwize = !state.directionClockwize;
+      }
     },
     updateActiveMoveLastPlayer: (state, action: PayloadAction<number>) => {
-      state.card = action.payload;
+      state.lastPlayer = action.payload;
     },
     updateActiveMoveWildCardColor: (state, action: PayloadAction<number>) => {
       state.wildCardColor = action.payload;

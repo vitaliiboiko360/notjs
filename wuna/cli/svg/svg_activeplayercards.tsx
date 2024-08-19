@@ -1,15 +1,17 @@
 import React, { Fragment, useContext } from 'react';
 
-import { getCard, isCardPlayable } from './svg_getcard';
+import { getCard, isCardPlayable, isCardSameColor } from './svg_getcard';
 import getOnClickForCard from './active_player/getOnClickForCard.ts';
 
 import { WebSocketContext } from '../websocketprovider.tsx';
 import { useAppSelector, useAppDispatch } from '../store/hooks.ts';
 import { selectActivePlayerSeatNumber } from '../store/activePlayerSeatNumber.ts';
+import { selectActiveMoveWildCardColor } from '../store/activeMove.ts';
 
 export default function SvgActivePlayerCards(props) {
   const webSocket = useContext(WebSocketContext);
   const activePlayerSeatNumber = useAppSelector(selectActivePlayerSeatNumber);
+  const activeWildCardColorToPlay = useAppSelector(selectActiveMoveWildCardColor);
   const dispatch = useAppDispatch();
 
   if (activePlayerSeatNumber == 0) {
@@ -24,7 +26,7 @@ export default function SvgActivePlayerCards(props) {
       .cardArray
       .map((card, index) => {
         let transformString = '';
-        const isPlayable = props.isOurTurn && isCardPlayable(card, props.activeCard);
+        const isPlayable = props.isOurTurn && (isCardPlayable(card, props.activeCard) || isCardSameColor(card, activeWildCardColorToPlay));
         if (isPlayable) {
           playableCardCounter++;
           transformString = `translate(${(index * 15) - 10},${-40})`;
