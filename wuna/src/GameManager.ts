@@ -152,7 +152,7 @@ function processSeatRequest(data: Uint8Array, webSocket: AppWebSocketInterface) 
   }, 3000);
 }
 
-import { isValidCard } from './Cards';
+import { isValidCard, isWildCard } from './Cards';
 import { game } from './WebSocketServer';
 import processMove from './ProcessMove';
 
@@ -169,7 +169,11 @@ function processPlayerInputConnection(data: Uint8Array, id: number) {
   if (isValidCard(idOfCard)) {
     // remove card from game state for this ID connection player
     let seatNumber = player!.seatNumber - 5;
-    game.removeCardUserAndSetItTopCard(idOfCard, seatNumber);
+    let color = -1;
+    if (isWildCard(idOfCard)) {
+      color = data[3];
+    }
+    game.removeCardUserAndSetItTopCard(idOfCard, seatNumber, color);
   }
   console.log('PROCESS_MOVE: call');
   processMove(player!, game, data);

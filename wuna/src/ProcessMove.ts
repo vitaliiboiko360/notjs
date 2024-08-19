@@ -70,7 +70,7 @@ function getPlayableCard(cardHand: number[] | undefined, topCard: number, colorT
 
 export default function processMove(player: ConnectionAndMeta, game: Game, data: Uint8Array) {
   let isNextSkip = true;
-  let colorToPlay: number = -1;
+  let colorToPlay: number = game.topColor;
   let getUserMoveAndSendIt: (userSeat: number) => void;
 
   getUserMoveAndSendIt =

@@ -128,12 +128,15 @@ export class Game {
     this.D_UserCards = [];
   }
 
-  removeCardUserAndSetItTopCard(idOfCard: number, userSeat: number) {
+  removeCardUserAndSetItTopCard(idOfCard: number, userSeat: number, color: number = -1) {
     this.removeCard(idOfCard, userSeat);
     this.UserColorBuckets.removeCard(userSeat, idOfCard);
     this.topCard = idOfCard;
     if (isReverseCard(idOfCard)) {
       this.leftDirection = !this.leftDirection;
+    }
+    if (color != -1) {
+      this.topColor = color;
     }
   }
 
