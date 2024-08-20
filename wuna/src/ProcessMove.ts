@@ -35,6 +35,14 @@ enum COLOR_BUCKET_INDEX {
 const USERS = 4;
 const COLORS = 4;
 
+function handleWin(player: ConnectionAndMeta, userSeat: number) {
+  console.log('WIN!!')
+  let arrayToSend: Uint8Array = new Uint8Array(3);
+  arrayToSend[0] = userSeat + 1;
+  arrayToSend[1] = 1; // indicate he's the winner
+  player.send(arrayToSend);
+}
+
 function getPlayableCard(cardHand: number[] | undefined, topCard: number, colorToPlay: number) {
   if (typeof cardHand === 'undefined') {
     return 0;
@@ -115,6 +123,7 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
         }
         // we consumed colorToPlay global we need to reset it back to -1
         colorToPlay = -1;
+        game.topColor = -1;
         let arrayToSend: Uint8Array = new Uint8Array(3);
         arrayToSend[0] = userSeat + 1;
         arrayToSend[1] = move!;
@@ -126,25 +135,34 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
         player.send(arrayToSend);
 
         if (move != 0) {
-          game.removeCardUserAndSetItTopCard(move!, userSeat);
           if (isReverseCard(move!)) {
             game.leftDirection = !game.leftDirection;
           }
           if (isWildCard(move!)) {
             colorToPlay = game.UserColorBuckets.getChooseColorToPlayForUser(userSeat);
             arrayToSend[2] = colorToPlay;
+            game.topColor = colorToPlay;
           }
           if (isSkipOrDrawCard(move!)) {
             isNextSkip = true;
+          }
+          const playerCardRemained = game.removeCardUserAndSetItTopCard(move!, userSeat, colorToPlay);
+          if (playerCardRemained == 0) {
+            handleWin(player, userSeat);
+            return;
           }
 
           let nextPlayer: number = getNextPlayer();
           console.log('PROCESS_MOVE: ', userSeat, '# player moved\n',
             'move= ', move, '\n',
+            'color= ', game.topColor,
             'next player is ', nextPlayer);
           if (nextPlayer == 0) {
             if (isSkipOrDrawCard(move!)) {
               return getUserMoveAndSendIt(getNextPlayer());
+            }
+            if (0 == getPlayableCard(game.getPlayerHand(0), move!, colorToPlay)) {
+              return setTimeout(() => getUserMoveAndSendIt(nextPlayer), 1500);
             }
             return;
           }
@@ -154,6 +172,7 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
         let nextPlayer = getNextPlayer();
         console.log('PROCESS_MOVE: ', userSeat, '# player moved\n',
           'move= ', move, '\n',
+          'color= ', game.topColor,
           'next player is ', nextPlayer);
         if (nextPlayer == 0) {
           return;

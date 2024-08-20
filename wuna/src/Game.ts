@@ -138,6 +138,10 @@ export class Game {
     if (color != -1) {
       this.topColor = color;
     }
+    if (this.getPlayerHand(userSeat)?.length == 0) {
+      return 0;
+    }
+    return 1;
   }
 
   drawUserCard(userSeat: number, howMuchToDraw: typeof DRAW2 | typeof DRAW4 | typeof DRAW1) {
@@ -150,7 +154,7 @@ export class Game {
     let lastDrawedCard: number = 0;
 
     const drawCards = (cardHand: number[]) => {
-      this.CardArray.splice(-howMuchToDraw);
+      //this.CardArray.splice(-howMuchToDraw);
       for (let i = 0; i < howMuchToDraw; ++i) {
         let drawCard = this.CardArray.pop()!
         cardHand.push(drawCard);
