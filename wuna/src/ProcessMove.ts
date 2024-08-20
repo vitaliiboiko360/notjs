@@ -1,5 +1,5 @@
 import { ConnectionAndMeta } from './GameManager';
-import { isWildCard, isReverseCard, isCardPlayable, isCardSameColor, isSkipCard, WILD, RED, GREEN, BLUE, YELLOW } from './Cards';
+import { isWildCard, isReverseCard, isCardPlayable, isCardSameColor, isSkipCard, WILD, RED, GREEN, BLUE, YELLOW, isSkipOrDrawCard } from './Cards';
 import { compare, Game, DRAW1, DRAW2, DRAW4 } from './Game';
 
 const valueSorted = [WILD.Wild, WILD.Draw4, RED._Draw2, RED._Skip, RED._Reverse, RED._9, RED._8, RED._7, RED._6, RED._5, RED._4, RED._3, RED._2, RED._1, RED._0];
@@ -76,7 +76,13 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
   getUserMoveAndSendIt =
     (userSeat: number) => {
       setTimeout(() => {
-
+        const getNextPlayer = () => {
+          if (game.leftDirection) {
+            return (userSeat + 1) % USERS;
+          } else {
+            return (userSeat - 1) == 0 ? USERS - 1 : (userSeat - 1);
+          }
+        };
         // drawing cards and/or skiping move
         //
         let howMuchToDraw: typeof DRAW2 | typeof DRAW4 | typeof DRAW1 = DRAW1;
@@ -87,12 +93,7 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
           if (howMuchToDraw > DRAW1)
             game.drawUserCard(userSeat, howMuchToDraw);
 
-          let nextPlayer: number;
-          if (game.leftDirection) {
-            nextPlayer = (userSeat + 1) % USERS;
-          } else {
-            nextPlayer = (userSeat - 1) == 0 ? USERS - 1 : (userSeat - 1);
-          }
+          let nextPlayer: number = getNextPlayer();
           let arrayToSend: Uint8Array = new Uint8Array(3);
           arrayToSend[0] = userSeat + 1;
           arrayToSend[1] = 0;
@@ -123,6 +124,7 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
         }
 
         player.send(arrayToSend);
+
         if (move != 0) {
           game.removeCardUserAndSetItTopCard(move!, userSeat);
           if (isReverseCard(move!)) {
@@ -131,40 +133,33 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
           if (isWildCard(move!)) {
             colorToPlay = game.UserColorBuckets.getChooseColorToPlayForUser(userSeat);
             arrayToSend[2] = colorToPlay;
+          }
+          if (isSkipOrDrawCard(move!)) {
             isNextSkip = true;
           }
-          if (isSkipCard(move!)) {
-            isNextSkip = true;
-          }
-          let nextPlayer: number;
-          if (game.leftDirection) {
-            nextPlayer = (userSeat + 1) % USERS;
-          } else {
-            nextPlayer = (userSeat - 1) == 0 ? USERS - 1 : (userSeat - 1);
-          }
+
+          let nextPlayer: number = getNextPlayer();
           console.log('PROCESS_MOVE: ', userSeat, '# player moved\n',
             'move= ', move, '\n',
             'next player is ', nextPlayer);
-          if (nextPlayer == 0)
+          if (nextPlayer == 0) {
+            if (isSkipOrDrawCard(move!)) {
+              return getUserMoveAndSendIt(getNextPlayer());
+            }
             return;
+          }
           return getUserMoveAndSendIt(nextPlayer);
         }
 
-        {
-          let nextPlayer: number;
-          if (game.leftDirection) {
-            nextPlayer = (userSeat + 1) % USERS;
-          } else {
-            nextPlayer = (userSeat - 1) == 0 ? USERS - 1 : (userSeat - 1);
-          }
-          console.log('PROCESS_MOVE: ', userSeat, '# player moved\n',
-            'move= ', move, '\n',
-            'next player is ', nextPlayer);
-          if (nextPlayer == 0)
-            return;
-          return getUserMoveAndSendIt(nextPlayer);
+        let nextPlayer = getNextPlayer();
+        console.log('PROCESS_MOVE: ', userSeat, '# player moved\n',
+          'move= ', move, '\n',
+          'next player is ', nextPlayer);
+        if (nextPlayer == 0) {
+          return;
         }
-      }, 1000);
+        return getUserMoveAndSendIt(nextPlayer);
+      }, 1500);
     };
 
   // entry point recursion
