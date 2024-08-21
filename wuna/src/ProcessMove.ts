@@ -51,7 +51,7 @@ function getPlayableCard(cardHand: number[] | undefined, topCard: number, colorT
   let playableCards: number[] = [];
   let wildCards: number[] = [];
 
-  console.log('cardHands cards= ', cardHand);
+
 
   for (let i = 0; i < cardHand.length; i++) {
     const handCard = cardHand[i];
@@ -63,6 +63,7 @@ function getPlayableCard(cardHand: number[] | undefined, topCard: number, colorT
       playableCards.push(handCard);
     }
   }
+  console.log('topCard= ', topCard, ' color=', colorToPlay, ' playableCards.length=', playableCards.length);
 
   if (playableCards.length != 0) {
     playableCards.sort(compare);
@@ -116,14 +117,14 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
         }
         // normal flow
         //
+        console.log('getPlayableCard userSeat=', userSeat);
         let move = getPlayableCard(game.getPlayerHand(userSeat), game.topCard, colorToPlay);
         if (move == 0) {
           let lastDrawedCard = game.drawUserCard(userSeat, DRAW1);
+          console.log('getPlayableCard userSeat=', userSeat);
           move = getPlayableCard([lastDrawedCard], game.topCard, colorToPlay);
         }
-        // we consumed colorToPlay global we need to reset it back to -1
-        colorToPlay = -1;
-        game.topColor = -1;
+
         let arrayToSend: Uint8Array = new Uint8Array(3);
         arrayToSend[0] = userSeat + 1;
         arrayToSend[1] = move!;
@@ -135,9 +136,9 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
         player.send(arrayToSend);
 
         if (move != 0) {
-          if (isReverseCard(move!)) {
-            game.leftDirection = !game.leftDirection;
-          }
+          // we consumed colorToPlay global we need to reset it back to -1
+          colorToPlay = -1;
+          game.topColor = -1;
           if (isWildCard(move!)) {
             colorToPlay = game.UserColorBuckets.getChooseColorToPlayForUser(userSeat);
             arrayToSend[2] = colorToPlay;
@@ -161,20 +162,36 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
             if (isSkipOrDrawCard(move!)) {
               return getUserMoveAndSendIt(getNextPlayer());
             }
+            console.log('getPlayableCard nextPlayer=', nextPlayer);
             if (0 == getPlayableCard(game.getPlayerHand(0), move!, colorToPlay)) {
-              return setTimeout(() => getUserMoveAndSendIt(nextPlayer), 1500);
+              let arrayToSend: Uint8Array = new Uint8Array(3);
+              arrayToSend[0] = USER._1 + 1; // client has player numbering from 1..4
+              arrayToSend[1] = game.drawUserCard(USER._1, DRAW1);
+              player.send(arrayToSend);
+              console.log('we found USER 0 has no moves');
+              return;
             }
+            console.log('next USER == nextPlayer= ', nextPlayer);
             return;
           }
           return getUserMoveAndSendIt(nextPlayer);
         }
 
         let nextPlayer = getNextPlayer();
-        console.log('PROCESS_MOVE: ', userSeat, '# player moved\n',
-          'move= ', move, '\n',
-          'color= ', game.topColor,
-          'next player is ', nextPlayer);
+        // console.log('PROCESS_MOVE: ', userSeat, '# player moved\n',
+        //   'move= ', move, '\n',
+        //   'color= ', game.topColor,
+        //   'next player is ', nextPlayer);
         if (nextPlayer == 0) {
+          if (0 == getPlayableCard(game.getPlayerHand(0), move!, colorToPlay)) {
+            let arrayToSend: Uint8Array = new Uint8Array(3);
+            arrayToSend[0] = USER._1 + 1; // client has player numbering from 1..4
+            arrayToSend[1] = game.drawUserCard(USER._1, DRAW1);
+            player.send(arrayToSend);
+            console.log('2222we found USER 0 has no moves');
+            return;
+          }
+          console.log('2222next USER == nextPlayer= ', nextPlayer);
           return;
         }
         return getUserMoveAndSendIt(nextPlayer);

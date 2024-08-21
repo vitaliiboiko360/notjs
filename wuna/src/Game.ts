@@ -45,7 +45,7 @@ function initCardArray(): number[] {
         = retArray[m + (NUBMER_OF_CARDS)]
         = retArray[m + (NUBMER_OF_CARDS * 2)]
         = retArray[m + (NUBMER_OF_CARDS * 3)]
-        = WILD.Draw4 + i;
+        = WILD.Wild + i;
     }
   }
   shuffleArray(retArray);
@@ -133,6 +133,7 @@ export class Game {
     this.UserColorBuckets.removeCard(userSeat, idOfCard);
     this.topCard = idOfCard;
     if (isReverseCard(idOfCard)) {
+      console.log('userSeat=', userSeat, ' just played isReverseCard(idOfCard)=', isReverseCard(idOfCard));
       this.leftDirection = !this.leftDirection;
     }
     if (color != -1) {
@@ -141,7 +142,8 @@ export class Game {
     if (this.getPlayerHand(userSeat)?.length == 0) {
       return 0;
     }
-    return 1;
+    console.log('userSeat=', userSeat, ' this.getPlayerHand(userSeat)?.length=', this.getPlayerHand(userSeat)?.length);
+    return this.getPlayerHand(userSeat)?.length;
   }
 
   drawUserCard(userSeat: number, howMuchToDraw: typeof DRAW2 | typeof DRAW4 | typeof DRAW1) {
@@ -159,6 +161,7 @@ export class Game {
         let drawCard = this.CardArray.pop()!
         cardHand.push(drawCard);
         lastDrawedCard = drawCard;
+        this.UserColorBuckets.addCard(userSeat, drawCard);
       }
     }
 
@@ -335,16 +338,16 @@ class ColorBucketTotalValues {
   getChooseColorToPlayForUser(userSeat: number) {
     const getChooseColor = (inputArray: number[]) => {
       let [value, color] = inputArray
-        .map((indexColor, value) => { return [value, indexColor] })
+        .map((value, indexColor) => { return [value, indexColor] })
         .sort((a: number[], b: number[]) => {
           if (a[0] > b[0]) return -1;
           if (a[0] < b[0]) return 1;
           return 0;
         })[0];
 
-      console.log('COLOR BUCKETS userSeat=', userSeat, ' = ', inputArray.join(' '));
-      if (value == 0)
-        return Math.floor(Math.random() * 3); // 0,1,2,3 colors
+      console.log('COLOR BUCKETS userSeat=', userSeat, ' = ', inputArray.join(' '), 'color=', color);
+      if (value == 0 || Number.isNaN(value))
+        return Math.floor(Math.random() * 3) + 1; // 0,1,2,3 colors but frontend use 1,2,3,4
       return color;
     };
     switch (userSeat) {
