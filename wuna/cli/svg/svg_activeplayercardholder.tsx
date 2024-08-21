@@ -7,6 +7,9 @@ import { selectActiveMoveCard, selectActiveMoveDirection, selectActiveMoveLastPl
 import { isReverseCard, isSkipCard } from './svg_getcard.tsx';
 
 function isOurTurn(activeCard: number, isDirectionClockwize: boolean, lastPlayerId: number) {
+  console.log('activeCard=', activeCard, 'isDirectionClockwize=', isDirectionClockwize, 'lastPlayerId=', lastPlayerId,
+    'isSkipCard(activeCard)=', isSkipCard(activeCard)
+  );
   if (isDirectionClockwize && lastPlayerId == 2 && isReverseCard(activeCard)) {
     return true;
   }
@@ -17,6 +20,12 @@ function isOurTurn(activeCard: number, isDirectionClockwize: boolean, lastPlayer
     return true;
   }
   if (!isDirectionClockwize && lastPlayerId == 2 && !isSkipCard(activeCard)) {
+    return true;
+  }
+  if (isDirectionClockwize && lastPlayerId == 3) {
+    return true;
+  }
+  if (!isDirectionClockwize && lastPlayerId == 2) {
     return true;
   }
   if (lastPlayerId == 3 && isSkipCard(activeCard)) {
