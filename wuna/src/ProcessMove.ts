@@ -107,7 +107,7 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
           arrayToSend[2] = howMuchToDraw;
           player.send(arrayToSend);
           isNextSkip = false;
-          console.log('PROCESS_MOVE: ', userSeat, '# player had draw or skip card\n so next player is ', nextPlayer);
+          console.log('\nPROCESS_MOVE: ', userSeat, '# player had draw or skip card\n so next player is ', nextPlayer);
           if (nextPlayer == 0) {
             return;
           }
@@ -141,6 +141,7 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
             colorToPlay = game.UserColorBuckets.getChooseColorToPlayForUser(userSeat);
             arrayToSend[2] = colorToPlay;
             game.topColor = colorToPlay;
+            console.log('userSeat=', userSeat, ' picking color = ', colorToPlay);
           }
           if (isSkipOrDrawCard(move!)) {
             isNextSkip = true;
