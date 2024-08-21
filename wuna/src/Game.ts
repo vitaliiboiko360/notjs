@@ -360,7 +360,7 @@ class ColorBucketTotalValues {
       case USER._2:
         return getChooseColor(this.D_colorBucks);
       default:
-        return Math.floor(Math.random() * 3);
+        return Math.floor(Math.random() * 3) + 1;
     }
   }
 

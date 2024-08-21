@@ -168,14 +168,14 @@ function processPlayerInputConnection(data: Uint8Array, id: number) {
 
   if (isValidCard(idOfCard)) {
     // remove card from game state for this ID connection player
-    let seatNumber = player!.seatNumber - 5;
+    let seatNumber = player!.seatNumber;
     let color = -1;
     if (isWildCard(idOfCard)) {
       color = data[3];
     }
     game.removeCardUserAndSetItTopCard(idOfCard, seatNumber, color);
   }
-  console.log('PROCESS_MOVE: call');
+  console.log('PROCESS_MOVE CALL::');
   processMove(player!, game, data);
   return; // disable multiplayer below
 
