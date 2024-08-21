@@ -8,7 +8,7 @@ import { isReverseCard, isSkipCard } from './svg_getcard.tsx';
 
 function isOurTurn(activeCard: number, isDirectionClockwize: boolean, lastPlayerId: number) {
   console.log('activeCard=', activeCard, 'isDirectionClockwize=', isDirectionClockwize, 'lastPlayerId=', lastPlayerId,
-    'isSkipCard(activeCard)=', isSkipCard(activeCard)
+    'isReverseCard(activeCard)=', isReverseCard(activeCard)
   );
   if (isDirectionClockwize && lastPlayerId == 4) {
     return true;
