@@ -10,25 +10,10 @@ function isOurTurn(activeCard: number, isDirectionClockwize: boolean, lastPlayer
   console.log('activeCard=', activeCard, 'isDirectionClockwize=', isDirectionClockwize, 'lastPlayerId=', lastPlayerId,
     'isSkipCard(activeCard)=', isSkipCard(activeCard)
   );
-  if (isDirectionClockwize && lastPlayerId == 2 && isReverseCard(activeCard)) {
-    return true;
-  }
-  if (!isDirectionClockwize && lastPlayerId == 4 && isReverseCard(activeCard)) {
-    return true;
-  }
-  if (isDirectionClockwize && lastPlayerId == 4 && !isSkipCard(activeCard)) {
-    return true;
-  }
-  if (!isDirectionClockwize && lastPlayerId == 2 && !isSkipCard(activeCard)) {
-    return true;
-  }
-  if (isDirectionClockwize && lastPlayerId == 3) {
+  if (isDirectionClockwize && lastPlayerId == 4) {
     return true;
   }
   if (!isDirectionClockwize && lastPlayerId == 2) {
-    return true;
-  }
-  if (lastPlayerId == 3 && isSkipCard(activeCard)) {
     return true;
   }
   return false;

@@ -16,7 +16,7 @@ import { isWildCard } from '../src/Cards.ts';
 
 function isValidCard(idOfCard: number) {
   const NUMBER_OF_VALUES = 13;
-  const BLACK_NUMBER_OF_VALUES = 2;
+  const BLACK_NUMBER_OF_VALUES = 1;
 
   if (idOfCard >= COLOR_OFFSETS.YELLOW_OFFSET
     && idOfCard <= COLOR_OFFSETS.YELLOW_OFFSET + NUMBER_OF_VALUES) {
@@ -109,7 +109,13 @@ function processGuestMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
 
 function insertToActiveCards(inputArray: Uint8Array, dispatch: AppDispatch) {
   let cardArray = inputArray.slice(1);
-  dispatch(insertActiveCardsByArray(Array.from(cardArray)));
+  let arrayToInsert: number[] = [];
+  for (let i = 0; i < cardArray.length; ++i) {
+    if (isValidCard(cardArray[i]))
+      arrayToInsert.push(cardArray[i]);
+  }
+  console.log('we dispatched insert array,', arrayToInsert.join(' '));
+  dispatch(insertActiveCardsByArray(arrayToInsert));
 }
 
 function processPlayerMessage(inputArray: Uint8Array, dispatch: AppDispatch) {

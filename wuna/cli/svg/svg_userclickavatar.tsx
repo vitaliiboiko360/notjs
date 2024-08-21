@@ -28,6 +28,7 @@ const UserClickAvatar = React.forwardRef((props, ref) => {
     let arrayToSend: Uint8Array = new Uint8Array(1);
     arrayToSend[0] = seatNumber;
     webSocket.send(arrayToSend);
+
   }, [playerSeatNumberRequested]);
 
   // useImperativeHandle(ref, () => {
@@ -42,22 +43,23 @@ const UserClickAvatar = React.forwardRef((props, ref) => {
 
     const nodeForRef = refRect.current;
 
-    if (!nodeForRef)
+    if (!refRect.current)
       return;
 
-    if (playerSeatNumberRequested != seatNumber &&
-      playerSeatNumberRequested != 0
-    ) {
-      //console.log('removing click on seat position=', props.position + 1);
-      nodeForRef.removeEventListener('click', onClick);
-      return;
-    }
-
-    // if (playerSeatNumberRequested != 0) {
-    //   console.log('someone clicked on seat=', seatNumber);
+    // if (playerSeatNumberRequested != 0
+    // ) {
+    //   //console.log('removing click on seat position=', props.position + 1);
+    //   nodeForRef.removeEventListener('click', onClick);
+    //   return;
     // }
 
-    nodeForRef.addEventListener('click', onClick);
+    // // if (playerSeatNumberRequested != 0) {
+    // //   console.log('someone clicked on seat=', seatNumber);
+    // // }
+    if (playerSeatNumberRequested == 0)
+      nodeForRef.addEventListener('click', onClick);
+    else
+      nodeForRef.removeEventListener('click', onClick);
 
     return () => nodeForRef.removeEventListener('click', onClick);
   }, [onClick]);
