@@ -35,7 +35,7 @@ enum COLOR_BUCKET_INDEX {
 const USERS = 4;
 const COLORS = 4;
 
-function handleWin(player: ConnectionAndMeta, userSeat: number) {
+export function handleWin(player: ConnectionAndMeta, userSeat: number) {
   console.log('WIN!!')
   let arrayToSend: Uint8Array = new Uint8Array(3);
   arrayToSend[0] = userSeat + 1;
@@ -50,8 +50,6 @@ function getPlayableCard(cardHand: number[] | undefined, topCard: number, colorT
 
   let playableCards: number[] = [];
   let wildCards: number[] = [];
-
-
 
   for (let i = 0; i < cardHand.length; i++) {
     const handCard = cardHand[i];

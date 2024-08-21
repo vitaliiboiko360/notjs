@@ -154,7 +154,7 @@ function processSeatRequest(data: Uint8Array, webSocket: AppWebSocketInterface) 
 
 import { isValidCard, isWildCard } from './Cards';
 import { game } from './WebSocketServer';
-import processMove from './ProcessMove';
+import processMove, { handleWin } from './ProcessMove';
 
 function processPlayerInputConnection(data: Uint8Array, id: number) {
   let firstByte = data[0];
@@ -173,9 +173,12 @@ function processPlayerInputConnection(data: Uint8Array, id: number) {
     if (isWildCard(idOfCard)) {
       color = data[3];
     }
-    game.removeCardUserAndSetItTopCard(idOfCard, seatNumber, color);
+    let remainedCardsCount = game.removeCardUserAndSetItTopCard(idOfCard, seatNumber, color);
+    if (remainedCardsCount == 0) {
+      return handleWin(player!, seatNumber);
+    }
   }
-  console.log('PROCESS_MOVE CALL::');
+  console.log('\nPROCESS_MOVE CALL:::\n');
   processMove(player!, game, data);
   return; // disable multiplayer below
 
