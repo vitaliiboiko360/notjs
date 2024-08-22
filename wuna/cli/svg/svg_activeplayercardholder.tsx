@@ -4,12 +4,8 @@ import SvgActivePlayerCards from './svg_activeplayercards';
 import { useAppSelector } from '../store/hooks.ts';
 import { selectActiveCards } from '../store/activeCards.ts';
 import { selectActiveMoveCard, selectActiveMoveDirection, selectActiveMoveLastPlayer } from '../store/activeMove.ts';
-import { isReverseCard, isSkipCard } from './svg_getcard.tsx';
 
-function isOurTurn(activeCard: number, isDirectionClockwize: boolean, lastPlayerId: number) {
-  console.log('activeCard=', activeCard, 'isDirectionClockwize=', isDirectionClockwize, 'lastPlayerId=', lastPlayerId,
-    'isReverseCard(activeCard)=', isReverseCard(activeCard)
-  );
+function isOurTurn(isDirectionClockwize: boolean, lastPlayerId: number) {
   if (isDirectionClockwize && lastPlayerId == 4) {
     return true;
   }
@@ -28,7 +24,7 @@ export default function SvgActivePlayerCardHolder(props) {
 
   return (<>
     <g transform="translate(270,400)">
-      <SvgActivePlayerCards isOurTurn={isOurTurn(activeCard, activeDirection, activeLastPlayer)} activeCard={activeCard} cardArray={cardArray} />
+      <SvgActivePlayerCards isOurTurn={isOurTurn(activeDirection, activeLastPlayer)} activeCard={activeCard} cardArray={cardArray} />
     </g>
   </>);
 }

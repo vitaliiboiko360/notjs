@@ -13,18 +13,20 @@ const initialState: ActiveCardsInterface = {
 
 export function mergeTwoArrays(arrayOne: number[], arrayTwo: number[]) {
   let first, second = 0;
+  console.log('before merge arrayCard=', arrayOne.join(' '));
 
-  while (first < arrayOne.length && second < arrayTwo.length) {
-    if (arrayOne[first] < arrayTwo[second]) {
+  while (first < arrayOne.length || second < arrayTwo.length) {
+    if (first < arrayOne.length && arrayOne[first] < arrayTwo[second]) {
       ++first;
       continue;
     }
-    if (arrayOne[first] == arrayTwo[second]) {
+    if (first < arrayOne.length && arrayOne[first] == arrayTwo[second]) {
       ++first;
       continue;
     }
     arrayOne.splice(first++, 0, arrayTwo[second++]);
   }
+  console.log('after merge arrayCard=', arrayOne.join(' '));
 }
 
 export const activeCardsSlice = createSlice({
@@ -46,6 +48,7 @@ export const activeCardsSlice = createSlice({
     insertActiveCardsByArray: (state, action: PayloadAction<number[]>) => {
       if (state.activeCards.length == 0) {
         state.activeCards = (action.payload);
+        return;
       }
       // we expect both arrays to be sorted otherwize it won't work
       mergeTwoArrays(state.activeCards, action.payload);
