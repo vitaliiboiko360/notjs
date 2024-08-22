@@ -142,7 +142,6 @@ export class Game {
     if (this.getPlayerHand(userSeat)?.length == 0) {
       return 0;
     }
-    console.log('userSeat=', userSeat, ' this.getPlayerHand(userSeat)?.length=', this.getPlayerHand(userSeat)?.length);
     return this.getPlayerHand(userSeat)?.length;
   }
 

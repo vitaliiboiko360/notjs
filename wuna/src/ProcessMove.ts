@@ -61,7 +61,7 @@ function getPlayableCard(cardHand: number[] | undefined, topCard: number, colorT
       playableCards.push(handCard);
     }
   }
-  console.log('topCard= ', topCard, ' color=', colorToPlay, ' playableCards.length=', playableCards.length);
+  // console.log('topCard= ', topCard, ' color=', colorToPlay, ' playableCards.length=', playableCards.length);
 
   if (playableCards.length != 0) {
     playableCards.sort(compare);
@@ -115,11 +115,12 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
         }
         // normal flow
         //
-        console.log('getPlayableCard userSeat=', userSeat);
+
+
         let move = getPlayableCard(game.getPlayerHand(userSeat), game.topCard, colorToPlay);
         if (move == 0) {
           let lastDrawedCard = game.drawUserCard(userSeat, DRAW1);
-          console.log('getPlayableCard userSeat=', userSeat);
+          console.log('move == 0 getPlayableCard userSeat=', userSeat);
           move = getPlayableCard([lastDrawedCard], game.topCard, colorToPlay);
         }
 
@@ -128,10 +129,11 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
         arrayToSend[1] = move!;
 
         if (move == 0) {
-          arrayToSend[2] = 1;
+          arrayToSend[2] = DRAW1;
+          player.send(arrayToSend);
         }
 
-        player.send(arrayToSend);
+
 
         if (move != 0) {
           // we consumed colorToPlay global we need to reset it back to -1
@@ -147,6 +149,10 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
             isNextSkip = true;
           }
           const playerCardRemained = game.removeCardUserAndSetItTopCard(move!, userSeat, colorToPlay);
+          console.log('after game.remove... getPlayerHand(userSeat).length=', game.getPlayerHand(userSeat)?.length);
+
+          player.send(arrayToSend);
+
           if (playerCardRemained == 0) {
             handleWin(player, userSeat);
             return;
@@ -161,7 +167,7 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
             if (isSkipOrDrawCard(move!)) {
               return getUserMoveAndSendIt(getNextPlayer());
             }
-            console.log('getPlayableCard nextPlayer=', nextPlayer);
+            console.log('nextPlayer==0 getPlayableCard nextPlayer=', nextPlayer);
             if (0 == getPlayableCard(game.getPlayerHand(0), move!, colorToPlay)) {
               let arrayToSend: Uint8Array = new Uint8Array(3);
               arrayToSend[0] = USER._1 + 1; // client has player numbering from 1..4
@@ -182,7 +188,7 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
         //   'color= ', game.topColor,
         //   'next player is ', nextPlayer);
         if (nextPlayer == 0) {
-          if (0 == getPlayableCard(game.getPlayerHand(0), move!, colorToPlay)) {
+          if (0 == getPlayableCard(game.getPlayerHand(USER._1), move!, colorToPlay)) {
             let arrayToSend: Uint8Array = new Uint8Array(3);
             arrayToSend[0] = USER._1 + 1; // client has player numbering from 1..4
             arrayToSend[1] = game.drawUserCard(USER._1, DRAW1);
