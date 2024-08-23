@@ -275,7 +275,7 @@ export const CARD_VALUES = [1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 20, 20, 20];
 
 class ColorBucketTotalValues {
 
-  private runFunctionOnUserArray(userSeat: number, callback: (inputArray: number[]) => void) {
+  private runFunctionOnUserArray(userSeat: number, callback: Function) {
     if (userSeat == USER._1) {
       callback(this.A_colorBucks);
     }
@@ -307,6 +307,7 @@ class ColorBucketTotalValues {
           arrayToChange[3] += CARD_VALUES[idOfCard - YELLOW._0];
           break;
         default:
+          return;
       }
 
     };
@@ -329,6 +330,7 @@ class ColorBucketTotalValues {
           arrayToChange[3] -= CARD_VALUES[idOfCard - YELLOW._0];
           break;
         default:
+          return;
       }
     };
     this.runFunctionOnUserArray(userSeat, removeCard);
@@ -336,17 +338,22 @@ class ColorBucketTotalValues {
 
   getChooseColorToPlayForUser(userSeat: number) {
     const getChooseColor = (inputArray: number[]) => {
-      let [value, color] = inputArray
+      let sortedArray = inputArray
         .map((value, indexColor) => { return [value, indexColor] })
         .sort((a: number[], b: number[]) => {
           if (a[0] > b[0]) return -1;
           if (a[0] < b[0]) return 1;
           return 0;
-        })[0];
+        });
 
-      console.log('COLOR BUCKETS userSeat=', userSeat, ' = ', inputArray.join(' '), 'color=', color);
-      if (value == 0 || Number.isNaN(value))
+      let [value, color] = sortedArray[0];
+
+      console.log('COLOR BUCKETS userSeat=', userSeat, ' = ', inputArray.join(' '),
+        'color=', color, 'sorted array=', sortedArray.join(' '));
+      if (value == 0 || Number.isNaN(value)) {
+        console.log('value==0', ' or isNan=', Number.isNaN(value));
         return Math.floor(Math.random() * 3) + 1; // 0,1,2,3 colors but frontend use 1,2,3,4
+      }
       return color;
     };
     switch (userSeat) {
