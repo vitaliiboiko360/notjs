@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, useEffect } from 'react';
 
-import { getCard, isCardPlayable, isCardSameColor } from './svg_getcard';
+import { getCard, isCardPlayable, isCardSameColor, getCardColor } from './svg_getcard';
 import getOnClickForCard from './active_player/getOnClickForCard.ts';
 
 import { WebSocketContext } from '../websocketprovider.tsx';
@@ -55,7 +55,9 @@ export default function SvgActivePlayerCards(props) {
           onClick = () => setTimeout(() => sendSkipMoveToServer(webSocket, activePlayerSeatNumber), 1500);
         }
         if (props.isOurTurn && !isPlayable)
-          console.log('isCardSameColor(card=', card, ' activeWildCardColorToPlay=', activeWildCardColorToPlay, ')= = ',); isCardSameColor(card, activeWildCardColorToPlay)
+          console.log('card=', card, ' activeWildCardColorToPlay=', activeWildCardColorToPlay,
+            'getCardColor(card)=', getCardColor(card),
+            ' isCardSameColor= ', isCardSameColor(card, activeWildCardColorToPlay));
         return (
           <Fragment key={index}>
             <g transform={transformString} onClick={isPlayable ? getOnClickForCard(card, webSocket, activePlayerSeatNumber, dispatch) : onClick} >
