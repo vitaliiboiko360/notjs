@@ -83,6 +83,11 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
   getUserMoveAndSendIt =
     (userSeat: number) => {
       setTimeout(() => {
+        if (userSeat == 0) {
+          console.log('SOMEONE SPILLED NEXT MOVE TO 0');
+          return;
+        }
+
         const getNextPlayer = () => {
           if (game.leftDirection) {
             return (userSeat + 1) % USERS;
@@ -172,6 +177,7 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
               let arrayToSend: Uint8Array = new Uint8Array(3);
               arrayToSend[0] = USER._1 + 1; // client has player numbering from 1..4
               arrayToSend[1] = game.drawUserCard(USER._1, DRAW1);
+              arrayToSend[2] = 111;
               player.send(arrayToSend);
               console.log('we found USER 0 has no moves');
               return;
