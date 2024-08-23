@@ -38,6 +38,7 @@ export default function SvgActivePlayerCards(props) {
   }
 
   //console.log(`props.cardsArray.length=${props.cardArray.length}`);
+  let onClick: Function | undefined = undefined;
   return (<>
     {props
       .cardArray
@@ -50,15 +51,14 @@ export default function SvgActivePlayerCards(props) {
         } else
           transformString = `translate(${(index * 15) - (10 * playableCardCounter)})`; // 20px -> step to the right on X axe
 
-        if (index == props.cardArray.length - 1) {
-          if (props.isOurTurn && playableCardCounter == 0) {
-            console.log('props.isOurTurn =', props.isOurTurn, ' playableCardCounter=', playableCardCounter);
-            setTimeout(() => sendSkipMoveToServer(webSocket, activePlayerSeatNumber), 1500);
-          }
+        if (typeof onClick === 'undefined' && props.isOurTurn && !isPlayable) {
+          onClick = () => setTimeout(() => sendSkipMoveToServer(webSocket, activePlayerSeatNumber), 1500);
         }
+        if (props.isOurTurn && !isPlayable)
+          console.log('isCardSameColor(card=', card, ' activeWildCardColorToPlay=', activeWildCardColorToPlay, ')= = ',); isCardSameColor(card, activeWildCardColorToPlay)
         return (
           <Fragment key={index}>
-            <g transform={transformString} onClick={isPlayable ? getOnClickForCard(card, webSocket, activePlayerSeatNumber, dispatch) : undefined} >
+            <g transform={transformString} onClick={isPlayable ? getOnClickForCard(card, webSocket, activePlayerSeatNumber, dispatch) : onClick} >
               {getCard(card)}
             </g>
           </Fragment>
