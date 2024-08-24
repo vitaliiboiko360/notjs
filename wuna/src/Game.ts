@@ -341,8 +341,8 @@ class ColorBucketTotalValues {
       let sortedArray = inputArray
         .map((value, indexColor) => { return [value, indexColor] })
         .sort((a: number[], b: number[]) => {
-          if (a[0] > b[0]) return -1;
-          if (a[0] < b[0]) return 1;
+          if (a[0] < b[0]) return -1;
+          if (a[0] > b[0]) return 1;
           return 0;
         });
 
