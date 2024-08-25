@@ -7,14 +7,14 @@ import { updateBottomUserCardsNumber } from './store/bottomUser.ts';
 import { updateLeftUserCardsNumber, decrementLeftUserCardsNumber, incrementLeftUserCardsByNumber } from './store/leftUser.ts';
 import { updateTopUserCardsNumber, decrementTopUserCardsNumber, incrementTopUserCardsByNumber } from './store/topUser.ts';
 import { updateRightUserCardsNumber, decrementRightUserCardsNumber, incrementRightUserCardsByNumber } from './store/rightUser.ts';
-import { updateActiveMove, updateActiveMoveCard, updateActiveMoveLastPlayer, updateActiveMoveWildCardColor } from './store/activeMove.ts';
+import { updateActiveMove, updateActiveMoveCard, updateActiveMoveLastPlayer, updateActiveMoveLastPlayerCard, updateActiveMoveWildCardColor } from './store/activeMove.ts';
 import { updateActivePlayerSeatNumber } from './store/activePlayerSeatNumber.ts';
 
 import { COLOR_OFFSETS, COLOR, isReverseCard } from './svg/svg_getcard.tsx';
 
 import { isWildCard } from '../src/Cards.ts';
 
-function isValidCard(idOfCard: number) {
+export function isValidCard(idOfCard: number) {
   const NUMBER_OF_VALUES = 13;
   const BLACK_NUMBER_OF_VALUES = 1;
 
@@ -127,6 +127,7 @@ function processPlayerMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
     if (move == 0) {
       let numberOfDrawedCards = inputArray[2];
       dispatch(updateActiveMoveLastPlayer(userSeat));
+      dispatch(updateActiveMoveLastPlayerCard(move));
       switch (userSeat) {
         case USER_2:
           dispatch(incrementLeftUserCardsByNumber(numberOfDrawedCards));
@@ -145,6 +146,7 @@ function processPlayerMessage(inputArray: Uint8Array, dispatch: AppDispatch) {
       let colorToPlay = inputArray[2];
       dispatch(updateActiveMoveWildCardColor(colorToPlay));
     }
+    dispatch(updateActiveMoveLastPlayerCard(move));
     dispatch(updateActiveMove(move, userSeat));
     switch (userSeat) {
       case USER_2:

@@ -54,7 +54,7 @@ export default function SvgActivePlayerCards(props) {
         if (typeof onClick === 'undefined' && props.isOurTurn && !isPlayable) {
           onClick = () => setTimeout(() => sendSkipMoveToServer(webSocket, activePlayerSeatNumber), 1500);
         }
-        if (props.isOurTurn && !isPlayable)
+        if (props.isOurTurn && isCardSameColor(card, activeWildCardColorToPlay))
           console.log('card=', card, ' activeWildCardColorToPlay=', activeWildCardColorToPlay,
             'getCardColor(card)=', getCardColor(card),
             ' isCardSameColor= ', isCardSameColor(card, activeWildCardColorToPlay));

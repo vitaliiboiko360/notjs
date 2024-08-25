@@ -7,6 +7,7 @@ import { isReverseCard } from '../svg/svg_getcard.tsx';
 interface ActiveMoveInterface {
   card: number,
   lastPlayer: number,
+  lastPlayerCard: number,
   directionClockwize: boolean,
   wildCardColor: number
 }
@@ -14,6 +15,7 @@ interface ActiveMoveInterface {
 const initialState: ActiveMoveInterface = {
   card: 0,
   lastPlayer: 0,
+  lastPlayerCard: 0,
   directionClockwize: true,
   wildCardColor: 0
 };
@@ -48,6 +50,9 @@ export const activeMoveSlice = createSlice({
     updateActiveMoveLastPlayer: (state, action: PayloadAction<number>) => {
       state.lastPlayer = action.payload;
     },
+    updateActiveMoveLastPlayerCard: (state, action: PayloadAction<number>) => {
+      state.lastPlayerCard = action.payload;
+    },
     updateActiveMoveWildCardColor: (state, action: PayloadAction<number>) => {
       state.wildCardColor = action.payload;
     },
@@ -57,11 +62,12 @@ export const activeMoveSlice = createSlice({
   }
 });
 
-export const { updateActiveMove, updateActiveMoveCard, updateActiveMoveLastPlayer, updateActiveMoveWildCardColor } = activeMoveSlice.actions;
+export const { updateActiveMove, updateActiveMoveCard, updateActiveMoveLastPlayer, updateActiveMoveLastPlayerCard, updateActiveMoveWildCardColor } = activeMoveSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectActiveMoveCard = (state: RootState) => state.activeMove.card;
 export const selectActiveMoveLastPlayer = (state: RootState) => state.activeMove.lastPlayer;
+export const selectActiveMoveLastPlayerCard = (state: RootState) => state.activeMove.lastPlayerCard;
 export const selectActiveMoveDirection = (state: RootState) => state.activeMove.directionClockwize;
 export const selectActiveMoveWildCardColor = (state: RootState) => state.activeMove.wildCardColor;
 

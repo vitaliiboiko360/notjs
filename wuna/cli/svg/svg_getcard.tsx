@@ -519,7 +519,7 @@ function getColoredTopping(value: number, color: number) {
   }
 }
 
-function getBlackCard(value: number) {
+export function getBlackCard(value: number) {
   let topping;
   if (value == WILD.Draw4) {
     topping = <><path
