@@ -11,8 +11,16 @@ import { xCenter, yCenter } from './svg_cardsstack.tsx';
 
 import { isValidCard, USER_1 } from '../websocketconsumer.tsx';
 
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
+
+gsap.registerPlugin(useGSAP, MotionPathPlugin);
+
 const CARD_HALF_WIDTH = 32;
 const CARD_HALF_HEIGHT = 48;
+
+let g_idCounter = 0;
 
 const Card = forwardRef((props, refGroupCenterTable) => {
   const refPreviousMove = useRef({ topCard: 0, lastPlayer: 0 });
@@ -24,7 +32,14 @@ const Card = forwardRef((props, refGroupCenterTable) => {
   //   refPreviousMove.current.topCard = lastPlayerCardId;
   // if (lastPlayerId != refPreviousMove.current.lastPlayer)
   //   refPreviousMove.current.lastPlayer = lastPlayerId;
-
+  const id = `cardId${g_idCounter++}`;
+  let tween = gsap.to(id, {
+    motionPath: {
+      path: "#path",
+    },
+    transformOrigin: "50% 50%",
+    duration: 2,
+  });
 
   if (lastPlayerCardId == 0 && lastPlayerId != USER_1) {
     console.log('lastPlayerCardId= ', lastPlayerCardId);
@@ -39,16 +54,18 @@ const Card = forwardRef((props, refGroupCenterTable) => {
   let x = Math.floor(Math.random() * CARD_HALF_WIDTH) + CARD_HALF_WIDTH;
   let y = Math.floor(Math.random() * CARD_HALF_HEIGHT) + CARD_HALF_HEIGHT;
 
-  let element = document.createElementNS('http://www.w3.org/2000/svg', 'cirle');
-  element.setAttribute('cr', '');
+  let element = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+
   element.setAttribute('transform', `matrix(1,0,0,1,${xCenter - x},${yCenter - y})`);
 
 
-  element.innerHTML = renderToString(getCard(topCardId));
   if (isValidCard(lastPlayerCardId))
     setupAnimation(element, lastPlayerId);
 
+  element.innerHTML = renderToString(getCard(topCardId));
+
   refGroupCenterTable.current.append(element);
+  tween.play();
 
   refPreviousMove.current.topCard = lastPlayerCardId;
   refPreviousMove.current.lastPlayer = lastPlayerId;
@@ -57,13 +74,3 @@ const Card = forwardRef((props, refGroupCenterTable) => {
 });
 
 export default Card;
-
-function getPath(props) {
-  return (<>
-    <path d="M120,300 C120,300 300,260 400,300" fill="none" stroke="red" stroke-width="1px"></path>
-    <path d="M400,170 C400,170 380,230 400,300" fill="none" stroke="green" stroke-width="1px"></path>
-    <path d="M400,170 C400,170 420,230 400,300" fill="none" stroke="green" stroke-width="1px"></path>
-    <path d="M680,300 C680,300 530,260 400,300" fill="none" stroke="blue" stroke-width="1px"></path>
-    <path d="M400,430 C400,430 420,360 400,300" fill="none" stroke="blue" stroke-width="1px"></path>
-    <path d="M400,430 C400,430 380,360 400,300" fill="none" stroke="blue" stroke-width="1px"></path></>);
-}

@@ -19,7 +19,8 @@ export default function setupAnimation(element: SVGGElement, userPosition: numbe
     default:
   }
   animateMotion.setAttribute('path', path);
-  element.appendChild(animateMotion);
+  //element.appendChild(animateMotion);
+  element.style.offsetPath = path;
 
   // let animateTransform = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
   // animateTransform.setAttribute('', '');
