@@ -7,7 +7,7 @@ import { useAppSelector } from '../store/hooks.ts';
 
 import { renderToString } from 'react-dom/server';
 
-import { IDPATH, xCenter, yCenter } from './svg_cardsstack.tsx';
+import { IDPATH, PATHDATA, xCenter, yCenter } from './svg_cardsstack.tsx';
 
 import { isValidCard, USER_1, USER_2, USER_3, USER_4 } from '../websocketconsumer.tsx';
 
@@ -34,18 +34,41 @@ const Card = forwardRef((props, refGroupCenterTable) => {
   //   refPreviousMove.current.lastPlayer = lastPlayerId;
   const id = `cardId${g_idCounter++}`;
 
+  const refCard = useRef(null);
+
 
   useGSAP(() => {
-    let tween = gsap.to(id, {
+    if (!refCard.current) {
+      console.log('!refCard.current');
+      return;
+    }
+    console.log('PATHDATA[index]=', PATHDATA[index]);
+
+    let index;
+    switch (lastPlayerCardId) {
+      case USER_1:
+        index = 4;
+        break;
+      case USER_2:
+        index = 0;
+        break;
+      case USER_3:
+        index = 1;
+        break;
+      case USER_4:
+        index = 2;
+        break;
+      default:
+    };
+    let tween = gsap.from(refCard.current, {
       motionPath: {
-        path: IDPATH[index],
+        path: PATHDATA[index],
+        align: PATHDATA[index]
       },
+      opacity: 0,
       transformOrigin: "50% 50%",
       duration: 2,
     });
-
-    tween.play();
-
 
   }, { dependencies: [], scope: refGroupCenterTable });
 
@@ -59,6 +82,11 @@ const Card = forwardRef((props, refGroupCenterTable) => {
     return;
   }
 
+  if (!isValidCard(lastPlayerCardId)) {
+    console.log('!isValidCard(lastPlayerCardId== ', lastPlayerCardId, ' )==false');
+    return;
+  }
+
   let x = Math.floor(Math.random() * CARD_HALF_WIDTH) + CARD_HALF_WIDTH;
   let y = Math.floor(Math.random() * CARD_HALF_HEIGHT) + CARD_HALF_HEIGHT;
 
@@ -66,31 +94,15 @@ const Card = forwardRef((props, refGroupCenterTable) => {
 
   element.setAttribute('transform', `matrix(1,0,0,1,${xCenter - x},${yCenter - y})`);
   element.setAttribute('id', id);
-  // element.style.display = 'none';
+  // element.style.opacity = "0";
 
 
   // if (isValidCard(lastPlayerCardId))
   //   setupAnimation(element, lastPlayerId);
 
   element.innerHTML = renderToString(getCard(topCardId));
-
+  refCard.current = element;
   refGroupCenterTable.current.append(element);
-  let index;
-  switch (lastPlayerCardId) {
-    case USER_1:
-      index = 4;
-      break;
-    case USER_2:
-      index = 0;
-      break;
-    case USER_3:
-      index = 1;
-      break;
-    case USER_4:
-      index = 2;
-      break;
-    default:
-  };
 
   refPreviousMove.current.topCard = lastPlayerCardId;
   refPreviousMove.current.lastPlayer = lastPlayerId;

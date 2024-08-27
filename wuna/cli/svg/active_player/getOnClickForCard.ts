@@ -1,6 +1,6 @@
 import type { AppDispatch } from '../../store/store.ts';
 import { removeActiveCard } from '../../store/activeCards.ts';
-import { updateActiveMove } from '../../store/activeMove.ts';
+import { updateActiveMove, updateActiveMoveLastPlayerCard } from '../../store/activeMove.ts';
 import { USER_1 } from '../../websocketconsumer.tsx';
 import { isWildCard } from '../../../src/Cards.ts';
 export default function getOnClickForCard(idOfCard: number, webSocket: WebSocket, userId: number, dispatch: AppDispatch) {
@@ -15,6 +15,7 @@ export default function getOnClickForCard(idOfCard: number, webSocket: WebSocket
       webSocket.send(arrayToSend);
     }
     dispatch(removeActiveCard(idOfCard));
+    dispatch(updateActiveMoveLastPlayerCard(idOfCard))
     dispatch(updateActiveMove(idOfCard, USER_1));
   };
 }
