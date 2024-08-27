@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef } from 'react';
+import React, { forwardRef, useRef, useEffect } from 'react';
 import { getCard } from './svg_getcard';
 
 import { selectActiveMoveCard, selectActiveMoveLastPlayerCard, selectActiveMoveLastPlayer } from '../store/activeMove.ts';
@@ -7,9 +7,9 @@ import { useAppSelector } from '../store/hooks.ts';
 
 import { renderToString } from 'react-dom/server';
 
-import { xCenter, yCenter } from './svg_cardsstack.tsx';
+import { IDPATH, xCenter, yCenter } from './svg_cardsstack.tsx';
 
-import { isValidCard, USER_1 } from '../websocketconsumer.tsx';
+import { isValidCard, USER_1, USER_2, USER_3, USER_4 } from '../websocketconsumer.tsx';
 
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -33,13 +33,21 @@ const Card = forwardRef((props, refGroupCenterTable) => {
   // if (lastPlayerId != refPreviousMove.current.lastPlayer)
   //   refPreviousMove.current.lastPlayer = lastPlayerId;
   const id = `cardId${g_idCounter++}`;
-  let tween = gsap.to(id, {
-    motionPath: {
-      path: "#path",
-    },
-    transformOrigin: "50% 50%",
-    duration: 2,
-  });
+
+
+  useGSAP(() => {
+    let tween = gsap.to(id, {
+      motionPath: {
+        path: IDPATH[index],
+      },
+      transformOrigin: "50% 50%",
+      duration: 2,
+    });
+
+    tween.play();
+
+
+  }, { dependencies: [], scope: refGroupCenterTable });
 
   if (lastPlayerCardId == 0 && lastPlayerId != USER_1) {
     console.log('lastPlayerCardId= ', lastPlayerCardId);
@@ -57,15 +65,32 @@ const Card = forwardRef((props, refGroupCenterTable) => {
   let element = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 
   element.setAttribute('transform', `matrix(1,0,0,1,${xCenter - x},${yCenter - y})`);
+  element.setAttribute('id', id);
+  // element.style.display = 'none';
 
 
-  if (isValidCard(lastPlayerCardId))
-    setupAnimation(element, lastPlayerId);
+  // if (isValidCard(lastPlayerCardId))
+  //   setupAnimation(element, lastPlayerId);
 
   element.innerHTML = renderToString(getCard(topCardId));
 
   refGroupCenterTable.current.append(element);
-  tween.play();
+  let index;
+  switch (lastPlayerCardId) {
+    case USER_1:
+      index = 4;
+      break;
+    case USER_2:
+      index = 0;
+      break;
+    case USER_3:
+      index = 1;
+      break;
+    case USER_4:
+      index = 2;
+      break;
+    default:
+  };
 
   refPreviousMove.current.topCard = lastPlayerCardId;
   refPreviousMove.current.lastPlayer = lastPlayerId;
