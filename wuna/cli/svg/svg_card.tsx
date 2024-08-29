@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, useEffect } from 'react';
+import React, { forwardRef, useRef, useEffect, useCallback } from 'react';
 import { getCard } from './svg_getcard';
 
 import { selectActiveMoveCard, selectActiveMoveLastPlayerCard, selectActiveMoveLastPlayer } from '../store/activeMove.ts';
@@ -37,40 +37,43 @@ const Card = forwardRef((props, refGroupCenterTable) => {
   const refCard = useRef(null);
 
 
-  useGSAP(() => {
-    if (!refCard.current) {
-      console.log('!refCard.current');
+  let index;
+  switch (lastPlayerCardId) {
+    case USER_1:
+      index = 4;
+      break;
+    case USER_2:
+      index = 0;
+      break;
+    case USER_3:
+      index = 1;
+      break;
+    case USER_4:
+      index = 2;
+      break;
+    default:
+  };
+
+
+  const run = (element) => {
+    // if (!refCard.current) {
+    //   console.log('!refCard.current');
+    //   return;
+    // }
+    if (typeof index === 'undefined')
       return;
-    }
+
     console.log('PATHDATA[index]=', PATHDATA[index]);
 
-    let index;
-    switch (lastPlayerCardId) {
-      case USER_1:
-        index = 4;
-        break;
-      case USER_2:
-        index = 0;
-        break;
-      case USER_3:
-        index = 1;
-        break;
-      case USER_4:
-        index = 2;
-        break;
-      default:
-    };
-    let tween = gsap.from(refCard.current, {
+    gsap.to(element, {
       motionPath: {
         path: PATHDATA[index],
-        align: PATHDATA[index]
+        align: PATHDATA[index],
+        alignOrigin: [0.5, 0.5]
       },
-      opacity: 0,
-      transformOrigin: "50% 50%",
       duration: 2,
     });
-
-  }, { dependencies: [], scope: refGroupCenterTable });
+  };
 
   if (lastPlayerCardId == 0 && lastPlayerId != USER_1) {
     console.log('lastPlayerCardId= ', lastPlayerCardId);
@@ -100,9 +103,11 @@ const Card = forwardRef((props, refGroupCenterTable) => {
   // if (isValidCard(lastPlayerCardId))
   //   setupAnimation(element, lastPlayerId);
 
-  element.innerHTML = renderToString(getCard(topCardId));
-  refCard.current = element;
   refGroupCenterTable.current.append(element);
+
+  element.innerHTML = renderToString(getCard(topCardId));
+  run(element);
+
 
   refPreviousMove.current.topCard = lastPlayerCardId;
   refPreviousMove.current.lastPlayer = lastPlayerId;
