@@ -95,7 +95,7 @@ export class Game {
     const removeFromCardArray = (cardArray: number[], idOfCard: number, userTag: string) => {
       const index = cardArray.indexOf(idOfCard);
       if (index == -1) {
-        console.log('requested remove card=', idOfCard, ` from ${userTag} user!`);
+        console.log('\n!!!requested remove card=', idOfCard, ` from ${userTag} user!\n`);
         return;
       }
       cardArray.splice(index, 1);
@@ -133,7 +133,7 @@ export class Game {
     this.UserColorBuckets.removeCard(userSeat, idOfCard);
     this.topCard = idOfCard;
     if (isReverseCard(idOfCard)) {
-      console.log('userSeat=', userSeat, ' just played isReverseCard(idOfCard)=', isReverseCard(idOfCard));
+      //console.log('userSeat=', userSeat, ' just played isReverseCard(idOfCard)=', isReverseCard(idOfCard));
       this.leftDirection = !this.leftDirection;
     }
     if (color != -1) {

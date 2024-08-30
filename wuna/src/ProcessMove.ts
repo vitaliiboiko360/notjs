@@ -151,7 +151,8 @@ export default function processMove(player: ConnectionAndMeta, game: Game, data:
             isNextSkip = true;
           }
           const playerCardRemained = game.removeCardUserAndSetItTopCard(move!, userSeat, colorToPlay);
-          console.log('after game.remove... getPlayerHand(userSeat).length=', game.getPlayerHand(userSeat)?.length);
+          console.log('\nAFTER game.remove... getPlayerHand(userSeat=', userSeat, ').length=', game.getPlayerHand(userSeat)?.length,
+            'playerCardRemained=', playerCardRemained);
 
           if (playerCardRemained == 0) {
             player.send(arrayToSend);
