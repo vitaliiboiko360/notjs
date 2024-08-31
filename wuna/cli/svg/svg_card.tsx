@@ -1,4 +1,4 @@
-import React, { forwardRef, useRef, useEffect, useCallback } from 'react';
+import React, { forwardRef, useRef, useEffect, useCallback, useLayoutEffect } from 'react';
 import { getCard } from './svg_getcard';
 
 import { selectActiveMoveCard, selectActiveMoveLastPlayerCard, selectActiveMoveLastPlayer } from '../store/activeMove.ts';
@@ -16,7 +16,6 @@ import { useGSAP } from "@gsap/react";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 
 gsap.registerPlugin(useGSAP, MotionPathPlugin);
-console.log('when');
 
 const CARD_HALF_WIDTH = 32;
 const CARD_HALF_HEIGHT = 48;
@@ -38,22 +37,7 @@ const Card = forwardRef((props, refGroupCenterTable) => {
   const refCard = useRef(null);
 
 
-  let index;
-  switch (lastPlayerCardId) {
-    case USER_1:
-      index = 4;
-      break;
-    case USER_2:
-      index = 0;
-      break;
-    case USER_3:
-      index = 1;
-      break;
-    case USER_4:
-      index = 2;
-      break;
-    default:
-  };
+
 
 
   const run = (element) => {
@@ -61,11 +45,26 @@ const Card = forwardRef((props, refGroupCenterTable) => {
     //   console.log('!refCard.current');
     //   return;
     // }
+    let index;
+    switch (lastPlayerCardId) {
+      case USER_1:
+        index = 4;
+        break;
+      case USER_2:
+        index = 0;
+        break;
+      case USER_3:
+        index = 1;
+        break;
+      case USER_4:
+        index = 2;
+        break;
+      default:
+    };
     if (typeof index === 'undefined')
       return;
 
     console.log('PATHDATA[index]=', PATHDATA[index]);
-
     gsap.to(element, {
       motionPath: {
         path: PATHDATA[index],
@@ -73,12 +72,13 @@ const Card = forwardRef((props, refGroupCenterTable) => {
         alignOrigin: [0.5, 0.5]
       },
       duration: 2,
+      opacity: 1,
       ease: "none",
       repeat: -1,
     });
   };
 
-  useGSAP(() => {
+  useEffect(() => {
     if (refCard.current) {
       console.log('before run');
       run(refCard.current);
