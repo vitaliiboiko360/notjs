@@ -102,19 +102,15 @@ export class Game {
     };
     if (userSeat == 0) {
       removeFromCardArray(this.A_UserCards, idOfCard, 'A');
-      this.UserColorBuckets.removeCard(USER._1, idOfCard);
     }
     if (userSeat == 1) {
       removeFromCardArray(this.B_UserCards, idOfCard, 'B');
-      this.UserColorBuckets.removeCard(USER._2, idOfCard);
     }
     if (userSeat == 2) {
       removeFromCardArray(this.C_UserCards, idOfCard, 'C');
-      this.UserColorBuckets.removeCard(USER._3, idOfCard);
     }
     if (userSeat == 3) {
       removeFromCardArray(this.D_UserCards, idOfCard, 'D');
-      this.UserColorBuckets.removeCard(USER._4, idOfCard);
     }
   }
 
@@ -314,7 +310,7 @@ class ColorBucketTotalValues {
     this.runFunctionOnUserArray(userSeat, addCard);
   }
   removeCard(userSeat: number, idOfCard: number) {
-    const removeCard = (arrayToChange: number[]) => {
+    const subtractCard = (arrayToChange: number[]) => {
       const color = getCardColor(idOfCard);
       switch (color) {
         case COLOR_RED:
@@ -333,7 +329,8 @@ class ColorBucketTotalValues {
           return;
       }
     };
-    this.runFunctionOnUserArray(userSeat, removeCard);
+    this.runFunctionOnUserArray(userSeat, subtractCard);
+    this.runFunctionOnUserArray(userSeat, (input: number[]) => { console.log('REMOVE CARD=', idOfCard, '\n color array= ', input.join(' ')) })
   }
 
   getChooseColorToPlayForUser(userSeat: number) {

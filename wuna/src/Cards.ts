@@ -110,7 +110,7 @@ export function isWildCard(idOfCard: number) {
 export function getCardColor(idOfCard: number) {
   if (idOfCard & 0b01000000)
     return 4;
-  if ((idOfCard & 0b00100000) && (idOfCard & 0b0001000))
+  if ((idOfCard & 0b00100000) && (idOfCard & 0b00010000))
     return 3;
   if (idOfCard & 0b00100000)
     return 2;
