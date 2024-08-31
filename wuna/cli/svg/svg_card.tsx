@@ -75,6 +75,13 @@ const Card = forwardRef((props, refGroupCenterTable) => {
     });
   };
 
+  useGSAP(() => {
+    if (refCard.current) {
+      console.log('before run');
+      run(refCard.current);
+    }
+  });
+
   if (lastPlayerCardId == 0 && lastPlayerId != USER_1) {
     console.log('lastPlayerCardId= ', lastPlayerCardId);
     return;
@@ -104,10 +111,8 @@ const Card = forwardRef((props, refGroupCenterTable) => {
   //   setupAnimation(element, lastPlayerId);
 
   refGroupCenterTable.current.append(element);
-
+  refCard.current = element;
   element.innerHTML = renderToString(getCard(topCardId));
-  run(element);
-
 
   refPreviousMove.current.topCard = lastPlayerCardId;
   refPreviousMove.current.lastPlayer = lastPlayerId;
