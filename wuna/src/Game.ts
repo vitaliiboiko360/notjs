@@ -330,7 +330,6 @@ class ColorBucketTotalValues {
       }
     };
     this.runFunctionOnUserArray(userSeat, subtractCard);
-    this.runFunctionOnUserArray(userSeat, (input: number[]) => { console.log('REMOVE CARD=', idOfCard, '\n color array= ', input.join(' ')) })
   }
 
   getChooseColorToPlayForUser(userSeat: number) {
