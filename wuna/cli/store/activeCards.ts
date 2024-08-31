@@ -16,7 +16,7 @@ export function mergeTwoArrays(arrayOne: number[], arrayTwo: number[]) {
   console.log('before merge arrayCard=', arrayOne.join(' '));
 
   while (first < arrayOne.length || second < arrayTwo.length) {
-    if (first < arrayOne.length && arrayOne[first] < arrayTwo[second]) {
+    if (first < arrayOne.length && arrayOne[first] > arrayTwo[second]) {
       ++first;
       continue;
     }

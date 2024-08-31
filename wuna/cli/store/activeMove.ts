@@ -3,6 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from './store';
 import { isReverseCard } from '../svg/svg_getcard.tsx';
+import { isWildCard } from '../../src/Cards.ts';
 
 interface ActiveMoveInterface {
   card: number,
@@ -31,6 +32,9 @@ export const activeMoveSlice = createSlice({
         }
         state.card = action.payload.card;
         state.lastPlayer = action.payload.lastPlayer;
+        if (!isWildCard(action.payload.card)) {
+          state.wildCardColor = 0;
+        }
       },
       prepare: (card: number, lastPlayer: number) => {
         return {

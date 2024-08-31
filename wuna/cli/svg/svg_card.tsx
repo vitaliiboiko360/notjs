@@ -16,6 +16,7 @@ import { useGSAP } from "@gsap/react";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 
 gsap.registerPlugin(useGSAP, MotionPathPlugin);
+console.log('when');
 
 const CARD_HALF_WIDTH = 32;
 const CARD_HALF_HEIGHT = 48;
@@ -72,6 +73,8 @@ const Card = forwardRef((props, refGroupCenterTable) => {
         alignOrigin: [0.5, 0.5]
       },
       duration: 2,
+      ease: "none",
+      repeat: -1,
     });
   };
 
