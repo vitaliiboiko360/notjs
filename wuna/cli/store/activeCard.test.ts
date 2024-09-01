@@ -2,15 +2,22 @@ import { describe, expect, test } from '@jest/globals';
 import { mergeTwoArrays } from './activeCards';
 
 describe('merge two array tests', () => {
+
   test('at beginning', () => {
-    expect(mergeTwoArrays([1, 2, 3], [1])).toBe([1, 1, 2, 3]);
+    let input = [1, 2, 3];
+    mergeTwoArrays(input, [1])
+    expect(input).toBe([1, 1, 2, 3]);
   });
 
   test('at end', () => {
-    expect(mergeTwoArrays([1, 2, 3], [3])).toBe([1, 2, 3, 3]);
+    let input = [1, 2, 3];
+    mergeTwoArrays(input, [3])
+    expect(input).toBe([1, 2, 3, 3]);
   });
 
   test('at middle', () => {
-    expect(mergeTwoArrays([1, 2, 3], [2])).toBe([1, 2, 2, 3]);
+    let input = [1, 2, 3];
+    mergeTwoArrays(input, [2])
+    expect(input).toBe([1, 2, 2, 3]);
   });
 });

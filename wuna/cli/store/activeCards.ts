@@ -13,7 +13,6 @@ const initialState: ActiveCardsInterface = {
 
 export function mergeTwoArrays(arrayOne: number[], arrayTwo: number[]) {
   let first, second = 0;
-  console.log('before merge arrayCard=', arrayOne.join(' '));
 
   while (first < arrayOne.length || second < arrayTwo.length) {
     if (first < arrayOne.length && arrayOne[first] > arrayTwo[second]) {
@@ -26,7 +25,6 @@ export function mergeTwoArrays(arrayOne: number[], arrayTwo: number[]) {
     }
     arrayOne.splice(first++, 0, arrayTwo[second++]);
   }
-  console.log('after merge arrayCard=', arrayOne.join(' '));
 }
 
 export const activeCardsSlice = createSlice({
