@@ -1,23 +1,19 @@
 import { describe, expect, test } from '@jest/globals';
 import { mergeTwoArrays } from './activeCards';
 
-describe('merge two array tests', () => {
+import { WILD, RED, GREEN, BLUE, YELLOW } from '../../src/Cards.ts'
 
+describe('merge two array tests', () => {
+  let input = [WILD.Wild, RED._0, GREEN._0];
   test('at beginning', () => {
-    let input = [1, 2, 3];
-    mergeTwoArrays(input, [1])
-    expect(input).toBe([1, 1, 2, 3]);
+    expect(mergeTwoArrays(input, [WILD.Draw4])).toEqual([WILD.Wild, WILD.Draw4, RED._0, GREEN._0]);
   });
 
   test('at end', () => {
-    let input = [1, 2, 3];
-    mergeTwoArrays(input, [3])
-    expect(input).toBe([1, 2, 3, 3]);
+    expect(mergeTwoArrays(input, [RED._0])).toEqual([WILD.Wild, RED._0, RED._0, GREEN._0]);
   });
 
   test('at middle', () => {
-    let input = [1, 2, 3];
-    mergeTwoArrays(input, [2])
-    expect(input).toBe([1, 2, 2, 3]);
+    expect(mergeTwoArrays(input, [BLUE._0])).toEqual([WILD.Wild, RED._0, GREEN._0, BLUE._0]);
   });
 });
