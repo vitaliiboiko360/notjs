@@ -60,17 +60,17 @@ export const compare = (A_card: number, B_card: number) => {
   if (A_color < B_color)
     return -1;
   if (A_color == B_color) {
-    if (A_color != COLOR.BLACK) {
-      if (A_card > B_card)
-        return -1;
+    if (A_color == COLOR.BLACK) {
       if (A_card < B_card)
+        return -1;
+      if (A_card > B_card)
         return 1;
       if (A_card == B_card)
         return 0;
     } else {
-      if (A_card > B_card)
-        return 1;
       if (A_card < B_card)
+        return 1;
+      if (A_card > B_card)
         return -1;
       if (A_card == B_card)
         return 0;
