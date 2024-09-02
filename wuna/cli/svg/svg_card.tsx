@@ -14,24 +14,23 @@ import { isValidCard, USER_1, USER_2, USER_3, USER_4 } from '../websocketconsume
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
-
+import { useSvgContext } from './svg_container';
 gsap.registerPlugin(useGSAP, MotionPathPlugin);
 
 const CARD_HALF_WIDTH = 32;
 const CARD_HALF_HEIGHT = 48;
 
 const Card = (props) => {
-
+  const refSvg = useSvgContext();
   const lastPlayerCardId = useAppSelector(selectActiveMoveLastPlayerCard);
   const lastPlayerId = useAppSelector(selectActiveMoveLastPlayer);
-
   const refCard = useRef(null);
 
   const run = (element) => {
-    // if (!refCard.current) {
-    //   console.log('!refCard.current');
-    //   return;
-    // }
+    if (lastPlayerId == 0) {
+      console.log('Animation but lastPlayerId=', lastPlayerId);
+      return;
+    }
     let index;
     switch (lastPlayerId) {
       case USER_1:
@@ -55,21 +54,14 @@ const Card = (props) => {
     gsap.to(element, {
       motionPath: {
         path: PATHDATA[index],
-        align: PATHDATA[index],
         alignOrigin: [0.5, 0.5]
       },
-      duration: 2,
+      duration: 1,
       opacity: 1,
       ease: "none",
-      repeat: -1,
+      repeat: 0,
     });
   };
-
-  useGSAP(() => {
-    if (lastPlayerCardId != 0 && !props.svg.current && refCard.current)
-      run(refCard.current)
-  }, { dependencies: [lastPlayerCardId], scope: props.svg.current, revertOnUpdate: true });
-
 
   if (lastPlayerCardId == 0 && lastPlayerId != USER_1) {
     console.log('lastPlayerCardId= ', lastPlayerCardId);
@@ -81,7 +73,7 @@ const Card = (props) => {
     return;
   }
 
-  if (!props.svg.current) {
+  if (!refSvg?.current) {
     console.log('!!!REF isnt ready');
     return;
   }
@@ -93,10 +85,10 @@ const Card = (props) => {
 
   element.setAttribute('transform', `matrix(1,0,0,1,${xCenter - x},${yCenter - y})`);
 
-  props.svg.current.append(element);
+  refSvg?.current.append(element);
   refCard.current = element;
   element.innerHTML = renderToString(getCard(lastPlayerCardId));
-
+  run(element)
   return (<></>);
 };
 

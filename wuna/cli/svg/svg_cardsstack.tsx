@@ -1,16 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from './svg_card';
 import { SVG_DIMENSIONS } from './svg_container';
 
-import SvgContext from './svg_container';
 
 export const xCenter = SVG_DIMENSIONS.width / 2;
 export const yCenter = SVG_DIMENSIONS.height / 2;
 
 export default function SvgCardStack(props) {
-  const svg = useContext(SvgContext)
+
   return (<>
-    <Card svg={svg} />
+    <Card />
   </>);
 }
 
