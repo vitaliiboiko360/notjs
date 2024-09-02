@@ -1,7 +1,7 @@
 {
   "name": "wuna",
   "scripts": {
-    "test": "jest",
+    "test": "jest --verbose false",
     "build": "webpack --progress --watch",
     "build:d.ts": "tsc",
     "watch": "webpack --progress --watch",
