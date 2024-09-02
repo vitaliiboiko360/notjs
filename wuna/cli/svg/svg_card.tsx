@@ -78,7 +78,7 @@ const Card = forwardRef((props, refGroupCenterTable) => {
     });
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (refCard.current) {
       console.log('before run');
       run(refCard.current);
