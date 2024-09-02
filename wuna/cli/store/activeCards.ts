@@ -3,6 +3,8 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from './store';
 
+import { compare } from '../../src/Game.ts';
+
 interface ActiveCardsInterface {
   activeCards: number[]
 }
@@ -12,19 +14,19 @@ const initialState: ActiveCardsInterface = {
 };
 
 export function mergeTwoArrays(arrayOne: number[], arrayTwo: number[]) {
-  let first, second = 0;
+  let first = 0;
+  let second = 0;
 
-  while (first < arrayOne.length || second < arrayTwo.length) {
-    if (first < arrayOne.length && arrayOne[first] > arrayTwo[second]) {
+  let retArray = arrayOne.map(e => e);
+
+  while (second < arrayTwo.length) {
+    if (first < retArray.length && compare(retArray[first], arrayTwo[second]) < 1) {
       ++first;
-      continue;
+    } else {
+      retArray.splice(first, 0, arrayTwo[second++]);
     }
-    if (first < arrayOne.length && arrayOne[first] == arrayTwo[second]) {
-      ++first;
-      continue;
-    }
-    arrayOne.splice(first++, 0, arrayTwo[second++]);
   }
+  return retArray;
 }
 
 export const activeCardsSlice = createSlice({
@@ -48,8 +50,8 @@ export const activeCardsSlice = createSlice({
         state.activeCards = (action.payload);
         return;
       }
-      // we expect both arrays to be sorted otherwize it won't work
-      mergeTwoArrays(state.activeCards, action.payload);
+      // we expect both arrays to be sorted w our compare func otherwize it won't work
+      state.activeCards = mergeTwoArrays(state.activeCards, action.payload);
     },
     default: (state) => {
       return state;
