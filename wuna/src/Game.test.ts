@@ -19,8 +19,13 @@ describe('compare function', () => {
     expect(compare(input[0], input[1])).toBe(0);
   });
 
-  test('mixed colors', () => {
+  test('mixed colors already sorted', () => {
     let input = [WILD.Wild, RED._0, GREEN._0];
     expect(input.sort(compare)).toBe(input);
+  });
+
+  test('mixed colors reversed', () => {
+    let input = [GREEN._0, RED._0, WILD.Wild];
+    expect(input.sort(compare)).toEqual([WILD.Wild, RED._0, GREEN._0]);
   });
 });
