@@ -1,25 +1,16 @@
-import React, { useRef, forwardRef } from 'react';
+import React, { useContext } from 'react';
 import Card from './svg_card';
 import { SVG_DIMENSIONS } from './svg_container';
 
-import { useAppSelector } from '../store/hooks.ts';
-import { selectActiveMoveCard, selectActiveMoveLastPlayerCard, selectActiveMoveLastPlayer } from '../store/activeMove.ts';
+import SvgContext from './svg_container';
 
 export const xCenter = SVG_DIMENSIONS.width / 2;
 export const yCenter = SVG_DIMENSIONS.height / 2;
 
 export default function SvgCardStack(props) {
-
-  const topCardId = useAppSelector(selectActiveMoveCard);
-  const lastPlayerCardId = useAppSelector(selectActiveMoveLastPlayerCard);
-  const lastPlayerId = useAppSelector(selectActiveMoveLastPlayer);
-
-  const getMove = (topCard, lastPlayer, lastCard) => {
-
-  }
-
+  const svg = useContext(SvgContext)
   return (<>
-    <Card move={ } />
+    <Card svg={svg} />
   </>);
 }
 

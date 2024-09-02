@@ -20,25 +20,12 @@ gsap.registerPlugin(useGSAP, MotionPathPlugin);
 const CARD_HALF_WIDTH = 32;
 const CARD_HALF_HEIGHT = 48;
 
-let g_idCounter = 0;
+const Card = (props) => {
 
-const Card = forwardRef((props, refGroupCenterTable) => {
-  const refPreviousMove = useRef({ topCard: 0, lastPlayer: 0 });
-  const topCardId = useAppSelector(selectActiveMoveCard);
   const lastPlayerCardId = useAppSelector(selectActiveMoveLastPlayerCard);
   const lastPlayerId = useAppSelector(selectActiveMoveLastPlayer);
 
-  // if (lastPlayerCardId != refPreviousMove.current.topCard)
-  //   refPreviousMove.current.topCard = lastPlayerCardId;
-  // if (lastPlayerId != refPreviousMove.current.lastPlayer)
-  //   refPreviousMove.current.lastPlayer = lastPlayerId;
-  const id = `cardId${g_idCounter++}`;
-
   const refCard = useRef(null);
-
-
-
-
 
   const run = (element) => {
     // if (!refCard.current) {
@@ -46,7 +33,7 @@ const Card = forwardRef((props, refGroupCenterTable) => {
     //   return;
     // }
     let index;
-    switch (lastPlayerCardId) {
+    switch (lastPlayerId) {
       case USER_1:
         index = 4;
         break;
@@ -78,25 +65,24 @@ const Card = forwardRef((props, refGroupCenterTable) => {
     });
   };
 
-  useLayoutEffect(() => {
-    if (refCard.current) {
-      console.log('before run');
-      run(refCard.current);
-    }
-  });
+  useGSAP(() => {
+    if (lastPlayerCardId != 0 && !props.svg.current && refCard.current)
+      run(refCard.current)
+  }, { dependencies: [lastPlayerCardId], scope: props.svg.current, revertOnUpdate: true });
+
 
   if (lastPlayerCardId == 0 && lastPlayerId != USER_1) {
     console.log('lastPlayerCardId= ', lastPlayerCardId);
     return;
   }
 
-  if (!refGroupCenterTable.current) {
-    console.log('GroupCenter Card no REF !!!! lastPlayerCardId=', lastPlayerCardId);
+  if (!isValidCard(lastPlayerCardId)) {
+    console.log('!isValidCard(lastPlayerCardId== ', lastPlayerCardId, ' )==false');
     return;
   }
 
-  if (!isValidCard(lastPlayerCardId)) {
-    console.log('!isValidCard(lastPlayerCardId== ', lastPlayerCardId, ' )==false');
+  if (!props.svg.current) {
+    console.log('!!!REF isnt ready');
     return;
   }
 
@@ -106,21 +92,12 @@ const Card = forwardRef((props, refGroupCenterTable) => {
   let element = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 
   element.setAttribute('transform', `matrix(1,0,0,1,${xCenter - x},${yCenter - y})`);
-  element.setAttribute('id', id);
-  // element.style.opacity = "0";
 
-
-  // if (isValidCard(lastPlayerCardId))
-  //   setupAnimation(element, lastPlayerId);
-
-  refGroupCenterTable.current.append(element);
+  props.svg.current.append(element);
   refCard.current = element;
-  element.innerHTML = renderToString(getCard(topCardId));
-
-  refPreviousMove.current.topCard = lastPlayerCardId;
-  refPreviousMove.current.lastPlayer = lastPlayerId;
+  element.innerHTML = renderToString(getCard(lastPlayerCardId));
 
   return (<></>);
-});
+};
 
 export default Card;

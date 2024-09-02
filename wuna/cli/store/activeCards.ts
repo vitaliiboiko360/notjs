@@ -3,7 +3,34 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 import { RootState } from './store';
 
-import { compare } from '../../src/Game.ts';
+import { getCardColor, COLOR } from '../../src/Cards.ts';
+
+const compare = (A_card: number, B_card: number) => {
+  const A_color: number = getCardColor(A_card);
+  const B_color: number = getCardColor(B_card);
+  if (A_color > B_color)
+    return 1;
+  if (A_color < B_color)
+    return -1;
+  if (A_color == B_color) {
+    if (A_color == COLOR.BLACK) {
+      if (A_card < B_card)
+        return -1;
+      if (A_card < B_card)
+        return 1;
+      if (A_card == B_card)
+        return 0;
+    } else {
+      if (A_card < B_card)
+        return 1;
+      if (A_card > B_card)
+        return -1;
+      if (A_card == B_card)
+        return 0;
+    }
+  }
+  return 0;
+};
 
 interface ActiveCardsInterface {
   activeCards: number[]
