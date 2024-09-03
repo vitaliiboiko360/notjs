@@ -4,11 +4,9 @@ import { USER_PLACE } from './svg_userplaceholder.tsx';
 
 import UserCards from './svg_usercards.tsx';
 
-function getTransformString(position: number, refAvatarBox) {
+function getTransformString(position: number) {
   let retString = '';
-  // let { x, y, width, height } = refAvatarBox.current.getBBox();
   if (position == USER_PLACE.LEFT_USER) {
-    // matrix(0,-1,1,0,100,370)
     retString = `matrix(0,-1,1,0,65,370)`;
   }
   if (position == USER_PLACE.TOP_USER) {
@@ -18,33 +16,21 @@ function getTransformString(position: number, refAvatarBox) {
     retString = `matrix(0,1,-1,0,740,220)`;
   }
   if (position == USER_PLACE.BOTTOM_USER) {
-    // for bottom user
-    // if user is active we wouldn't need this group of hiden cards in user's hand
+    // for guest edit and enable this string
     //retString = `matrix(${-1},0,0,${1},${x - 20},${y + (width / 2)})`;
   }
   return retString;
 }
 
 const UserCardsGroup = React.forwardRef((props, refAvatarBox) => {
-  const [transform, setTransform] = useState('');
 
   if (props.position == USER_PLACE.BOTTOM_USER) {
     return (<></>);
   }
 
-  useEffect(() => {
-    if (!refAvatarBox || !refAvatarBox.current) {
-      console.log('useEffect no REF!!! refAvatarBox=null props.position=', props.position);
-      return;
-    }
-    console.log('!!!!!! useEffect cards group');
-    const transformString = getTransformString(props.position, refAvatarBox);
-    setTransform(transformString);
-  });
-
   let refToGroup = useRef(null);
 
-  return (<><g ref={refToGroup} transform={getTransformString(props.position, refAvatarBox)}>
+  return (<><g ref={refToGroup} transform={getTransformString(props.position)}>
     <UserCards refToGroup={refToGroup} position={props.position} />
   </g></>);
 });

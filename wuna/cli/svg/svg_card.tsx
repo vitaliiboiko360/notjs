@@ -12,10 +12,9 @@ import { IDPATH, PATHDATA, xCenter, yCenter } from './svg_cardsstack.tsx';
 import { isValidCard, USER_1, USER_2, USER_3, USER_4 } from '../websocketconsumer.tsx';
 
 import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { useSvgContext } from './svg_container';
-gsap.registerPlugin(useGSAP, MotionPathPlugin);
+gsap.registerPlugin(MotionPathPlugin);
 
 const CARD_HALF_WIDTH = 32;
 const CARD_HALF_HEIGHT = 48;
@@ -50,7 +49,7 @@ const Card = (props) => {
     if (typeof index === 'undefined')
       return;
 
-    console.log('PATHDATA[index]=', PATHDATA[index]);
+    console.log('PATHDATA[index]=', [index]);
     gsap.to(element, {
       motionPath: {
         path: PATHDATA[index],
@@ -73,7 +72,7 @@ const Card = (props) => {
     return;
   }
 
-  if (!refSvg?.current) {
+  if (!refSvg.current) {
     console.log('!!!REF isnt ready');
     return;
   }

@@ -6,7 +6,6 @@ import UserName from './svg_userplacename.tsx';
 
 export default function SvgUserPlaceHolder(props) {
   let ref = React.useRef(null);
-  console.log('user placeholder comp props.position=', props.position);
   return (<>
     <UserClickAvatar
       xPosition={props.xPosition}
