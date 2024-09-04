@@ -61,9 +61,9 @@ const Card = (props) => {
         path: getPath(playerId, refSvg.current),
         alignOrigin: [0.5, 0.5]
       },
-      duration: 1,
-      opacity: 1,
-      ease: "none",
+      duration: 1.5,
+      rotation: 360,
+      ease: "slow",
       repeat: 0,
     });
   };

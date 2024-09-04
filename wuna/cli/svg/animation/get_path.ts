@@ -3,7 +3,7 @@ import { USER_INFO } from '../svg_userplaceholder'
 
 const xCenter = 400;
 const yCenter = 300;
-const deltaFromCenter = 15;
+const deltaFromCenter = 50;
 
 export default function getPath(userPosition: number, svgElement): string {
   let path = '';
@@ -41,13 +41,13 @@ export default function getPath(userPosition: number, svgElement): string {
 
   switch (userPosition) {
     case 2:
-      path = `M${startX + bBox.width},${startY + bBox.height} C${startX + bBox.width},${startY + bBox.height} 300,260 400,300`;
+      path = `M${startX + bBox.width},${startY + bBox.height} C${startX + bBox.width},${startY + bBox.height} 300,260 ${x},${y}`;
       break;
     case 3:
-      path = `M${startX},${startY + bBox.height} C${startX},${startY + bBox.height} 380,230 400,300`;
+      path = `M${startX + bBox.width},${startY} C${startX + bBox.width},${startY} 380,230 ${x},${y}`;
       break;
     case 4:
-      path = `M${startX + bBox.width},${startY} C${startX + bBox.width},${startY} 530,260 400,300`;
+      path = `M${startX},${startY + bBox.height} C${startX},${startY + bBox.height} 530,260 ${x},${y}`;
       break;
     default:
       return 'M400,300';
