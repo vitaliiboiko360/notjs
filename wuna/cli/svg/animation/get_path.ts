@@ -34,20 +34,20 @@ export default function getPath(userPosition: number, svgElement): string {
   let bBox = userCardGroup.getBBox();
   point.x = bBox.x;
   point.y = bBox.y;
-  let matrix = userCardGroup.getCTM();
-  let localCoordinates = point.matrixTransform(matrix);
-  let startX = localCoordinates.x + localCoordinates.width;
-  let startY = localCoordinates.y + localCoordinates.height;
+  let matrix = userCardGroup.getScreenCTM();
+  let localCoordinates = point.matrixTransform(matrix.inverse());
+  let startX = localCoordinates.x;
+  let startY = localCoordinates.y;
 
   switch (userPosition) {
     case 2:
-      path = `M${startX},${startY} C${startX},${startY} 300,260 400,300`;
+      path = `M${startX + bBox.width},${startY + bBox.height} C${startX + bBox.width},${startY + bBox.height} 300,260 400,300`;
       break;
     case 3:
-      path = `M${startX},${startY} C${startX},${startY} 380,230 400,300`;
+      path = `M${startX},${startY + bBox.height} C${startX},${startY + bBox.height} 380,230 400,300`;
       break;
     case 4:
-      path = `M${startX},${startY} C${startX},${startY} 530,260 400,300`;
+      path = `M${startX + bBox.width},${startY} C${startX + bBox.width},${startY} 530,260 400,300`;
       break;
     default:
       return 'M400,300';
