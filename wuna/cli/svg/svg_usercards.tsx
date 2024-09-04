@@ -26,7 +26,7 @@ const UserCards = forwardRef((props, refToGroup) => {
   }
   // console.log(`props.postion=${props.position} userCardsNumber=`, userCardsNumber);
 
-  let elements = Array.apply(null, { length: userCardsNumber })
+  let cardElements = Array.apply(null, { length: userCardsNumber })
     .map(Number.call, Number)
     .map((index) => {
       if (isNaN(index))
@@ -48,7 +48,7 @@ const UserCards = forwardRef((props, refToGroup) => {
       </g>);
     })
   return (<>
-    {elements}
+    {cardElements}
   </>);
 });
 

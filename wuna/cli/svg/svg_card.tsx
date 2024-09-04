@@ -25,24 +25,6 @@ const Card = (props) => {
   const lastPlayerId = useAppSelector(selectActiveMoveLastPlayer);
   const refCard = useRef(null);
 
-  const run = (element) => {
-    if (lastPlayerId == 0) {
-      console.log('Animation but lastPlayerId=', lastPlayerId);
-      return;
-    }
-
-    gsap.to(element, {
-      motionPath: {
-        path: getPath(lastPlayerId, refSvg.current),
-        alignOrigin: [0.5, 0.5]
-      },
-      duration: 1,
-      opacity: 1,
-      ease: "none",
-      repeat: 0,
-    });
-  };
-
   if (lastPlayerCardId == 0 && lastPlayerId != USER_1) {
     console.log('lastPlayerCardId= ', lastPlayerCardId);
     return;
@@ -68,7 +50,24 @@ const Card = (props) => {
   refSvg?.current.append(element);
   refCard.current = element;
   element.innerHTML = renderToString(getCard(lastPlayerCardId));
-  run(element)
+  const run = (element, playerId) => {
+    if (playerId == 0) {
+      console.log('Animation but lastPlayerId=', playerId);
+      return;
+    }
+
+    gsap.to(element, {
+      motionPath: {
+        path: getPath(playerId, refSvg.current),
+        alignOrigin: [0.5, 0.5]
+      },
+      duration: 1,
+      opacity: 1,
+      ease: "none",
+      repeat: 0,
+    });
+  };
+  run(element, lastPlayerId);
   return (<></>);
 };
 

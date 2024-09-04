@@ -30,7 +30,7 @@ const UserCardsGroup = React.forwardRef((props, refAvatarBox) => {
 
   let refToGroup = useRef(null);
 
-  return (<><g ref={refToGroup} transform={getTransformString(props.position)}>
+  return (<><g id={props.id} ref={refToGroup} transform={getTransformString(props.position)}>
     <UserCards refToGroup={refToGroup} position={props.position} />
   </g></>);
 });
