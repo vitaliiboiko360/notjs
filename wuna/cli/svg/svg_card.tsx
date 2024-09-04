@@ -2,7 +2,7 @@ import React, { forwardRef, useRef, useEffect, useCallback, useLayoutEffect } fr
 import { getCard } from './svg_getcard';
 
 import { selectActiveMoveCard, selectActiveMoveLastPlayerCard, selectActiveMoveLastPlayer } from '../store/activeMove.ts';
-import setupAnimation from './animation/setup_animation.ts'
+import getPath from './animation/get_path.ts';
 import { useAppSelector } from '../store/hooks.ts';
 
 import { renderToString } from 'react-dom/server';
@@ -30,29 +30,10 @@ const Card = (props) => {
       console.log('Animation but lastPlayerId=', lastPlayerId);
       return;
     }
-    let index;
-    switch (lastPlayerId) {
-      case USER_1:
-        index = 4;
-        break;
-      case USER_2:
-        index = 0;
-        break;
-      case USER_3:
-        index = 1;
-        break;
-      case USER_4:
-        index = 2;
-        break;
-      default:
-    };
-    if (typeof index === 'undefined')
-      return;
 
-    console.log('PATHDATA[index]=', [index]);
     gsap.to(element, {
       motionPath: {
-        path: PATHDATA[index],
+        path: getPath(lastPlayerId, refSvg.current),
         alignOrigin: [0.5, 0.5]
       },
       duration: 1,
