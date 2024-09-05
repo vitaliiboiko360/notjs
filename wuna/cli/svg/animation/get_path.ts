@@ -36,7 +36,7 @@ export default function getPath(userPosition: number, svgElement): string {
   let point = new DOMPoint(bBox.x, bBox.y);
 
   let matrix = userCardGroup.getScreenCTM();
-  let localCoordinates = point.matrixTransform(matrix.inverse());
+  let localCoordinates = point.matrixTransform(matrix);
   let startX = localCoordinates.x;
   let startY = localCoordinates.y;
 
