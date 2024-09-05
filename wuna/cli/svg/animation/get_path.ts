@@ -27,13 +27,14 @@ export default function getPath(userPosition: number, svgElement): string {
   let userCardGroup = svgElement.querySelector('#' + userId);
   if (userCardGroup == null) {
     console.log('cannot get usercard userId==', userId);
-    return 'M400,300';
+    return `M400,300 L${x},${y}`;
   }
 
-  let point = svgElement.createSVGPoint();
+
   let bBox = userCardGroup.getBBox();
-  point.x = bBox.x;
-  point.y = bBox.y;
+  console.log('bBox of userCardGroupu pos', userPosition, ' ', JSON.stringify(bBox));
+  let point = new DOMPoint(bBox.x, bBox.y);
+
   let matrix = userCardGroup.getScreenCTM();
   let localCoordinates = point.matrixTransform(matrix.inverse());
   let startX = localCoordinates.x;
@@ -50,7 +51,7 @@ export default function getPath(userPosition: number, svgElement): string {
       path = `M${startX},${startY + bBox.height} C${startX},${startY + bBox.height} 530,260 ${x},${y}`;
       break;
     default:
-      return 'M400,300';
+      return `M400,300 L${x},${y}`;
   }
 
   return path;
