@@ -65,6 +65,7 @@ const Card = (props) => {
       rotation: 360,
       ease: "slow",
       repeat: 0,
+      transformOrigin: "50% 50%"
     });
   };
   run(element, lastPlayerId);

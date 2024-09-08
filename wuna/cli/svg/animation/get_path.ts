@@ -8,7 +8,7 @@ const deltaFromCenter = 50;
 export default function getPath(userPosition: number, svgElement): string {
   let path = '';
 
-  const r = Math.floor(Math.random() * deltaFromCenter);
+  let r = Math.floor(Math.random() * deltaFromCenter) + 1;
   const alpha = Math.random() * (2 * Math.PI);
   const x = xCenter + (Math.cos(alpha) / r);
   const y = yCenter + (Math.sin(alpha) / r);
@@ -30,9 +30,8 @@ export default function getPath(userPosition: number, svgElement): string {
     return `M400,300 L${x},${y}`;
   }
 
-
   let bBox = userCardGroup.getBBox();
-  console.log('bBox of userCardGroupu pos', userPosition, ' ', JSON.stringify(bBox));
+  console.log('bBox of userCardGroup pos', userPosition, ' ', JSON.stringify(bBox));
   let point = new DOMPoint(bBox.x, bBox.y);
 
   let matrix = userCardGroup.getScreenCTM();
@@ -42,7 +41,7 @@ export default function getPath(userPosition: number, svgElement): string {
 
   switch (userPosition) {
     case 2:
-      path = `M${startX + bBox.width},${startY + bBox.height} C${startX + bBox.width},${startY + bBox.height} 300,260 ${x},${y}`;
+      path = `M${startX},${startY - bBox.height} C${startX},${startY - bBox.height} 300,260 ${x},${y}`;
       break;
     case 3:
       path = `M${startX + bBox.width},${startY} C${startX + bBox.width},${startY} 380,230 ${x},${y}`;
