@@ -4,10 +4,10 @@ layout: default
 
 #### Javascript/ES/Web  
 ##### what is Promise  
-*Promise* is object that represent eventual completion (or failure) of asynchronous operation.  
-*Promise* is object to which are attached success and failure callbacks   
+**Promise** is object that represent eventual completion (or failure) of asynchronous operation.  
+**Promise** is object to which are attached success and failure callbacks   
 `.then` accepts callbacks for fullfilled or rejected case  
-```javascript   
+```js   
 const promise1 = new Promise((resolve, reject) => {
   resolve('Success!');
 });
