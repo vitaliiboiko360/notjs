@@ -44,6 +44,14 @@ const data = Promise.race([
 ```  
 `Promise.any` accepts iterable of promises; return promise, whose fulfillment value is the first fulfilled  promise. it rejects when all input's promises reject, with `AggregatedError` containg array of rejection reasons.  
 
+#### Array  
+Access Element:  
+`at(index)` returns element at the `index` or undefined  if `index >= array.length` OR `-index < -array.length`
+`entries()` returns a new array iterator object that contains the key/value pair for each index and element of the array
+_sparse array with empty slots treated as if the empty element has value `undefined`_   
+Scan/Inspect:  
+`every(callbackFn, `_`thisArg`_`)` returns `true` if `callbackFn` returned `true` for each element of the array. or `false` if it has `callbackFn` returned `false` for the element and returns immediately after that element.
+
 ### Typescript  
 #### decorators  
 
@@ -98,3 +106,7 @@ Browser has same origin policy  it blocks request resources from different origi
 Browser send request with header `Origin`  
 Server responses with header `Access-Control-Allow-Origin: *`  
 If proper header recieved, browser can share response data to the client site   
+
+
+#### same origin policy  
+Origin defined as protocol (https|https), host (ip addr|dns name), and port
