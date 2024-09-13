@@ -45,12 +45,28 @@ const data = Promise.race([
 `Promise.any` accepts iterable of promises; return promise, whose fulfillment value is the first fulfilled  promise. it rejects when all input's promises reject, with `AggregatedError` containg array of rejection reasons.  
 
 #### Array  
-Access Element:  
+**Access Element:**  
 `at(index)` returns element at the `index` or undefined  if `index >= array.length` OR `-index < -array.length`
 `entries()` returns a new array iterator object that contains the key/value pair for each index and element of the array
 _sparse array with empty slots treated as if the empty element has value `undefined`_   
-Scan/Inspect:  
-`every(callbackFn, `_`thisArg`_`)` returns `true` if `callbackFn` returned `true` for each element of the array. or `false` if it has `callbackFn` returned `false` for the element and returns immediately after that element.
+**Scan/Search/Inspect:**  
+`every(compareFn, `_`thisArg`_`)` returns `true` if `compareFn` returned `true` for each element of the array. or `false` if it has `compareFn` returned `false` for the element and returns immediately after that element.  
+`find(compareFn, `_`thisArg`_`)`  return first element for which `compareFn` returned `true`. or `undefined` otherwise if it didn't found any such element  
+`findIndex(compareFn, `_`thisArg`_`)` returns index of the elmement for which `compareFn` returned truthy value. or `-1` if `compareFn` returned falsy value for each array's element  
+
+
+**Change/Mutatate/Update:**  
+`fill(value, `_`start`_`, `_`end`_`)` change array's element withing range  
+from `start` or `0` if ommitted, to `end` or array's length if omitted.  
+returns changed array  
+**Create New Array Copy:**  
+`filter(compareFn: (element, index, array)=>Boolean, `_`thisArg`_`)` returns shallow copy of array where element for which `compareFn` returned truthy value.  
+
+
+
+#### truthy falsy  
+all values are truthy when placed in boolean context, except falsy values:  
+> `false` `0` `-0` `0n` `""` `null` `undefined` `NaN`
 
 ### Typescript  
 #### decorators  
