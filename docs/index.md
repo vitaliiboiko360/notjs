@@ -14,7 +14,7 @@ doSomeShitOnce(5);      // 5 is shit
 doSomeShitOnce('blah'); // Error: This function can be run only once
 ```  
 
-#### write function `isPalindrom(input: string)`  
+#### write function ```isPalindrom(input: string)```  
 ```js  
 isPalindrome('abacaba'); // true
 isPalindrome('qwerty');  // false
@@ -22,24 +22,25 @@ isPalindrome('qwerty');  // false
 write function in one line  
 explain adv/disadv of each implementation   
 
-#### write function `showAddition(n: number)`  
+#### write function ```showAddition(n: number)```  
 ```js  
 showAdditions(456);   // "400+50+6"
 showAdditions(8274);  // "8000+200+70+4"
 showAdditions(15040); // "10000+5000+40"
 ```  
 
-#### write function `flatten(args...)`  
+#### write function ```flatten(args...)```  
 ```js  
 flatten([3, 5, [7], [1, [[22]], [[6], 3]]]); // Array [ 3, 5, 7, 1, 22, 6, 3 ]
 ```  
-<!--details  
+<details>  
+<summary>answer</summary>
 ```js  
 function flatten() {
-  
+
 }
 ```  
--->  
+</details>  
 
 ### Javascript/ES/Web  
 #### what is Promise  
