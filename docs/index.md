@@ -28,13 +28,13 @@ showAdditions(456);   // "400+50+6"
 showAdditions(8274);  // "8000+200+70+4"
 showAdditions(15040); // "10000+5000+40"
 ```  
-
+  
 #### write function ```flatten(args...)```  
 ```js  
 flatten([3, 5, [7], [1, [[22]], [[6], 3]]]); // Array [ 3, 5, 7, 1, 22, 6, 3 ]
 ```  
 <details>  
-<summary>answer</summary>  
+<summary>solution</summary>  
 ```js  
 function flatten() {
 
@@ -42,6 +42,22 @@ function flatten() {
 ```  
 </details>  
   
+#### explain order of output   
+```js  
+console.log('script start');
+
+setTimeout(function() {
+  console.log('setTimeout');
+}, 0);
+
+Promise.resolve().then(function() {
+  console.log('promise1');
+}).then(function() {
+  console.log('promise2');
+});
+
+console.log('script end');
+```  
   
 ### Javascript/ES/Web  
 #### what is Promise  
