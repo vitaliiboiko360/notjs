@@ -34,14 +34,15 @@ showAdditions(15040); // "10000+5000+40"
 flatten([3, 5, [7], [1, [[22]], [[6], 3]]]); // Array [ 3, 5, 7, 1, 22, 6, 3 ]
 ```  
 <details>  
-<summary>answer</summary>
+<summary>answer</summary>  
 ```js  
 function flatten() {
 
 }
 ```  
 </details>  
-
+  
+  
 ### Javascript/ES/Web  
 #### what is Promise  
 **Promise** is object that represent eventual completion (or failure) of asynchronous operation.  
