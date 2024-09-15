@@ -115,8 +115,8 @@ const data = Promise.race([
 
 #### Array  
 **Access Element:**  
-`at(index)` returns element at the `index` or undefined  if `index >= array.length` OR `-index < -array.length`
-`entries()` returns a new array iterator object that contains the key/value pair for each index and element of the array
+- `at(index)` returns element at the `index` or undefined  if `index >= array.length` OR `-index < -array.length`
+- `entries()` returns a new array iterator object that contains the key/value pair for each index and element of the array
 _sparse array with empty slots treated as if the empty element has value `undefined`_   
 
 **Scan/Search/Inspect:**  
@@ -135,6 +135,7 @@ negative `fromIndex` will count offset starting from end. But the search still g
 - `lastIndexOf(searchElement, `_`fromIndex`_`)` returns last index of `searchElement` in the array. or `-1` if `searchElement` no found.  
 - `keys()` returns object iterator, which iterates over array's element indices. In sparce arrays, empty slots still iterated.  
 - `some(compareFn: (element, index, array)=>Boolean, `_`thisArg`_`)` returns `true` if a `compareFn` returned `true` for an array element. Returns `false` if `compareFn` returned `false` for each array element.  
+- `values()` returns array iterator object that iterates the value of each element in the array. 
 
   
 **Change/Mutatate/Update:**  
@@ -147,7 +148,8 @@ returns changed array
 - `shift()` removes first element of an array. Returns removed first element. Returns `undefined` if array is empty.   
 - `sort(`_`compareFn: (a, b)=>-1 | 0 | 1`_`)` reorder array elements in sorted order _in-place_. If `compareFn` not provided it sorts array in alphabetical order. Array of numbers will be treated as array of strings, (example: "80" will come before "9").  
 - `splice(start, `_`deleteCount=0, element1, elementN`_`)` removes or inserts elements in an array starting from `start`. if `element1...elementN` provided, `splice` inserts the elements into array. Returns array of deleted elements, empty array if no elements were deleted.  
-
+- `unshift(`_`element1`_`, `_`elementN`_`)` insert the given value/values to the beginning of the array. Returns new length of the array  
+  
 **Create New Copy Array/ or New Value:**  
 - `filter(compareFn: (element, index, array)=>Boolean, `_`thisArg`_`)` returns shallow copy of array where element for which `compareFn` returned truthy value.  
 - `flat(`_`depth=1`_`)` returns a new array with sub-array elements flatenned up to the `depth` level. On sparce-arrays empty slots are removed.    
@@ -159,6 +161,7 @@ returns changed array
 for the first iteration, `accumulator` is set ,if provided to `initialValue`, or to the first element of the array and then executing `reducerFn` starting from next (second) element of the array.  
 - `reduceRight(reducerFn: (accumulator`_`=initialValue`_`, currentValue, currentIndex, array)=>any, `_`initialValue`_`)` executes `reducerFn` on each array element starting from back to front (right to left) order. Returns resulting value of executing function.  
 - `slice(`_`start`_`, `_`end`_`)` returns new array containing the extracted values.  
+- `with(index, value)` return new array copy with the element at `index` replaced with `value`  
 
 
 #### truthy falsy  
