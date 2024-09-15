@@ -2,6 +2,15 @@
 layout: default
 ---
 
+[Practical exercises](#practical)  
+[Javascript/ES](#javascriptesweb)  
+[Typescript](#typescript)  
+[Node.js](#nodejs)  
+[React](#reactredux)  
+[HTML](#html)  
+[CSS](#css)  
+[Other questions](#other-questions)  
+
 ### Practical  
 #### write function `runOnce()`  
 ```js  
@@ -34,12 +43,15 @@ showAdditions(15040); // "10000+5000+40"
 flatten([3, 5, [7], [1, [[22]], [[6], 3]]]); // Array [ 3, 5, 7, 1, 22, 6, 3 ]
 ```  
 <details>  
+
 <summary>solution</summary>  
+
 ```js  
 function flatten() {
 
 }
 ```  
+
 </details>  
   
 #### explain order of output   
@@ -106,16 +118,21 @@ const data = Promise.race([
 `at(index)` returns element at the `index` or undefined  if `index >= array.length` OR `-index < -array.length`
 `entries()` returns a new array iterator object that contains the key/value pair for each index and element of the array
 _sparse array with empty slots treated as if the empty element has value `undefined`_   
+
 **Scan/Search/Inspect:**  
 `every(compareFn, `_`thisArg`_`)` returns `true` if `compareFn` returned `true` for each element of the array. or `false` if it has `compareFn` returned `false` for the element and returns immediately after that element.  
 `find(compareFn, `_`thisArg`_`)`  return first element for which `compareFn` returned `true`. or `undefined` otherwise if it didn't found any such element  
 `findIndex(compareFn, `_`thisArg`_`)` returns index of the elmement for which `compareFn` returned truthy value. or `-1` if `compareFn` returned falsy value for each array's element  
-
-
+`findLast(compareFn: (element, index, array)=>Boolean, `_`thisArg`_`)` returns element, staring/iterating from the end of array, element for which `compareFn` returned `true`, or otherwise returns `undefined` if such element not found  
+`findLastIndex(compareFn: (element, index, array)=>Boolean, `_`thisArg`_`)` returns  
+index of the element, starting/iterating from the end of array, for which `compareFn` returned truthy value.  
+or `-1` if `compareFn` returned falsy value for each array's element.  
+  
 **Change/Mutatate/Update:**  
 `fill(value, `_`start`_`, `_`end`_`)` change array's element withing range  
 from `start` or `0` if ommitted, to `end` or array's length if omitted.  
 returns changed array  
+
 **Create New Array Copy:**  
 `filter(compareFn: (element, index, array)=>Boolean, `_`thisArg`_`)` returns shallow copy of array where element for which `compareFn` returned truthy value.  
 
