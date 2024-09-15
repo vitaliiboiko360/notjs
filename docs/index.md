@@ -127,15 +127,38 @@ _sparse array with empty slots treated as if the empty element has value `undefi
 `findLastIndex(compareFn: (element, index, array)=>Boolean, `_`thisArg`_`)` returns  
 index of the element, starting/iterating from the end of array, for which `compareFn` returned truthy value.  
 or `-1` if `compareFn` returned falsy value for each array's element.  
+`forEach(callbackFn: (element, index, array)=>Boolean, `_`thisArg`_`)` executed provided `callbackFn` once for each array element in index-ascending order. `foreEach` returns `undefined`.  
+`includes(searchElement, `_`fromIndex`_`)` returns `true` if `searchElement` is found in the array (or whithin a range starting from `fromIndex`). 
+returns `false` if `searchElement` not found. 
+negative `fromIndex` will count offset starting from end. But the search still going from front to back of the array.  
+`indexOf(searchElement, `_`fromIndex`_`)` returns the first index of `searchElement` in the array. or returns `-1` if `searchElement` hasn't been found.   
+`lastIndexOf(searchElement, `_`fromIndex`_`)` returns last index of `searchElement` in the array. or `-1` if `searchElement` no found.  
+`keys()` returns object iterator, which iterates over array's element indices. In sparce arrays, empty slots still iterated.  
+`some(compareFn: (element, index, array)=>Boolean, `_`thisArg`_`)` returns `true` if a `compareFn` returned `true` for an array element. Returns `false` if `compareFn` returned `false` for each array element.  
+
   
 **Change/Mutatate/Update:**  
 `fill(value, `_`start`_`, `_`end`_`)` change array's element withing range  
 from `start` or `0` if ommitted, to `end` or array's length if omitted.  
 returns changed array  
+`pop()` returns the last element of the arrya. returns `undefined` if array is empty. removes returned last element in the array.  
+`push(element1, `_`element2`_`, `_`elementN`_`,)` append element to the back of array. returns new `length` value of the object upon which the method `push` was being called.  
+`reverse()` reverses order of an array. Returns reference to the reversed modified array (to itself). Preserves empty slots in sparce array.  
+`shift()` removes first element of an array. Returns removed first element. Returns `undefined` if array is empty.   
+`sort(`_`compareFn: (a, b)=>-1 | 0 | 1`_`)` reorder array elements in sorted order _in-place_. If `compareFn` not provided it sorts array in alphabetical order. Array of numbers will be treated as array of strings, (example: "80" will come before "9").  
+`splice(start, `_`deleteCount=0, element1, elementN`_`)` removes or inserts elements in an array starting from `start`. if `element1...elementN` provided, `splice` inserts the elements into array. Returns array of deleted elements, empty array if no elements were deleted.  
 
-**Create New Array Copy:**  
+**Create New Copy Array/ or New Value:**  
 `filter(compareFn: (element, index, array)=>Boolean, `_`thisArg`_`)` returns shallow copy of array where element for which `compareFn` returned truthy value.  
-
+`flat(`_`depth=1`_`)` returns a new array with sub-array elements flatenned up to the `depth` level. On sparce-arrays empty slots are removed.    
+`flatMap(mapFn: (element, index, array)=>any, `_`thisArg`_`)` returns a new array with `mapFn` being run on each array's element and then the resulting array is flattened by 1.  
+`join(`_`separator`_`)` returns string with all array elements joined. if array `length` is 0 returns empty string. if array has one element, passed `separator` wouldn't be used.  
+`map(mapFn: (element, index, array)=>any, `_`thisArg`_`)` returns a new array with each element is the result of `mapFn`. 
+`mapFn` is not invoked on empty slots in sparce arrays.  
+`reduce(reducerFn: (accumulator`_`=initialValue`_`, currentValue, currentIndex, array)=>any, `_`initialValue`_`)` executes `reducerFn` on each array element. Returns resulting value of executing function.  
+for the first iteration, `accumulator` is set ,if provided to `initialValue`, or to the first element of the array and then executing `reducerFn` starting from next (second) element of the array.  
+`reduceRight(reducerFn: (accumulator`_`=initialValue`_`, currentValue, currentIndex, array)=>any, `_`initialValue`_`)` executes `reducerFn` on each array element starting from back to front (right to left) order. Returns resulting value of executing function.  
+`slice(`_`start`_`, `_`end`_`)` returns new array containing the extracted values.  
 
 
 #### truthy falsy  
