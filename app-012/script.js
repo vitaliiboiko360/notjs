@@ -16,8 +16,18 @@ function getTestText() {
     console.log(textArea1.getBoundingClientRect());
     const { width } = textArea1.getBoundingClientRect();
     divOutput1.style.width = width + 'px';
+
+    const wrapPTag = (string) => {
+      let pElement = document.createElement('p');
+      pElement.textContent = string;
+      return pElement;
+    };
+
     button1.addEventListener("click", (event) => {
-      output1.textContent = textArea1.value;
+      divOutput1.innerHTML = '';
+      textArea1.value.split('\n').forEach(element => {
+        divOutput1.appendChild(wrapPTag(element));
+      });
     });
 
   }
