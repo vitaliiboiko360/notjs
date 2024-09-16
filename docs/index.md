@@ -43,15 +43,19 @@ showAdditions(15040); // "10000+5000+40"
 flatten([3, 5, [7], [1, [[22]], [[6], 3]]]); // Array [ 3, 5, 7, 1, 22, 6, 3 ]
 ```  
 <details>  
-
-<summary>solution</summary>  
-
+  
+<summary>  
+  
+solution  
+  
+</summary>   
+  
 ```js  
 function flatten() {
 
 }
 ```  
-
+  
 </details>  
   
 #### explain order of output   
