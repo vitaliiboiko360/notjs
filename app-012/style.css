@@ -1,0 +1,20 @@
+#button-1 {
+  height: 2em;
+  width: 8em;
+  font-size: 1.5em;
+  display: block;
+}
+
+#div-1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-self: flex-start;
+}
+
+.col-1 {
+  flex: 1;
+
+}
