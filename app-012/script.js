@@ -40,10 +40,16 @@ function getTestText() {
     });
 
     let isMouseDown = false;
+    let startX = 0;
+    let startY = 0;
+    let moveX = 0;
+    let moveY = 0;
     divOutput1.addEventListener("mousedown", event => {
       isMouseDown = true;
       const { clientX, clientY } = event;
       output2.textContent = `${clientX} ${clientY}`;
+      startX = clientX;
+      startY = clientY;
     });
     divOutput1.addEventListener("mouseup", event => {
       const { clientX, clientY } = event;
@@ -54,6 +60,18 @@ function getTestText() {
       if (!isMouseDown) return;
       const { clientX, clientY } = event;
       output3.textContent = `${clientX} ${clientY}`;
+
+      moveX = clientX;
+      moveY = clientY;
+
+      for (let i = startX; i < moveX; i += 2) {
+        for (let j = startY; j < moveY; j += 2) {
+          let element = document.elementFromPoint(i, j);
+          // console.log(element.tagName);
+          if (element.tagName == "SPAN")
+            element.style.color = "red";
+        }
+      }
     });
 
 
