@@ -17,7 +17,10 @@ function getTestText() {
     const { width } = textArea1.getBoundingClientRect();
     divOutput1.style.width = width + 'px';
 
-    const wrapPTag = (string) => {
+    let output2 = document.getElementById("output-2");
+    let output3 = document.getElementById("output-3");
+
+    const getPTagWrapString = (string) => {
       let pElement = document.createElement('p');
       pElement.textContent = string;
       return pElement;
@@ -25,10 +28,34 @@ function getTestText() {
 
     button1.addEventListener("click", (event) => {
       divOutput1.innerHTML = '';
-      textArea1.value.split('\n').forEach(element => {
-        divOutput1.appendChild(wrapPTag(element));
+      textArea1.value.split('\n').forEach(string => {
+        let pElement = document.createElement('p');
+        for (const character of string) {
+          let spanElement = document.createElement('span');
+          spanElement.textContent = character;
+          pElement.appendChild(spanElement);
+        }
+        divOutput1.appendChild(pElement);
       });
     });
+
+    let isMouseDown = false;
+    divOutput1.addEventListener("mousedown", event => {
+      isMouseDown = true;
+      const { clientX, clientY } = event;
+      output2.textContent = `${clientX} ${clientY}`;
+    });
+    divOutput1.addEventListener("mouseup", event => {
+      const { clientX, clientY } = event;
+      output3.textContent = `${clientX} ${clientY}`;
+      isMouseDown = false;
+    });
+    divOutput1.addEventListener("mousemove", event => {
+      if (!isMouseDown) return;
+      const { clientX, clientY } = event;
+      output3.textContent = `${clientX} ${clientY}`;
+    });
+
 
   }
 )();
