@@ -1,7 +1,9 @@
 
 
 let video = document.getElementsByTagName('video')[0];
-let owner = document.getElementsByClassName("sc-gzVnrw pui_control-bar_bottom-control-bar sc-uJMKN jexDTL")[0];
+const oldClass = "sc-gzVnrw pui_control-bar_bottom-control-bar sc-uJMKN jexDTL";
+const newClass = "baseline-indicator high";
+let owner = document.getElementsByClassName(newClass)[0];
 let owne = document.getElementsByClassName('video-resource__details--leaf')[0]; //.getElementById('owner');
 let button = document.createElement('button');
 button.innerText = 'BUTTON_TO_START';
@@ -24,7 +26,8 @@ let data = [];
 recorder.ondataavailable = (event) => data.push(event.data);
 recorder.start();
 
-video.pause(); recorder.stop();
+video.pause();
+recorder.stop();
 
 let recordedBlob = new Blob(data, { type: "video/webm" });
 let url = URL.createObjectURL(recordedBlob);
