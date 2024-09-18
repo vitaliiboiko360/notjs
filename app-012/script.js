@@ -8,72 +8,137 @@ function getTestText() {
 
 (
   function main() {
-    let button1 = document.getElementById("button-1");
-    let textArea1 = document.getElementById("text-field-1");
+    let button1 = document.getElementById('button-1');
+    let textArea1 = document.getElementById('text-field-1');
     textArea1.value = getTestText();
-    let output1 = document.getElementById("output-1");
-    let divOutput1 = document.getElementById("div-3");
+
+    let divOutput1 = document.getElementById('div-3');
     console.log(textArea1.getBoundingClientRect());
     const { width } = textArea1.getBoundingClientRect();
     divOutput1.style.width = width + 'px';
+    divOutput1.style.position = 'relative';
 
-    let output2 = document.getElementById("output-2");
-    let output3 = document.getElementById("output-3");
+    let output2 = document.getElementById('output-2');
+    let output3 = document.getElementById('output-3');
 
-    const getPTagWrapString = (string) => {
+    const appendParagraphTagWithCharSpansFromString = string => {
       let pElement = document.createElement('p');
-      pElement.textContent = string;
-      return pElement;
+      pElement.style.position = 'relative';
+      pElement.style.display = 'inline-block';
+      for (const character of string) {
+        let spanElement = document.createElement('span');
+        spanElement.style.display = 'inline-block';
+        spanElement.textContent = character;
+        pElement.appendChild(spanElement);
+      }
+      divOutput1.appendChild(pElement);
     };
 
-    button1.addEventListener("click", (event) => {
+    button1.addEventListener('click', (event) => {
       divOutput1.innerHTML = '';
-      textArea1.value.split('\n').forEach(string => {
-        let pElement = document.createElement('p');
-        for (const character of string) {
-          let spanElement = document.createElement('span');
-          spanElement.textContent = character;
-          pElement.appendChild(spanElement);
-        }
-        divOutput1.appendChild(pElement);
-      });
+      textArea1
+        .value
+        .split('\n')
+        .forEach(appendParagraphTagWithCharSpansFromString);
     });
 
+    let output4 = document.getElementById('output-4');
+    let isKeyCtrlDown = false;
+    document.body.addEventListener('keydown', event => {
+      isKeyCtrlDown = event.ctrlKey;
+      if (isKeyCtrlDown)
+        output4.textContent = 'ctrl is pressed';
+    });
+    document.body.addEventListener('keyup', event => {
+      isKeyCtrlDown = event.ctrlKey;
+      if (!isKeyCtrlDown)
+        output4.textContent = '';
+    });
+
+
+    let isMoveInProgress = false;
     let isMouseDown = false;
     let startX = 0;
     let startY = 0;
-    let moveX = 0;
-    let moveY = 0;
-    divOutput1.addEventListener("mousedown", event => {
-      isMouseDown = true;
+    let selectedCharacterSet = new Set();
+
+    const addSelectedIfCharacter = (x, y) => {
+      let element = document.elementFromPoint(x, y);
+      if (element.tagName === 'SPAN') {
+        element.style.color = 'red';
+        selectedCharacterSet.add(element);
+      }
+    };
+
+    divOutput1.addEventListener('mousedown', event => {
       const { clientX, clientY } = event;
-      output2.textContent = `${clientX} ${clientY}`;
+
+      let element = document.elementFromPoint(clientX, clientY);
+
+      if (element.tagName === 'SPAN' && selectedCharacterSet.has(element)) {
+        isMoveInProgress = true;
+        for (const spanElement of selectedCharacterSet) {
+          spanElement.style.position = 'absolute';
+          spanElement.style.width = spanElement.clientWidth;
+          spanElement.style.height = spanElement.clientHeight;
+          // spanElement.style.zIndex = 1000
+        }
+        return;
+      }
+
+      isMouseDown = true;
+
       startX = clientX;
       startY = clientY;
+
+      if (!isKeyCtrlDown) {
+        // revert and clear current selection
+        for (const spanElement of selectedCharacterSet)
+          spanElement.style.color = 'black';
+        selectedCharacterSet.clear();
+      }
+      addSelectedIfCharacter(startX, startY);
     });
-    divOutput1.addEventListener("mouseup", event => {
-      const { clientX, clientY } = event;
-      output3.textContent = `${clientX} ${clientY}`;
+    divOutput1.addEventListener('mouseup', event => {
+      // const { clientX, clientY } = event;
       isMouseDown = false;
+      isMoveInProgress = false;
     });
-    divOutput1.addEventListener("mousemove", event => {
-      if (!isMouseDown) return;
+
+    const updateSelectionPosition = (deltaX, deltaY) => {
+      for (const spanElement of selectedCharacterSet) {
+        spanElement.style.left += deltaX;
+        spanElement.style.top += deltaY;
+      }
+    }
+
+    const STEP = 2; // tradeoff between perfomance and accuracy :-|
+    divOutput1.addEventListener('mousemove', event => {
       const { clientX, clientY } = event;
-      output3.textContent = `${clientX} ${clientY}`;
+      const deltaX = startX - clientX;
+      const deltaY = startY - clientY;
 
-      moveX = clientX;
-      moveY = clientY;
+      if (isMoveInProgress) {
+        updateSelectionPosition(deltaX, deltaY);
+        return;
+      }
 
-      for (let i = startX; i < moveX; i += 2) {
-        for (let j = startY; j < moveY; j += 2) {
-          let element = document.elementFromPoint(i, j);
-          // console.log(element.tagName);
-          if (element.tagName == "SPAN")
-            element.style.color = "red";
+      if (!isMouseDown) return;
+
+      const goByX = Math.abs(deltaX);
+      const goByY = Math.abs(deltaY);
+      const nextX = deltaX < 0 ? x => x += STEP : x => x -= STEP;
+      const nextY = deltaY < 0 ? y => y += STEP : y => y -= STEP;
+
+      for (let j = 0, clientJ = startY;
+        j < goByY;
+        j += STEP, clientJ = nextY(clientJ)) {
+        for (let i = 0, clientI = startX;
+          i < goByX;
+          i += STEP, clientI = nextX(clientI)) {
+          addSelectedIfCharacter(clientI, clientJ);
         }
       }
     });
-
-
   }
 )();
