@@ -196,6 +196,19 @@ numbers and BigInt converted to string using `toString(10)`
 
 **String instance methods**
 
+**Access element**
+
+- `at(index)` return new string consiting UTF-16 code unit located at the specified `index` position.  
+  returns `undefined` if `index` is not found  
+  `charAt(index)` returns new string consiting UTF-16 code unit located at the specified `index` position.  
+  returns empty string if `index` is not found  
+  returns  
+  `charCodeAt(index)` returns integer between `0` to `65535` (`0xFFFF`) that represent
+  the UTF-16 code point value of the character at the position `index`  
+  returns `NaN` if `index` is not found  
+  `codePointAt(index)` returns integer that represent UTF-16 code point value at the specified `index`  
+  returns `undefined ` if `index` is not found
+
 **Check / Examine / Search**
 
 - `startsWith(searchString, `_`position=0`_`)`  
@@ -205,7 +218,38 @@ numbers and BigInt converted to string using `toString(10)`
 - `includes(searchString, `_`position=0`_`)`  
   Returns `true` if the `searchString` is found anywhere in the string, search is starting from `position`. Returns `false` if not found. _Note: method is case-sensitive;_
 - `endsWith(searchString, `_`endPosition=str.length`_`)`  
-  Returns `true` if the given `searchString`'s last character + 1, found at the `endPosition`. Returns `false` if not.
+  Returns `true` if the given `searchString`'s last character + 1, found at the `endPosition`. Returns `false` if not found. _Note: case-sensitive_
+- `indexOf(searchString, `_`position=0`_`)` returns index of the first occurence of `searchString` found. Search from `position` if `position` is negative it became `0`  
+  returns `-1` if `searchString` is not found in the string
+- `lastIndexOf(searchString, `_`position=+Infinity`_`)` return index of the last occurence of `searchString` found. Search from `position` if `position` is negative it became `0` and search would be only at `0` position.  
+  returns `-1` if `searchString` is not found in the string
+- `localeCompare(compareString, `_`locales`_`, `_`options`_`)`  
+  returns negative if the called string occurs before `compareString`  
+  returns positive if the called string occurs after `compareString`  
+  returns `0` if the called string equivalent to `compareString`  
+  _Note: ECMAScript specification only mandates negative and positive values_
+- `match(regularExpression)` returns array of all results matching `regularExpression`:  
+  if the `g` flag specified then capturing groups are not included in results.  
+  if the `g` flag is not used, only first complete match and its related capturing groups are returned  
+   `regularExpression` is regular expression `RegExp` object, (or any object with `.match` method). if it is not `RegExp` it will implicitly converted to `new RegExp(regularExpression)`
+- `matchAll(regulaExpression)` retruns iterator object of matches or empty iterator if no matches are found.  
+  `regularExpression` is regular expression `RegExp` object, (or any object with `.match` method). if it is not `RegExp` it will implicitly converted to `new RegExp(regularExpression, 'g')`. if `regularExpression` is `RegExp` and doesn't have the `g` flag, `TypeError` is thrown.
+
+**New String**  
+`concat(`_`str1`_`,`_`strN`_`)` returns a new string containing the combined text from string object it called upon and the arguments string provided  
+-`repeat(count)` returns a new string containing the specified `count` number of copies of the current string
+
+- `replace(pattern, replacement)` returns a new string with matches replaced with specified replacement pattern.  
+  `replacement` can be a string of a function
+  > string: it will replace the substring matched by `pattern`
+  > function: iw will be invoked on every match and function's return value would be used as replacement text  
+  > _Note: string pattern would be replaced only once_
+
+**Change / Update**
+
+- `normalize(`_`form`_`)` returns a string containing the Unicode Normalization Form `normalize` converts string into normalized form common for all sequences of code points that represents the same characters.
+- `padEnd(targetLength, `_`padString=" "`_`)` returns a string of the specified length padded with `padString` applied at the end of the current string
+- `padStart(targetLength, `_`padString=" "`_`)` returns a string of the specified length padded with `padString` applied from the start of the current string
 
 #### truthy falsy
 
