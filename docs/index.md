@@ -214,7 +214,7 @@ numbers and BigInt converted to string using `toString(10)`
 - `startsWith(searchString, `_`position=0`_`)`  
   Returns `true` if the `searchString` is found at the beggining of the string (or at the `position`).  
   Returns `false` if not found.  
-  _Note: if `searchString` is omitted `udnefined` value coerced to "undefined" and searched instead; method is case-sensitive; if `searchStrin` is empty string method returns `true`_
+  _Note: if `searchString` is omitted `udnefined` value coerced to "undefined" and searched instead; method is case-sensitive; if `searchString` is empty string method returns `true`_
 - `includes(searchString, `_`position=0`_`)`  
   Returns `true` if the `searchString` is found anywhere in the string, search is starting from `position`. Returns `false` if not found. _Note: method is case-sensitive;_
 - `endsWith(searchString, `_`endPosition=str.length`_`)`  
@@ -232,24 +232,48 @@ numbers and BigInt converted to string using `toString(10)`
   if the `g` flag specified then capturing groups are not included in results.  
   if the `g` flag is not used, only first complete match and its related capturing groups are returned  
    `regularExpression` is regular expression `RegExp` object, (or any object with `.match` method). if it is not `RegExp` it will implicitly converted to `new RegExp(regularExpression)`
-- `matchAll(regulaExpression)` retruns iterator object of matches or empty iterator if no matches are found.  
-  `regularExpression` is regular expression `RegExp` object, (or any object with `.match` method). if it is not `RegExp` it will implicitly converted to `new RegExp(regularExpression, 'g')`. if `regularExpression` is `RegExp` and doesn't have the `g` flag, `TypeError` is thrown.
+- `matchAll(regularExpression)` retruns iterator object of matches or empty iterator if no matches are found.  
+  `regularExpression` is regular expression `RegExp` object, (or any object with `.match` method). if it is not `RegExp` it will implicitly converted to `new RegExp(regularExpression, 'g')`. if `regularExpression` is `RegExp` and doesn't have the `g` flag, `TypeError` is thrown.  
+- `search(regularExpression)` returns the index of the first match of `regularExpression`.  
+return `-1` if match not found  
+`regularExpression` should be `RegExp` or any object with `.search` method, or it will be implicitly converted to `new RegExp(regularExpression)`   
 
-**New String**  
-`concat(`_`str1`_`,`_`strN`_`)` returns a new string containing the combined text from string object it called upon and the arguments string provided  
--`repeat(count)` returns a new string containing the specified `count` number of copies of the current string
-
-- `replace(pattern, replacement)` returns a new string with matches replaced with specified replacement pattern.  
-  `replacement` can be a string of a function
+**New String/Array**  
+- `concat(`_`str1`_`,`_`strN`_`)` returns a new string containing the combined text from string object it called upon and the arguments string provided  
+-  `repeat(count)` returns a new string containing the specified `count` number of copies of the current string  
+- `replace(pattern, replacement)` returns a new string with first matche is replaced with specified replacement pattern.  
+  `replacement` can be a string or a function
   > string: it will replace the substring matched by `pattern`
   > function: iw will be invoked on every match and function's return value would be used as replacement text  
-  > _Note: string pattern would be replaced only once_
+  > _Note: string pattern would be replaced only once_  
+- `replaceAll(pattern, replacement)` returns a new string with all matches are replaced with replaxement pattern.  
+- `pattern` is expected to be an object with `.replace` method (like `RegExp`), value w/o it will be coerced to a string.  
+`replacement` could be string or function, semantics are the same as for `String.replace` method.  
+- `slice(indexStart,`_`indexEnd=str.length`_`)` returns a new string with extracted section from the original string; `indexStart` first index included in the resulting string; `indexEnd` first index excluded from the resulting string;  
+if `indexStart` is ommited `undefined` converted to `0`;  
+- `split(separator,`_`limit`_`)` returns array of strings, split at each point where `separator`  
+if `separator` is ommited or `undefined` then it returns array with original string as a single element `[str]`; if explicit `limit` is set to `0` then `split` returns `[]`;
+```js  
+// NOTE: when trying to use split with '' empty string argument, to get an array of chars, it will not work
+const a = '𝟘𝟙𝟚𝟛'.split('');
+console.log(a);
+// Output: ["�","�","�","�","�","�","�","�"]
+```
+- `substring(indexStart,`_`indexEnd`_`)` returns a new string with extracted section from the original string; extract characters starting from `indexStart` and up to but not included `indexEnd`; if `indexEnd` is ommited then it extracts characters up to the `str.length`;  
+- NOTE: difference between `splice` and `substring`: `splice` can work with negative indices counting from the end, `substring` treats negative indices as `0`;  
+- `trim()` returns a new string with original string is stripped of whitespace from beggining and end; it string doesnt have whitespaces before and after, it still returns a new string, essentially a copy;  
+- `trimStart()` or `trimeLeft()` returns a new string with original string is stripped of whitespace at the beggining, left side of the string;  
+- `trimEnd()` or `trimRight()` returns a new string with original string is stripped of whitespace from its end, right side of the string;  
+- `valueOf()` and `toString()` returns string itself  
+- `toWellFormed()` retruns a new string with any lone surrogates replaced by Unicode replacement character U+FFFD "�"  
+- `toLowerCase()` `toLowerCase(`_`locale`_`)` `toUpperCase()` `toLowerCase(`_`locale`_`)` 
 
-**Change / Update**
+**Change / Update**  
 
 - `normalize(`_`form`_`)` returns a string containing the Unicode Normalization Form `normalize` converts string into normalized form common for all sequences of code points that represents the same characters.
 - `padEnd(targetLength, `_`padString=" "`_`)` returns a string of the specified length padded with `padString` applied at the end of the current string
-- `padStart(targetLength, `_`padString=" "`_`)` returns a string of the specified length padded with `padString` applied from the start of the current string
+- `padStart(targetLength, `_`padString=" "`_`)` returns a string of the specified length padded with `padString` applied from the start of the current string  
+
 
 #### truthy falsy
 
