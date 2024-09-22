@@ -70,6 +70,9 @@ blockquote {
 code, pre {
   font-family:Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal, Consolas, Liberation Mono, DejaVu Sans Mono, Courier New, monospace;
   color:#333;
+  background-color: var(--bgColor-neutral-muted, var(--color-neutral-muted));
+  border-radius: 5px;
+  border: 1px solid #e5e5e5;
 }
 
 pre {
