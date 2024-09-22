@@ -25,6 +25,30 @@ doSomeShitOnce(5); // 5 is shit
 doSomeShitOnce('blah'); // Error: This function can be run only once
 ```
 
+<details>  
+  
+<summary>  
+  
+solution  
+  
+</summary>   
+  
+```js  
+function runOnce() {
+  let isCalled = false;
+  return function (arg) {
+    if (isCalled)
+      throw Error('already called');
+    console.log(arg);
+    isCalled = true;
+  };
+}
+  
+```  
+  
+</details>  
+
+
 #### write function `isPalindrom(input: string)`
 
 ```js
@@ -58,30 +82,33 @@ solution
 </summary>   
   
 ```js  
-function flatten() {
-
+function flatten(array) {
+  return array.flat(Infinity);
 }
-
-````
-
-</details>
-
+  
+```  
+  
+</details>  
+  
 #### explain order of output
+
 ```js
 console.log('script start');
 
-setTimeout(function() {
+setTimeout(function () {
   console.log('setTimeout');
 }, 0);
 
-Promise.resolve().then(function() {
-  console.log('promise1');
-}).then(function() {
-  console.log('promise2');
-});
+Promise.resolve()
+  .then(function () {
+    console.log('promise1');
+  })
+  .then(function () {
+    console.log('promise2');
+  });
 
 console.log('script end');
-````
+```
 
 ### Javascript/ES/Web
 
@@ -136,15 +163,15 @@ const data = Promise.race([
 
 - `at(index)` returns element at the `index` or undefined if `index >= array.length` OR `-index < -array.length`
 - `entries()` returns a new array iterator object that contains the key/value pair for each index and element of the array
-  _sparse array with empty slots treated as if the empty element has value `undefined`_  
+  _sparse array with empty slots treated as if the empty element has value `undefined`_
 - `values()` returns array iterator object that iterates the value of each element in the array.
 
 **Scan/Search/Inspect:**
 
 - `every(compareFn: (element, index, array)=>Boolean, `_`thisArg`_`)` returns `true` if `compareFn` returned `true` for each element of the array.  
-  Immediately returns `false` if it has at least one element for which `compareFn` returned `false`  
+  Immediately returns `false` if it has at least one element for which `compareFn` returned `false`
 - `some(compareFn: (element, index, array)=>Boolean, `_`thisArg`_`)` Returns `false` if `compareFn` returned `false` for each array element.  
-  Immediately returns `true` if a `compareFn` returned `true` for an array element.  
+  Immediately returns `true` if a `compareFn` returned `true` for an array element.
 - `find(compareFn, `_`thisArg`_`)` return first element for which `compareFn` returned `true`. or `undefined` otherwise if it didn't found any such element
 - `findIndex(compareFn, `_`thisArg`_`)` returns index of the elmement for which `compareFn` returned truthy value. or `-1` if `compareFn` returned falsy value for each array's element
 - `findLast(compareFn: (element, index, array)=>Boolean, `_`thisArg`_`)` returns element, staring/iterating from the end of array, element for which `compareFn` returned `true`, or otherwise returns `undefined` if such element not found
@@ -157,7 +184,7 @@ const data = Promise.race([
   negative `fromIndex` will count offset starting from end. But the search still going from front to back of the array.
 - `indexOf(searchElement, `_`fromIndex`_`)` returns the first index of `searchElement` in the array. or returns `-1` if `searchElement` hasn't been found.
 - `lastIndexOf(searchElement, `_`fromIndex`_`)` returns last index of `searchElement` in the array. or `-1` if `searchElement` no found.
-- `keys()` returns object iterator, which iterates over array's element indices. In sparce arrays, empty slots still iterated   
+- `keys()` returns object iterator, which iterates over array's element indices. In sparce arrays, empty slots still iterated
 
 **Change/Mutatate/Update:**
 
@@ -197,13 +224,13 @@ numbers and BigInt converted to string using `toString(10)`
 **Access individual characters**
 
 - `at(index)` return new string consiting UTF-16 code unit located at the specified `index` position.  
-  returns `undefined` if `index` is not found  
+  returns `undefined` if `index` is not found
 - `charAt(index)` returns new string consiting UTF-16 code unit located at the specified `index` position.  
   returns empty string if `index` is not found  
-  returns  
+  returns
 - `charCodeAt(index)` returns integer between `0` to `65535` (`0xFFFF`) that represent
   the UTF-16 code point value of the character at the position `index`  
-  returns `NaN` if `index` is not found  
+  returns `NaN` if `index` is not found
 - `codePointAt(index)` returns integer that represent UTF-16 code point value at the specified `index`  
   returns `undefined ` if `index` is not found
 
@@ -231,83 +258,88 @@ numbers and BigInt converted to string using `toString(10)`
   if the `g` flag is not used, only first complete match and its related capturing groups are returned  
    `regularExpression` is regular expression `RegExp` object, (or any object with `.match` method). if it is not `RegExp` it will implicitly converted to `new RegExp(regularExpression)`
 - `matchAll(regularExpression)` retruns iterator object of matches or empty iterator if no matches are found.  
-  `regularExpression` is regular expression `RegExp` object, (or any object with `.match` method). if it is not `RegExp` it will implicitly converted to `new RegExp(regularExpression, 'g')`. if `regularExpression` is `RegExp` and doesn't have the `g` flag, `TypeError` is thrown.  
+  `regularExpression` is regular expression `RegExp` object, (or any object with `.match` method). if it is not `RegExp` it will implicitly converted to `new RegExp(regularExpression, 'g')`. if `regularExpression` is `RegExp` and doesn't have the `g` flag, `TypeError` is thrown.
 - `search(regularExpression)` returns the index of the first match of `regularExpression`.  
-return `-1` if match not found  
-`regularExpression` should be `RegExp` or any object with `.search` method, or it will be implicitly converted to `new RegExp(regularExpression)`   
+  return `-1` if match not found  
+  `regularExpression` should be `RegExp` or any object with `.search` method, or it will be implicitly converted to `new RegExp(regularExpression)`
 
-**New String/Array**  
-- `concat(`_`str1`_`,`_`strN`_`)` returns a new string containing the combined text from string object it called upon and the arguments string provided  
--  `repeat(count)` returns a new string containing the specified `count` number of copies of the current string  
+**New String/Array**
+
+- `concat(`_`str1`_`,`_`strN`_`)` returns a new string containing the combined text from string object it called upon and the arguments string provided
+- `repeat(count)` returns a new string containing the specified `count` number of copies of the current string
 - `replace(pattern, replacement)` returns a new string with first matche is replaced with specified replacement pattern.  
   `replacement` can be a string or a function
   > string: it will replace the substring matched by `pattern`
   > function: iw will be invoked on every match and function's return value would be used as replacement text  
-  > _Note: string pattern would be replaced only once_  
+  > _Note: string pattern would be replaced only once_
 - `replaceAll(pattern, replacement)` returns a new string with all matches are replaced with replaxement pattern;  
-`pattern` is expected to be an object with `.replace` method (like `RegExp`), value w/o it will be coerced to a string    
-`replacement` could be string or function, semantics are the same as for `String.replace` method    
+  `pattern` is expected to be an object with `.replace` method (like `RegExp`), value w/o it will be coerced to a string  
+  `replacement` could be string or function, semantics are the same as for `String.replace` method
 - `slice(indexStart,`_`indexEnd=str.length`_`)` returns a new string with extracted section from the original string; `indexStart` first index included in the resulting string; `indexEnd` first index excluded from the resulting string;  
-if `indexStart` is ommited `undefined` converted to `0`;  
+  if `indexStart` is ommited `undefined` converted to `0`;
 - `split(separator,`_`limit`_`)` returns array of strings, split at each point where `separator`  
-if `separator` is ommited or `undefined` then it returns array with original string as a single element `[str]`; if explicit `limit` is set to `0` then `split` returns `[]`;
-```js  
+  if `separator` is ommited or `undefined` then it returns array with original string as a single element `[str]`; if explicit `limit` is set to `0` then `split` returns `[]`;
+
+```js
 // NOTE: when trying to use split with '' empty string argument, to get an array of chars, it will not work
 const a = '𝟘𝟙𝟚𝟛'.split('');
 console.log(a);
 // Output: ["�","�","�","�","�","�","�","�"]
 ```
-- `substring(indexStart,`_`indexEnd`_`)` returns a new string with extracted section from the original string; extract characters starting from `indexStart` and up to but not included `indexEnd`; if `indexEnd` is ommited then it extracts characters up to the `str.length`;  
-- NOTE: difference between `splice` and `substring`: `splice` can work with negative indices counting from the end, `substring` treats negative indices as `0`;  
-- `trim()` returns a new string with original string is stripped of whitespace from beggining and end; it string doesnt have whitespaces before and after, it still returns a new string, essentially a copy;  
-- `trimStart()` or `trimeLeft()` returns a new string with original string is stripped of whitespace at the beggining, left side of the string;  
-- `trimEnd()` or `trimRight()` returns a new string with original string is stripped of whitespace from its end, right side of the string;  
-- `valueOf()` and `toString()` returns string itself  
-- `toWellFormed()` retruns a new string with any lone surrogates replaced by Unicode replacement character U+FFFD "�"  
-- `toLowerCase()` `toLowerCase(`_`locale`_`)` `toUpperCase()` `toLowerCase(`_`locale`_`)` 
 
-**Change / Update**  
+- `substring(indexStart,`_`indexEnd`_`)` returns a new string with extracted section from the original string; extract characters starting from `indexStart` and up to but not included `indexEnd`; if `indexEnd` is ommited then it extracts characters up to the `str.length`;
+- NOTE: difference between `splice` and `substring`: `splice` can work with negative indices counting from the end, `substring` treats negative indices as `0`;
+- `trim()` returns a new string with original string is stripped of whitespace from beggining and end; it string doesnt have whitespaces before and after, it still returns a new string, essentially a copy;
+- `trimStart()` or `trimeLeft()` returns a new string with original string is stripped of whitespace at the beggining, left side of the string;
+- `trimEnd()` or `trimRight()` returns a new string with original string is stripped of whitespace from its end, right side of the string;
+- `valueOf()` and `toString()` returns string itself
+- `toWellFormed()` retruns a new string with any lone surrogates replaced by Unicode replacement character U+FFFD "�"
+- `toLowerCase()` `toLowerCase(`_`locale`_`)` `toUpperCase()` `toLowerCase(`_`locale`_`)`
+
+**Change / Update**
 
 - `normalize(`_`form`_`)` returns a string containing the Unicode Normalization Form `normalize` converts string into normalized form common for all sequences of code points that represents the same characters.
 - `padEnd(targetLength, `_`padString=" "`_`)` returns a string of the specified length padded with `padString` applied at the end of the current string
-- `padStart(targetLength, `_`padString=" "`_`)` returns a string of the specified length padded with `padString` applied from the start of the current string  
-
+- `padStart(targetLength, `_`padString=" "`_`)` returns a string of the specified length padded with `padString` applied from the start of the current string
 
 #### truthy falsy
 
 all values are truthy when placed in boolean context, except falsy values:
 
-> `false` `0` `-0` `0n` `""` `null` `undefined` `NaN`  
+> `false` `0` `-0` `0n` `""` `null` `undefined` `NaN`
 
-#### JS Build-Ins    
-- `isFinite(value)` returns `false` if `value` is `NaN`, `Infinity`, `-Infinity`; otherwize returns `true`  
-- `isNaN(value)` returns `true` if `value` is `NaN`, otherwize retruns `false`  
-- ```js typeof operand``` returns "undefined" "object" "boolean" "number" "string" "function"  
-- ```js obj.val?.prop; obj.val?.[expr]; obj.func?.(args)``` the `.?` optional chaining operator is same as `.` but if object is `null` or `undefined` it will return `undefined`    
-- `new`creates an instance of user-defined object; `new MyObject` is same as `new MyObject()`  
-- `delete` removes property of object; `delete object.property` `delete object[properyt]`, returns `true` if value is NOT own non-configurable property, returns `false` when it is in non-strict mode or throws `Type Error` in strict mode; throws `Reference Error` if object is `super`  
-- `??` nullish coalescing opeartor; `leftExpression ?? rightExpression` means it returns `rightExpression` if `leftExpression` operand is null or undefined, otherwize returns right operand    
-- `??=` nullish coalescing assignment; `x ??= y` is equiavalent to `x ?? (x = y)`  
-- `...` speard operator, expands iterable (string or array) to its elements where they are expected (function calls or array literals)   
-- `yeald` return statement in generator function    
-- `super` access base class in derived class;  in constructor you could acess `this` only after you called `super()` base class constructor     
-- `this` references execution context of the caller.  
+#### JS Build-Ins
+
+- `isFinite(value)` returns `false` if `value` is `NaN`, `Infinity`, `-Infinity`; otherwize returns `true`
+- `isNaN(value)` returns `true` if `value` is `NaN`, otherwize retruns `false`
+- `js typeof operand` returns "undefined" "object" "boolean" "number" "string" "function"
+- `js obj.val?.prop; obj.val?.[expr]; obj.func?.(args)` the `.?` optional chaining operator is same as `.` but if object is `null` or `undefined` it will return `undefined`
+- `new`creates an instance of user-defined object; `new MyObject` is same as `new MyObject()`
+- `delete` removes property of object; `delete object.property` `delete object[properyt]`, returns `true` if value is NOT own non-configurable property, returns `false` when it is in non-strict mode or throws `Type Error` in strict mode; throws `Reference Error` if object is `super`
+- `??` nullish coalescing opeartor; `leftExpression ?? rightExpression` means it returns `rightExpression` if `leftExpression` operand is null or undefined, otherwize returns right operand
+- `??=` nullish coalescing assignment; `x ??= y` is equiavalent to `x ?? (x = y)`
+- `...` speard operator, expands iterable (string or array) to its elements where they are expected (function calls or array literals)
+- `yeald` return statement in generator function
+- `super` access base class in derived class; in constructor you could acess `this` only after you called `super()` base class constructor
+- `this` references execution context of the caller.
 - `function*` define generator function
-- `in` return `true` if specified propery is present in the object; syntax `prop in object`  
-- `parseFloat(value)`   
-- `parseInt(value)`   
+- `in` return `true` if specified propery is present in the object; syntax `prop in object`
+- `parseFloat(value)`
+- `parseInt(value)`
 
 **Functions**
-- `arguments` object contains values of passed parameters   
-- `apply` `bind` `call`  
 
-**Object**  
-- `seal` `freeze`  
+- `arguments` object contains values of passed parameters
+- `apply` `bind` `call`
 
+**Object**
+
+- `seal` `freeze`
 
 ### Typescript
 
-#### decorators
+**decorators**  
+Decorator is declaration that can be attached class, class methods,
 
 ### Node.JS
 
