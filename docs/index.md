@@ -356,6 +356,48 @@ all values are truthy when placed in boolean context, except falsy values:
 **decorators**  
 Decorator is declaration that can be attached class, class methods,
 
+**Class Parameters Properties**
+
+```js
+class MyClass {
+  constructor(public publicProperty1: number, private privateProperty1: number) {}
+}
+```
+
+is equivalent
+
+```js
+class MyClass {
+  constructor(publicProperty1: number, privateProperty1: number) {
+    this.publicProperty1 = publicProperty1;
+    this.privateProperty1 = privateProperty1;
+  }
+}
+```
+
+**Enum**
+
+```js
+enum NumberEnum {
+  One = 1,
+  Two,
+}
+```
+
+```js
+enum StringEnum {
+  Word1 = "WORD1",
+  Word2 = "WORD2",
+}
+```
+
+```js
+const enum ConstEnum {
+  Const1 = "Const1",
+  Const2 = "Const2",
+}
+```
+
 ### Node.JS
 
 ####
