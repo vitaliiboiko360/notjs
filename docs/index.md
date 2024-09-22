@@ -46,8 +46,7 @@ function runOnce() {
   
 ```  
   
-</details>  
-
+</details>
 
 #### write function `isPalindrom(input: string)`
 
@@ -58,6 +57,22 @@ isPalindrome('qwerty'); // false
 
 write function in one line  
 explain adv/disadv of each implementation
+
+<details>
+
+<summary>Solution</summary>
+
+### You can add a header
+
+You can add text within a collapsed section.
+
+You can add an image or a code block, too.
+
+```ruby
+   puts "Hello World"
+```
+
+</details>
 
 #### write function `showAddition(n: number)`
 
