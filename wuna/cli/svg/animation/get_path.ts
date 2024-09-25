@@ -12,7 +12,10 @@ export default function getPath(userPosition: number, svgElement, x: number, y: 
   if (userPosition == 1) {
     const userCardX = xStart ?? 400;
     const userCardY = yStart ?? 430;
-    return `M${userCardX},${userCardY} C${userCardX},${userCardY} 420,360 ${x},${y}`;
+    const getMidPoint = (start, end) => end + ((start - end) / 2);
+    const midPointX = getMidPoint(userCardX, x);
+    const midPointY = getMidPoint(userCardY, y);
+    return `M${userCardX},${userCardY} C${userCardX},${userCardY} ${midPointX},${midPointY} ${x},${y}`;
   }
 
   const userIndex = userPosition - 1;
