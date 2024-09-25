@@ -1,17 +1,8 @@
 
 import { USER_INFO } from '../svg_userplaceholder'
 
-const xCenter = 400;
-const yCenter = 300;
-const deltaFromCenter = 50;
-
-export default function getPath(userPosition: number, svgElement): string {
+export default function getPath(userPosition: number, svgElement, x: number, y: number): string {
   let path = '';
-
-  let r = Math.floor(Math.random() * deltaFromCenter) + 1;
-  const alpha = Math.random() * (2 * Math.PI);
-  const x = xCenter + (Math.cos(alpha) / r);
-  const y = yCenter + (Math.sin(alpha) / r);
 
   if (userPosition == 0) {
     console.log('getPath called with userPosition=', userPosition);

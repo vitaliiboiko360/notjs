@@ -14,10 +14,15 @@ import { isValidCard, USER_1, USER_2, USER_3, USER_4 } from '../websocketconsume
 import { gsap } from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { useSvgContext } from './svg_container';
+
+import { getGaussianRandom as getRandom } from './animation/get_random.ts';
+
 gsap.registerPlugin(MotionPathPlugin);
 
 const CARD_HALF_WIDTH = 32;
 const CARD_HALF_HEIGHT = 48;
+const deltaFromCenter = 25;
+const deltaAngle = 20;
 
 const Card = (props) => {
   const refSvg = useSvgContext();
@@ -40,10 +45,15 @@ const Card = (props) => {
     return;
   }
 
-  let x = Math.floor(Math.random() * CARD_HALF_WIDTH) + CARD_HALF_WIDTH;
-  let y = Math.floor(Math.random() * CARD_HALF_HEIGHT) + CARD_HALF_HEIGHT;
-
   let element = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+
+  let r = Math.floor(Math.random() * deltaFromCenter) + 1;
+  const alpha = Math.random() * (2 * Math.PI);
+  const x = xCenter + (Math.cos(alpha) * r) - CARD_HALF_WIDTH;
+  const y = yCenter + (Math.sin(alpha) * r) - CARD_HALF_HEIGHT;
+  // console.log(`r=${r}\talpha=${alpha}\tx=${x}\ty=${y}`);
+
+  const randomAngle = getRandom(-deltaAngle, deltaAngle);
 
   element.setAttribute('transform', `matrix(1,0,0,1,${xCenter - x},${yCenter - y})`);
 
@@ -58,11 +68,11 @@ const Card = (props) => {
 
     gsap.to(element, {
       motionPath: {
-        path: getPath(playerId, refSvg.current),
+        path: getPath(playerId, refSvg.current, x, y),
         alignOrigin: [0.5, 0.5]
       },
       duration: 1.5,
-      rotation: 360,
+      rotation: 360 + randomAngle,
       ease: "slow",
       repeat: 0,
       transformOrigin: "50% 50%"
