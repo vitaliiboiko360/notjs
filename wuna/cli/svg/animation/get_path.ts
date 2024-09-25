@@ -1,7 +1,7 @@
 
 import { USER_INFO } from '../svg_userplaceholder'
 
-export default function getPath(userPosition: number, svgElement, x: number, y: number): string {
+export default function getPath(userPosition: number, svgElement, x: number, y: number, xStart: number, yStart: number): string {
   let path = '';
 
   if (userPosition == 0) {
@@ -10,7 +10,9 @@ export default function getPath(userPosition: number, svgElement, x: number, y: 
   }
 
   if (userPosition == 1) {
-    return `M400,430 C400,430 420,360 ${x},${y}`;
+    const userCardX = xStart ?? 400;
+    const userCardY = yStart ?? 430;
+    return `M${userCardX},${userCardY} C${userCardX},${userCardY} 420,360 ${x},${y}`;
   }
 
   const userIndex = userPosition - 1;

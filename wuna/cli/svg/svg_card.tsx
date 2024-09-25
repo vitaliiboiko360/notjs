@@ -15,6 +15,8 @@ import { gsap } from "gsap";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { useSvgContext } from './svg_container';
 
+import { usePlayCardInfoContext } from './svg_playcardprovider.tsx';
+
 import { getGaussianRandom as getRandom } from './animation/get_random.ts';
 
 gsap.registerPlugin(MotionPathPlugin);
@@ -29,6 +31,7 @@ const Card = (props) => {
   const lastPlayerCardId = useAppSelector(selectActiveMoveLastPlayerCard);
   const lastPlayerId = useAppSelector(selectActiveMoveLastPlayer);
   const refCard = useRef(null);
+  const playCardInfo = usePlayCardInfoContext();
 
   if (lastPlayerCardId == 0 && lastPlayerId != USER_1) {
     console.log('lastPlayerCardId= ', lastPlayerCardId);
@@ -55,20 +58,25 @@ const Card = (props) => {
 
   const randomAngle = getRandom(-deltaAngle, deltaAngle);
 
-  element.setAttribute('transform', `matrix(1,0,0,1,${xCenter - x},${yCenter - y})`);
+  element.setAttribute('transform', `translate(${xCenter - x},${yCenter - y})`);
 
-  refSvg?.current.append(element);
+
   refCard.current = element;
   element.innerHTML = renderToString(getCard(lastPlayerCardId));
+
+  refSvg?.current.append(element);
+
   const run = (element, playerId) => {
     if (playerId == 0) {
       console.log('Animation but lastPlayerId=', playerId);
       return;
     }
+    const userXStart = playCardInfo.x;
+    const userYStart = playCardInfo.y;
 
     gsap.to(element, {
       motionPath: {
-        path: getPath(playerId, refSvg.current, x, y),
+        path: getPath(playerId, refSvg.current, x, y, userXStart, userYStart),
         alignOrigin: [0.5, 0.5]
       },
       duration: 1.5,

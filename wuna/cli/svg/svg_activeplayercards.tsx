@@ -60,7 +60,7 @@ export default function SvgActivePlayerCards(props) {
             ' isCardSameColor= ', isCardSameColor(card, activeWildCardColorToPlay));
         return (
           <Fragment key={index}>
-            <g transform={transformString} onClick={isPlayable ? getOnClickForCard(card, webSocket, activePlayerSeatNumber, dispatch) : onClick} >
+            <g transform={transformString} onClick={isPlayable ? getOnClickForCard(card, webSocket, activePlayerSeatNumber, dispatch, props.setPlayCardInfo) : onClick} >
               {getCard(card)}
             </g>
           </Fragment>

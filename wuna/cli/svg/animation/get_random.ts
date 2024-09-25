@@ -34,11 +34,11 @@ export function getNormalRandomBoxMullerTransform(min, max) {
 function gaussianRand() {
   let rand = 0;
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 3; i++) {
     rand += Math.random();
   }
 
-  return rand / 10;
+  return rand / 3;
 }
 
 export function getGaussianRandom(min, max) {

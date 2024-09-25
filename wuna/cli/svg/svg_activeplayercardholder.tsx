@@ -24,7 +24,11 @@ export default function SvgActivePlayerCardHolder(props) {
 
   return (<>
     <g transform="translate(270,400)">
-      <SvgActivePlayerCards isOurTurn={isOurTurn(activeDirection, activeLastPlayer)} activeCard={activeCard} cardArray={cardArray} />
+      <SvgActivePlayerCards
+        setPlayCardInfo={props.setPlayCardInfo}
+        isOurTurn={isOurTurn(activeDirection, activeLastPlayer)}
+        activeCard={activeCard}
+        cardArray={cardArray} />
     </g>
   </>);
 }
