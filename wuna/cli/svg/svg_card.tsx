@@ -20,7 +20,7 @@ import { getGaussianRandom as getRandom } from './animation/get_random.ts';
 gsap.registerPlugin(MotionPathPlugin);
 
 const CARD_HALF_WIDTH = 32;
-const CARD_HALF_HEIGHT = 48;
+const CARD_HALF_HEIGHT = 48 + 20;
 const deltaFromCenter = 25;
 const deltaAngle = 20;
 

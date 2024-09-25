@@ -17,5 +17,6 @@ export default function getOnClickForCard(idOfCard: number, webSocket: WebSocket
     dispatch(removeActiveCard(idOfCard));
     dispatch(updateActiveMoveLastPlayerCard(idOfCard))
     dispatch(updateActiveMove(idOfCard, USER_1));
+    console.log(this);
   };
 }
