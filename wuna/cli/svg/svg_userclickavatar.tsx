@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useEffect, useCallback, useImperativeHandle } from 'react';
+import React, { useRef, useContext, useEffect, useCallback } from 'react';
 
 import { WebSocketContext } from '../websocketprovider.tsx';
 
@@ -21,7 +21,6 @@ const UserClickAvatar = React.forwardRef((props, ref) => {
   let onClick;
   onClick = useCallback((event) => {
     if (playerSeatNumberRequested != 0) {
-      //console.log('ONCLICK: clicked on seat=', seatNumber);
       return;
     }
     dispatch(updatePlayerSeatRequested(seatNumber));
@@ -31,14 +30,6 @@ const UserClickAvatar = React.forwardRef((props, ref) => {
 
   }, [playerSeatNumberRequested]);
 
-  // useImperativeHandle(ref, () => {
-  //   return {
-  //     click() {
-  //       refRect.current.click();
-  //     }
-  //   }
-  // }, [onClick]);
-
   useEffect(() => {
 
     const nodeForRef = refRect.current;
@@ -46,16 +37,6 @@ const UserClickAvatar = React.forwardRef((props, ref) => {
     if (!refRect.current)
       return;
 
-    // if (playerSeatNumberRequested != 0
-    // ) {
-    //   //console.log('removing click on seat position=', props.position + 1);
-    //   nodeForRef.removeEventListener('click', onClick);
-    //   return;
-    // }
-
-    // // if (playerSeatNumberRequested != 0) {
-    // //   console.log('someone clicked on seat=', seatNumber);
-    // // }
     if (playerSeatNumberRequested == 0)
       nodeForRef.addEventListener('click', onClick);
     else
@@ -65,20 +46,6 @@ const UserClickAvatar = React.forwardRef((props, ref) => {
   }, [onClick]);
 
   return (<>
-    {/* <rect
-    ref={(node) => {
-      refRect.current = node;
-      if (typeof ref === 'function') {
-        ref(node);
-      } else if (ref) {
-        ref.current = node;
-      }
-    }}
-    x={props.xPosition}
-    y={props.yPosition}
-    width={USERPLACEHOLDER_DIMS.width}
-    height={USERPLACEHOLDER_DIMS.height}
-    rx="7" ry="7" fill="ghostwhite" stroke="lightgray" strokeWidth="2" /> */}
     <UserPlayerAvatar
       ref={(node) => {
         refRect.current = node;
@@ -88,6 +55,7 @@ const UserClickAvatar = React.forwardRef((props, ref) => {
           ref.current = node;
         }
       }}
+      img={''}
       {...props}
     /></>);
 });
