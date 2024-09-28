@@ -424,7 +424,15 @@ Typography
 Grid  
 Positioning
 
-### HTML
+### HTML/Web   
+**document**
+- `document.images` read-only property returns a collection of images in the current html document  
+- `document.body` represents `body` or outermost `frameset` element or `null` if no such element  
+- `document.links` read-only property returns a collection of `<a>` or `<area>` elements where the value for `href` attribute is set  
+- `document.defaultView` return `window` object associated with a `document` or `null` if no `window` object avaialbe  
+
+**window**
+`
 
 ### Other questions
 
@@ -442,8 +450,6 @@ O - open closed principle, objects should be open of extension, but close for mo
 L - Liskov substitution principle, derived class should be substitutable for their base class, subclass should substitute base class w/o breaking base class  
 I - Interface segregation principle, clients shouldn't be force to depend upon interfaces they don't use. better to create two specific interfaces rather than one big  
 D - dependency inversion principle, objects must depend on abstractions not concretions. hole in the middle pattern,
-
-### Web
 
 #### Cross-Origin Resource Sharing (CORS)
 
