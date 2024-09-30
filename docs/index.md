@@ -432,7 +432,13 @@ Positioning
 - `document.defaultView` return `window` object associated with a `document` or `null` if no `window` object avaialbe  
 
 **window**
-`
+``
+
+**DOM**  
+- `Node.childNodes` returns a live collection of child `Node`s, it includes elements, text, and comments  
+- `Element.children` returns a collection of child nodes, it includes only elements  
+- `Node.nodeValue` get/set the value of node; if value is `null` setting won't work. For `Element`, `Document`, `DocumentFragment` (ShadowRoot), `DocumentType`, `NameNodeMap` the `nodeValue` is `null`  
+
 
 ### Other questions
 
