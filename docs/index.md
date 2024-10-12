@@ -317,6 +317,11 @@ console.log(a);
 - `padEnd(targetLength, `_`padString=" "`_`)` returns a string of the specified length padded with `padString` applied at the end of the current string
 - `padStart(targetLength, `_`padString=" "`_`)` returns a string of the specified length padded with `padString` applied from the start of the current string
 
+#### Objects
+
+`Object.freeze()` prevents modification of properties of the object and prevent adding new properties  
+`Object.defineProperty()` adds a property to an object or change attributes of the existing property; attributes like `configurable`, `enumerable`, `writable`, `value`
+
 #### truthy falsy
 
 all values are truthy when placed in boolean context, except falsy values:
@@ -424,24 +429,26 @@ Typography
 Grid  
 Positioning
 
-### HTML/Web   
+### HTML/Web
+
 **document**
-- `document.images` read-only property returns a collection of images in the current html document  
-- `document.body` represents `body` or outermost `frameset` element or `null` if no such element  
-- `document.links` read-only property returns a collection of `<a>` or `<area>` elements where the value for `href` attribute is set  
-- `document.defaultView` return `window` object associated with a `document` or `null` if no `window` object avaialbe  
+
+- `document.images` read-only property returns a collection of images in the current html document
+- `document.body` represents `body` or outermost `frameset` element or `null` if no such element
+- `document.links` read-only property returns a collection of `<a>` or `<area>` elements where the value for `href` attribute is set
+- `document.defaultView` return `window` object associated with a `document` or `null` if no `window` object avaialbe
 
 **window**
 ``
 
-**DOM**  
-- `Node.childNodes` returns a live collection of child `Node`s, it includes elements, text, and comments  
-- `Element.children` returns a collection of child nodes, it includes only elements  
-- `Node.nodeValue` get/set the value of node; if value is `null` setting won't work. For `Element`, `Document`, `DocumentFragment` (ShadowRoot), `DocumentType`, `NameNodeMap` the `nodeValue` is `null`  
-- `Element.append(element, ..., elementN)` and `Node.appendChild(node)`;   
-`apppend(element)` insert `element` after the last child of the `Element` return nothing, could insert all passed elements;  
-`appendChild(node)` insert only one `node` and return it;  
+**DOM**
 
+- `Node.childNodes` returns a live collection of child `Node`s, it includes elements, text, and comments
+- `Element.children` returns a collection of child nodes, it includes only elements
+- `Node.nodeValue` get/set the value of node; if value is `null` setting won't work. For `Element`, `Document`, `DocumentFragment` (ShadowRoot), `DocumentType`, `NameNodeMap` the `nodeValue` is `null`
+- `Element.append(element, ..., elementN)` and `Node.appendChild(node)`;  
+  `apppend(element)` insert `element` after the last child of the `Element` return nothing, could insert all passed elements;  
+  `appendChild(node)` insert only one `node` and return it;
 
 ### Other questions
 
