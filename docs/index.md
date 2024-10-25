@@ -424,24 +424,26 @@ Typography
 Grid  
 Positioning
 
-### HTML/Web   
+### HTML/Web
+
 **document**
-- `document.images` read-only property returns a collection of images in the current html document  
-- `document.body` represents `body` or outermost `frameset` element or `null` if no such element  
-- `document.links` read-only property returns a collection of `<a>` or `<area>` elements where the value for `href` attribute is set  
-- `document.defaultView` return `window` object associated with a `document` or `null` if no `window` object avaialbe  
+
+- `document.images` read-only property returns a collection of images in the current html document
+- `document.body` represents `body` or outermost `frameset` element or `null` if no such element
+- `document.links` read-only property returns a collection of `<a>` or `<area>` elements where the value for `href` attribute is set
+- `document.defaultView` return `window` object associated with a `document` or `null` if no `window` object avaialbe
 
 **window**
 ``
 
-**DOM**  
-- `Node.childNodes` returns a live collection of child `Node`s, it includes elements, text, and comments  
-- `Element.children` returns a collection of child nodes, it includes only elements  
-- `Node.nodeValue` get/set the value of node; if value is `null` setting won't work. For `Element`, `Document`, `DocumentFragment` (ShadowRoot), `DocumentType`, `NameNodeMap` the `nodeValue` is `null`  
-- `Element.append(element, ..., elementN)` and `Node.appendChild(node)`;   
-`apppend(element)` insert `element` after the last child of the `Element` return nothing, could insert all passed elements;  
-`appendChild(node)` insert only one `node` and return it;  
+**DOM**
 
+- `Node.childNodes` returns a live collection of child `Node`s, it includes elements, text, and comments
+- `Element.children` returns a collection of child nodes, it includes only elements
+- `Node.nodeValue` get/set the value of node; if value is `null` setting won't work. For `Element`, `Document`, `DocumentFragment` (ShadowRoot), `DocumentType`, `NameNodeMap` the `nodeValue` is `null`
+- `Element.append(element, ..., elementN)` and `Node.appendChild(node)`;  
+  `apppend(element)` insert `element` after the last child of the `Element` return nothing, could insert all passed elements;  
+  `appendChild(node)` insert only one `node` and return it;
 
 ### Other questions
 
@@ -470,3 +472,18 @@ If proper header recieved, browser can share response data to the client site
 #### same origin policy
 
 Origin defined as protocol (https|https), host (ip addr|dns name), and port
+
+#### SQL
+
+recursion and CTE
+have to know about Third Normal Form,
+indexes,  
+referential integrity,  
+cursors,  
+key spaces,  
+partitioning,  
+backup and reorganisation,  
+and what the EXPLAIN output means, if you are actually going to implement a database.  
+CREATE TABLE or ALTER TABLE options - (such as redefining a primary key and modifying partitioning, which you want to do in the same statement on a big table, as both require a full table rebuild).  
+clastered index scan, a table scan, seeks  
+modelling data effectively cannot be done just by using an ORM. Indexing is vital
