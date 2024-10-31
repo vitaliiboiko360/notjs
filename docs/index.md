@@ -492,3 +492,17 @@ and what the EXPLAIN output means, if you are actually going to implement a data
 CREATE TABLE or ALTER TABLE options - (such as redefining a primary key and modifying partitioning, which you want to do in the same statement on a big table, as both require a full table rebuild).  
 clastered index scan, a table scan, seeks  
 modelling data effectively cannot be done just by using an ORM. Indexing is vital
+
+**simple commands**  
+**SELECT**  
+`SELECT * FROM table_name;`  
+`SELECT field_name_1, field_name_2, field_name_N FROM table_name;`  
+`SELECT usual_field_name, (variableOrFieldNameForExpression + variableOrFieldNamewForExpression)/2 AS field_output_name, another_field_name FROM table_name;`  
+would return as result:  
+`| usual_field_name | field_output_name | another_field_name |`  
+`-------------------------------------------------------------`  
+`| data_from_field__record_1 | result_of_expression_for_record_1 | data_from_another_field__record_1 |`  
+`AS` relabels output column name  
+`WHERE` `AND` `NOT` `OR`
+
+`sql SELECT * FROM table_name WHERE field_name_1 = 'Equal to some data' AND field_name_2 > 0.0;`
