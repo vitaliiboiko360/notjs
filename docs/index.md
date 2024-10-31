@@ -477,3 +477,18 @@ If proper header recieved, browser can share response data to the client site
 #### same origin policy
 
 Origin defined as protocol (https|https), host (ip addr|dns name), and port
+
+#### SQL
+
+recursion and CTE
+have to know about Third Normal Form,
+indexes,  
+referential integrity,  
+cursors,  
+key spaces,  
+partitioning,  
+backup and reorganisation,  
+and what the EXPLAIN output means, if you are actually going to implement a database.  
+CREATE TABLE or ALTER TABLE options - (such as redefining a primary key and modifying partitioning, which you want to do in the same statement on a big table, as both require a full table rebuild).  
+clastered index scan, a table scan, seeks  
+modelling data effectively cannot be done just by using an ORM. Indexing is vital
