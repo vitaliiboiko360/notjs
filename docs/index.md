@@ -516,4 +516,10 @@ would return as result:
 data should be in the order of fields  
 `INSERT INTO table_name VALUES ('data for 1st field', 46, 50, 0.25, '2024-11-27');`  
 or could specify fields  
-`INSERT INTO table_name (field_1, field_2, field_3, field_4, field_5) VALUES ('data for 1st field', 43, 57, 0.0, '2024-11-27);`
+`INSERT INTO table_name (field_1, field_2, field_3, field_4, field_5) VALUES ('data for 1st field', 43, 57, 0.0, '2024-11-27);`  
+better to specify fields in order of input data explicitly  
+`INSERT INTO table_name (field_3, field_1, field_5, field_0) VALUES ('data for 3th field', 42.0, '2024-11-27', 0.0)`  
+**`COPY`** load large amounts of data from flat-text files  
+`COPY table_name FROM '/path/to/flat-text/file.txt';`  
+**`CREATE TABLE`**  
+**`DROP TABLE`**
