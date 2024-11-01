@@ -506,3 +506,8 @@ would return as result:
 `WHERE` `AND` `NOT` `OR`
 
 `sql SELECT * FROM table_name WHERE field_name_1 = 'Equal to some data' AND field_name_2 > 0.0;`
+`ORDER BY` sort  
+`SELECT field, other_fields FROM table_name ORDER BY field, other_fields`  
+`DISTINCT` remove duplicate rows  
+`SELECT DISTINCT field FROM table;`  
+
