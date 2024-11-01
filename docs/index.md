@@ -509,5 +509,11 @@ would return as result:
 `ORDER BY` sort  
 `SELECT field, other_fields FROM table_name ORDER BY field, other_fields`  
 `DISTINCT` remove duplicate rows  
-`SELECT DISTINCT field FROM table;`  
+`SELECT DISTINCT field FROM table;`
 
+**INSERT**  
+`INSERT` insert rows into table  
+data should be in the order of fields  
+`INSERT INTO table_name VALUES ('data for 1st field', 46, 50, 0.25, '2024-11-27');`  
+or could specify fields  
+`INSERT INTO table_name (field_1, field_2, field_3, field_4, field_5) VALUES ('data for 1st field', 43, 57, 0.0, '2024-11-27);`
