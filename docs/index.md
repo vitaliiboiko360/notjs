@@ -347,12 +347,30 @@ all values are truthy when placed in boolean context, except falsy values:
 - `parseFloat(value)`
 - `parseInt(value)`
 
-**Functions**
-
+**Functions**  
 - `arguments` object contains values of passed parameters
-- `apply` `bind` `call`
+- `apply` `bind` `call` are usable only with Funciton objects  
 
-**Object**
+**Object**  
+**Object properties descriptos**  
+Data and accessor descriptors have:
+
+- `configurable` if `true` property could change its descriptor or could be removed from the object. **Default is `false`**
+- `enumerable` only if `true` show up as property during enumeration. **Default is `false`**  
+  Data descriptors also might have optional keys:
+- `value` any value that could be associated with the property (number, object, function). **Default is `undefined`**
+- `writable` if only `true` the `value` could be changed. **Default is `false`**  
+  Accessor descriptors also might have optional keys:
+- `get` `set` function getter and setter of the property. **Default is `undefined`**  
+  **Static methods**
+- `Object.assign(target, source1...sourceN)` copy all enumeratable own properties from source object to a target. Return target modified object
+- `Object.create(proto, `_`propertiesObject`_`)` create a new object. Return new object with `proto` properties and methods
+- `Object.defineProperties(object, props)` modifies or add properties from `props` to `object`. `props` is object of property names and their key is object of property descriptors described above. Returns modified `object`  
+- `Object.defineProperty(object, prop, descriptor)` define or modify property `prop` on the `object` accordint to the following `descriptor`. Return `object` with defined or modified property  
+- `Object.  
+
+
+**Instance methods**
 
 - `seal` `freeze`
 
