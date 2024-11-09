@@ -347,9 +347,10 @@ all values are truthy when placed in boolean context, except falsy values:
 - `parseFloat(value)`
 - `parseInt(value)`
 
-**Functions**  
+**Functions**
+
 - `arguments` object contains values of passed parameters
-- `apply` `bind` `call` are usable only with Funciton objects  
+- `apply` `bind` `call` are usable only with Funciton objects
 
 **Object**  
 **Object properties descriptos**  
@@ -365,14 +366,35 @@ Data and accessor descriptors have:
   **Static methods**
 - `Object.assign(target, source1...sourceN)` copy all enumeratable own properties from source object to a target. Return target modified object
 - `Object.create(proto, `_`propertiesObject`_`)` create a new object. Return new object with `proto` properties and methods
-- `Object.defineProperties(object, props)` modifies or add properties from `props` to `object`. `props` is object of property names and their key is object of property descriptors described above. Returns modified `object`  
-- `Object.defineProperty(object, prop, descriptor)` define or modify property `prop` on the `object` accordint to the following `descriptor`. Return `object` with defined or modified property  
-- `Object.  
-
+- `Object.defineProperties(object, props)` modifies or add properties from `props` to `object`. `props` is object of property names and their key is object of property descriptors described above. Returns modified `object`
+- `Object.defineProperty(object, prop, descriptor)` define or modify property `prop` on the `object` accordint to the following `descriptor`. Return `object` with defined or modified property
+- `Object.
 
 **Instance methods**
 
 - `seal` `freeze`
+
+**Destructuring object**  
+if property `undefined` or has no value the default value would be used,  
+`null` does not trigger default-value-assing-logic
+
+```js
+const [a = 1] = []; // a is 1
+const { b = 2 } = { b: undefined }; // b is 2
+const { c = 2 } = { c: null }; // c is null
+```
+
+default value could be any expression  
+` const { b = console.log("hey") } = { b: 2 };`
+
+ignore incoming values  
+`[, ,] = f();`
+
+control binding pattern  
+`const [a, b, ...{ length }] = [1, 2, 3];`
+
+destructuring to a new name, rename variable  
+`const { length: lengthOfArray } = [1, 2, 3];`  
 
 ### Typescript
 
