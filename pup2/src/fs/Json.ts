@@ -5,7 +5,7 @@ export function readJsonFromFileSync(filePath: string) {
   return readFileSync(filePath);
 }
 
-export function saveJsonFileSync(filePath: string, content: any) {
+export function saveJsonToFileSync(filePath: string, content: any) {
   try {
     writeFileSync(filePath, content);
   } catch (err) {
