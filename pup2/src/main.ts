@@ -9,15 +9,13 @@ import getAndLoadTranslations from './GetTranslation.js';
 
 const rl = readline.createInterface({ input, output });
 
-let config: { intpuFilePath: string, dbConfig: {} } = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
+let config: { intpuFilePath: string; dbConfig: {} } = JSON.parse(
+  fs.readFileSync('./config.json', 'utf8')
+);
 
 async function main() {
-
-  let listOfTextsJson: { texts: [{ resource: string }] } = JSON.parse(fs.readFileSync(config.intpuFilePath, 'utf8'));
-  let listOfTexts = listOfTextsJson.texts.map(item => item.resource);
-  logger.info(`we found following texts: \n${listOfTexts.join('\n')}\n`);
-
   logger.info('Launching headless Chrome');
+
   const browser = await puppeteer.launch({
     executablePath: '/opt/google/chrome/google-chrome',
     headless: false,
@@ -29,8 +27,8 @@ async function main() {
       '--hide-crash-restore-bubble',
       '--disable-dev-shm-usage',
       '--fast-start',
-      '--no-sandbox'
-    ]
+      '--no-sandbox',
+    ],
   });
 
   const page = (await browser.pages())[0];
@@ -40,10 +38,18 @@ async function main() {
 
   await page.goto('https://translate.google.com/', { waitUntil: 'load' });
 
+  let listOfTextsJson: { texts: [{ resource: string }] } = JSON.parse(
+    fs.readFileSync(config.intpuFilePath, 'utf8')
+  );
+  let listOfTexts = listOfTextsJson.texts.map((item) => item.resource);
+
+  logger.info(`we found following texts: \n${listOfTexts.join('\n')}\n`);
+
   for (let i = 0; i < listOfTexts.length; i++) {
     let fileName = listOfTexts[i];
     await getAndLoadTranslations(page, fileName);
   }
+
   process.exit();
 }
 

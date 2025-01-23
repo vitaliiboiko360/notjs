@@ -1,9 +1,8 @@
 import pg from 'pg';
 
 import fs from 'node:fs/promises';
-import path from 'node:path'
+import path from 'node:path';
 import { fileURLToPath } from 'url';
-import { cli } from 'winston/lib/winston/config';
 
 console.log(`DBLoader`);
 
@@ -15,10 +14,13 @@ const clientConfig = JSON.parse(await fs.readFile(pathToDbConfig, 'utf8'));
 
 const { Client } = pg;
 
-export default async function loadJsonFileFromDb(fileName: string): Promise<Object> {
+export default async function fetchJsonFileFromDb(
+  fileName: string
+): Promise<Object> {
   const client = new Client(clientConfig);
   await client.connect();
-  const queryText = 'SELECT text_lines_json FROM spanish_stories WHERE file_name_noext = $1';
+  const queryText =
+    'SELECT text_lines_json FROM spanish_stories WHERE file_name_noext = $1';
   try {
     console.log(`trying to query with fileName=${fileName}\n`);
     const res = await client.query(queryText, [fileName]);
@@ -35,12 +37,19 @@ export default async function loadJsonFileFromDb(fileName: string): Promise<Obje
   return { lines: [] };
 }
 
-export async function loadJsonTranslationToDb(translationObject: Object, fileName: string) {
+export async function saveJsonTranslationToDb(
+  translationObject: Object,
+  fileName: string
+) {
   const client = new Client(clientConfig);
   await client.connect();
-  const queryText = 'UPDATE spanish_stories SET translations_json=$1 WHERE file_name_noext=$2';
+  const queryText =
+    'UPDATE spanish_stories SET translations_json=$1 WHERE file_name_noext=$2';
   try {
-    await client.query(queryText, [JSON.stringify(translationObject), fileName]);
+    await client.query(queryText, [
+      JSON.stringify(translationObject),
+      fileName,
+    ]);
   } catch (e) {
     console.log(e);
   }

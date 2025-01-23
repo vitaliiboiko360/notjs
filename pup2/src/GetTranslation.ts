@@ -1,22 +1,29 @@
 import puppeteer from 'puppeteer';
 import { getWordsJson } from './WordsBrowser.js';
-import loadJsonFileFromDb, { loadJsonTranslationToDb } from './DBLoader.js';
 import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
-import { transport } from 'winston';
+
 const rl = readline.createInterface({ input, output });
 
-declare type translation = { originalLine: string, translation: {} };
+declare type translation = { originalLine: string; translation: {} };
 
-export default async function getAndLoadTranslations(page: puppeteer.Page, inputFileName: string) {
-  let inputJson: any = await loadJsonFileFromDb(inputFileName);
-  let textLines = inputJson.lines.map((element: { text: string }) => element.text);
+export default async function getAndLoadTranslations(
+  page: puppeteer.Page,
+  inputFileName: string
+) {
+  let inputJson: any = await fetchJsonFileFromDb(inputFileName);
+  let textLines = inputJson.lines.map(
+    (element: { text: string }) => element.text
+  );
 
   let resultsJson: { translations: translation[] } = { translations: [] };
   for (let i = 0; i < textLines.length; ++i) {
     let inputString = textLines[i];
     let result = await getWordsJson(page, inputString);
-    resultsJson.translations.push({ originalLine: inputString, translation: result });
+    resultsJson.translations.push({
+      originalLine: inputString,
+      translation: result,
+    });
   }
-  loadJsonTranslationToDb(resultsJson, inputFileName);
+  saveJsonTranslationToDb(resultsJson, inputFileName);
 }
