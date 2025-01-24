@@ -45,8 +45,11 @@ async function main() {
   logger.info(`we found following texts: \n${listOfTexts.join('\n')}\n`);
 
   for (let i = 0; i < listOfTexts.length; i++) {
-    let fileName = listOfTexts[i];
-    await getAndLoadTranslations(page, fileName);
+    const resourceName = listOfTexts[i];
+    const fileName = path.join(config.basePath, `${resourceName}.json`);
+    logger.info(`reading file: "${fileName}"\n`);
+
+    await getAndLoadTranslations(page, resourceName, fileName);
   }
 
   process.exit();
