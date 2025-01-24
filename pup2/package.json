@@ -24,6 +24,8 @@
     "colors": "^1.4.0",
     "pg": "^8.11.5",
     "puppeteer": "^5.5.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
     "winston": "^3.13.0"
   }
 }
