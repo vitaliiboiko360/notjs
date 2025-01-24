@@ -1,33 +1,32 @@
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-extra';
 import process from 'node:process';
 import { logger } from './Logger.js';
 
-import * as readline from 'node:readline/promises';
-import { stdin as input, stdout as output } from 'node:process';
+import path from 'node:path';
 import fs from 'node:fs';
 import getAndLoadTranslations from './GetTranslation.js';
 
-const rl = readline.createInterface({ input, output });
+const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 
-let config: { intpuFilePath: string; dbConfig: {} } = JSON.parse(
-  fs.readFileSync('./config.json', 'utf8')
-);
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
 async function main() {
   logger.info('Launching headless Chrome');
+
+  puppeteer.use(StealthPlugin());
 
   const browser = await puppeteer.launch({
     executablePath: '/opt/google/chrome/google-chrome',
     headless: false,
     userDataDir: '/home/user1/.config/google-chrome/Default',
     defaultViewport: null,
-    devtools: true,
+    devtools: false,
+    // ignoreDefaultArgs: ['--enable-automation'],
     args: [
-      '--user-data-dir="/home/user1/.config/google-chrome/Default"',
+      // '--app=https://translate.google.com/',
+      '--no-default-browser-check',
+      '--enable-automation',
       '--hide-crash-restore-bubble',
-      '--disable-dev-shm-usage',
-      '--fast-start',
-      '--no-sandbox',
     ],
   });
 
