@@ -23,7 +23,11 @@
       const onClick = async () => {
         let captureScreenStream = await navigator.mediaDevices.getDisplayMedia({
           video: true,
-          audio: true,
+          audio: {
+            autoGainControl: false,
+            echoCancellation: false,
+            noiseSuppression: false,
+          },
           systemAudio: 'include',
         });
         recorder = new MediaRecorder(captureScreenStream);
