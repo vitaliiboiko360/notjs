@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Save Video</title>
+  </head>
+  <body>
+    <div style="margin: 30px">
+      <button
+        id="saveVideo"
+        style="width: 100px; height: 60px; color: black; font-size: 14px"
+      >
+        SAVE VIDEO
+      </button>
+      <button id="initRecorder">Init Recorder</button>
+    </div>
+    <script>
+      var recorder;
+      var data = [];
+
+      const onClick = async () => {
+        let captureScreenStream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: true,
+          systemAudio: 'include',
+        });
+        recorder = new MediaRecorder(captureScreenStream);
+        recorder.ondataavailable = (event) => data.push(event.data);
+        recorder.start();
+      };
+      document
+        .getElementById('initRecorder')
+        .addEventListener('click', onClick);
+      document.getElementById('saveVideo').addEventListener('click', () => {
+        recorder.stop();
+        let recordedBlob = new Blob(data, { type: 'video/webm' });
+        let url = URL.createObjectURL(recordedBlob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = `RecordedVideo_${Date.now()}.webm`;
+        a.click();
+      });
+    </script>
+  </body>
+</html>
