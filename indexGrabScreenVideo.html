@@ -30,6 +30,18 @@
           },
           systemAudio: 'include',
         });
+
+        // const [track] = stream.getVideoTracks();
+        // const captureTarget = document
+        //   .getElementById('46349191b07f499ea3d87f5e55dde27f')
+        //   .getElementsByTagName('video')[0];
+
+        // console.log(`restriction target element ${captureTarget}`);
+        // const restrictionTarget = await RestrictionTarget.fromElement(
+        //   captureTarget
+        // );
+        // await track.restrictTo(restrictionTarget);
+
         recorder = new MediaRecorder(captureScreenStream);
         recorder.ondataavailable = (event) => data.push(event.data);
         recorder.start();
