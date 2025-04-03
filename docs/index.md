@@ -2,128 +2,15 @@
 layout: default
 ---
 
-[Practical exercises](#practical)  
+[Backend/NestJS/Mongo](./backend.md)
 [Javascript/ES](#javascriptesweb)  
 [Typescript](#typescript)  
 [Node.js](#nodejs)  
 [React](#reactredux)  
 [HTML](#html)  
 [CSS](#css)  
-[Other questions](#other-questions)
-
-### Practical
-
-#### write function `runOnce()`
-
-```js
-function doSomeShit(param) {
-  console.log(`${param} is shit.`);
-}
-
-const doSomeShitOnce = runOnce(doSomeShit);
-doSomeShitOnce(5); // 5 is shit
-doSomeShitOnce('blah'); // Error: This function can be run only once
-```
-
-<details>  
-  
-<summary>  
-  
-solution  
-  
-</summary>   
-  
-```js  
-function runOnce() {
-  let isCalled = false;
-  return function (arg) {
-    if (isCalled)
-      throw Error('already called');
-    console.log(arg);
-    isCalled = true;
-  };
-}
-  
-```  
-  
-</details>
-
-#### write function `isPalindrom(input: string)`
-
-```js
-isPalindrome('abacaba'); // true
-isPalindrome('qwerty'); // false
-```
-
-write function in one line  
-explain adv/disadv of each implementation
-
-<details>
-
-<summary>Solution</summary>
-
-### You can add a header
-
-You can add text within a collapsed section.
-
-You can add an image or a code block, too.
-
-```ruby
-   puts "Hello World"
-```
-
-</details>
-
-#### write function `showAddition(n: number)`
-
-```js
-showAdditions(456); // "400+50+6"
-showAdditions(8274); // "8000+200+70+4"
-showAdditions(15040); // "10000+5000+40"
-```
-
-#### write function `flatten(args...)`
-
-```js
-flatten([3, 5, [7], [1, [[22]], [[6], 3]]]); // Array [ 3, 5, 7, 1, 22, 6, 3 ]
-```
-
-<details>  
-  
-<summary>  
-  
-solution  
-  
-</summary>   
-  
-```js  
-function flatten(array) {
-  return array.flat(Infinity);
-}
-  
-```  
-  
-</details>  
-  
-#### explain order of output
-
-```js
-console.log('script start');
-
-setTimeout(function () {
-  console.log('setTimeout');
-}, 0);
-
-Promise.resolve()
-  .then(function () {
-    console.log('promise1');
-  })
-  .then(function () {
-    console.log('promise2');
-  });
-
-console.log('script end');
-```
+[Other questions](#other-questions)  
+[Practical exercises](#practical)
 
 ### Javascript/ES/Web
 
@@ -394,7 +281,7 @@ control binding pattern
 `const [a, b, ...{ length }] = [1, 2, 3];`
 
 destructuring to a new name, rename variable  
-`const { length: lengthOfArray } = [1, 2, 3];`  
+`const { length: lengthOfArray } = [1, 2, 3];`
 
 ### Typescript
 
@@ -563,3 +450,105 @@ better to specify fields in order of input data explicitly
 `COPY table_name FROM '/path/to/flat-text/file.txt';`  
 **`CREATE TABLE`**  
 **`DROP TABLE`**
+
+### Practical
+
+#### write function `runOnce()`
+
+```js
+function doSomeShit(param) {
+  console.log(`${param} is shit.`);
+}
+
+const doSomeShitOnce = runOnce(doSomeShit);
+doSomeShitOnce(5); // 5 is shit
+doSomeShitOnce('blah'); // Error: This function can be run only once
+```
+
+<details>  
+  
+<summary>solution</summary>   
+  
+```js  
+function runOnce() {
+  let isCalled = false;
+  return function (arg) {
+    if (isCalled)
+      throw Error('already called');
+    console.log(arg);
+    isCalled = true;
+  };
+}
+  
+```  
+  
+</details>
+
+#### write function `isPalindrom(input: string)`
+
+```js
+isPalindrome('abacaba'); // true
+isPalindrome('qwerty'); // false
+```
+
+write function in one line  
+explain adv/disadv of each implementation
+
+<details>
+
+<summary>Solution</summary>
+
+### Palindrom TODO
+
+```js
+console.log('palindrom');
+```
+
+</details>
+
+#### write function `showAddition(n: number)`
+
+```js
+showAdditions(456); // "400+50+6"
+showAdditions(8274); // "8000+200+70+4"
+showAdditions(15040); // "10000+5000+40"
+```
+
+#### write function `flatten(args...)`
+
+```js
+flatten([3, 5, [7], [1, [[22]], [[6], 3]]]); // Array [ 3, 5, 7, 1, 22, 6, 3 ]
+```
+
+<details>  
+  
+<summary>solution</summary>    
+  
+```js  
+function flatten(array) {
+  return array.flat(Infinity);
+}
+  
+```  
+  
+</details>  
+  
+#### explain order of output
+
+```js
+console.log('script start');
+
+setTimeout(function () {
+  console.log('setTimeout');
+}, 0);
+
+Promise.resolve()
+  .then(function () {
+    console.log('promise1');
+  })
+  .then(function () {
+    console.log('promise2');
+  });
+
+console.log('script end');
+```
