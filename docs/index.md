@@ -14,6 +14,38 @@ layout: default
 
 ### Javascript/ES/Web
 
+#### Arrow functions  
+Arrow functions don't have their own bindings to 
+- this  
+- arugements  
+- super  
+Arrow functions should not be used as methods  
+Array functions cannot be used as constructor  
+Calling new on arrow function returns TypeError    
+Arrow function doesn't have access to new.target  
+Arrow functions cannot use `yield`  
+and cannot be created as generator functions  
+
+
+#### Functions   
+##### new.target  
+`new.target` meta property to detect wheathe function or constructor was called using `new` keyword  
+```js  
+function Foo() {
+  if (!new.target) {
+    throw new TypeError("calling Foo constructor without new is invalid");
+  }
+}
+
+try {
+  Foo();
+} catch (e) {
+  console.log(e); // TypeError: calling Foo constructor without new is invalid
+}
+```  
+  
+
+
 #### what is Promise
 
 **Promise** is object that represent eventual completion (or failure) of asynchronous operation.  

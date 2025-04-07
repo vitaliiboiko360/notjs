@@ -21,6 +21,21 @@ layout: default
 
 #### mongosh
 
+list collections  
+`db.runCommand({listCollections:1,nameOnly:true})`  
+
+get fields audio for all documents  
+`db.runCommand({find:'lessons',projection:{'audio':1}})`  
+
+get collection  
+`var collectionName = db.getCollection(`collectionName`);`  
+add `newField` with `newValue`  
+`collectionName.updateOne({name:{$eq:'name'}},{$set:{'newField','newValue'}})`  
+example:  
+`var lessons = db.getCollection('lessons')`  
+`lessons.updateOne({audio:{$eq:'mike_tiene_un_perro.mp3'}},{name:{$set:'mike_tiene_un_perro'}})`  
+
+
 #### mongoose
 
 ##### Query
